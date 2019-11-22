@@ -21,7 +21,7 @@ namespace Magnet.Sample
                 .ConfigureAppConfiguration( builder =>
                 {
                     builder.AddJsonFile("appsettings.json");
-                    builder.AddJsonFile("appsettings.user.json");
+                    builder.AddJsonFile("appsettings.user.json", optional:true);
                     builder.AddEnvironmentVariables();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>

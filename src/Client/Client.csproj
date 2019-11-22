@@ -18,13 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Abstractions\Server.Abstractions.csproj" />
+    <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
 
 
   <ItemGroup>
     <Protobuf Include="Protos\magnet.proto" GrpcServices="Client" />
   </ItemGroup>
-  
+
 
 </Project>

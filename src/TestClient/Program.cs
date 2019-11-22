@@ -1,7 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Net.Client;
+using Magnet;
+using Magnet.Client;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TestClient
 {
@@ -9,28 +14,61 @@ namespace TestClient
     {
         static async Task Main(string[] args)
         {
-            var subsc = "all";
+            var subsc = "a";
 
             if (args.Length > 0)
                 subsc = args[0];
 
-            // The port number(5001) must match the port of the gRPC server.
-            using var channel = GrpcChannel.ForAddress("https://localhost:5001");
-            var client = new Magnet.Protos.Messenger.MessengerClient(channel);
+            //var client = new MessageStreamClient(new GrpcOptions
+            //{
+            //    Address = "https://localhost:5001"
+            //});
 
-            AsyncServerStreamingCall<Magnet.Protos.MagnetMessage> messages =
-                client.GetMessages(new Magnet.Protos.MessagesRequest { ClientName = subsc });
 
-            Console.WriteLine("Connected, waiting for messages");
+            //client.RegisterMessageReceivedHandler("a", (msg) =>
+            //{
+            //    Console.WriteLine(msg.From);
+            //});
 
-            await foreach (Magnet.Protos.MagnetMessage msg in messages.ResponseStream.ReadAllAsync())
+            IServiceProvider services = BuildServiceProvider();
+            MagnetClient mg = services.GetService<MagnetClient>();
+
+            while (true)
             {
-                Console.WriteLine($"{msg.Type}-{msg.From}");
+                SmsMessage sms = await mg.WaitForSms("+41798074288");
+                //SmsMessage sms = await mg.WaitFor<SmsMessage>(
+                //    FilterBuilder.To("sasas")
+                //    .Build());
+                Console.WriteLine(sms.From);
             }
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
             Console.WriteLine("Disconecting...");
         }
+
+
+
+        private static IServiceProvider BuildServiceProvider()
+        {
+            IServiceCollection services = new ServiceCollection();
+            services.AddSingleton<IMessageStreamClient, MessageStreamClient>();
+            services.AddMagnet(null);
+
+            services.AddSingleton(
+                new MagnetOptions
+                {
+                    ClientName = "a",
+                    Grpc = new GrpcOptions
+                    {
+                        Address = "https://localhost:5001"
+                    }
+                }
+                );
+
+            services.AddSingleton(c => c.GetService<MagnetOptions>().Grpc);
+            return services.BuildServiceProvider();
+        }
+
     }
 }

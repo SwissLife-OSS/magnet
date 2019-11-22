@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Grpc.Core;
-using Grpc.Net.Client;
 using Magnet.Client.Mappers;
 
 namespace Magnet.Client
@@ -11,97 +8,69 @@ namespace Magnet.Client
 
     public class MagnetClient
     {
-        private readonly IMessageBus _messageBus;
         private readonly MessageMapperFactory _messageMapper;
+        private readonly IMessageStreamClient _messageStreamClient;
         private readonly MagnetOptions _options;
-        private readonly List<MagnetMessage> _messages = new List<MagnetMessage>();
-        private readonly List<Action<MagnetMessage>> _waitHandlers =
-            new List<Action<MagnetMessage>>();
-
-        private bool _isListening = false;
 
         public MagnetClient(
-            IMessageBus messageBus,
             MessageMapperFactory messageMapper,
+            IMessageStreamClient messageStreamClient,
             MagnetOptions options)
         {
-            _messageBus = messageBus;
             _messageMapper = messageMapper;
+            _messageStreamClient = messageStreamClient;
             _options = options;
-
-
         }
 
-        private async Task EnsureListening()
+        public async Task<TMessage> WaitFor<TMessage>(
+            string to,
+            WaitOptions options = null)
         {
-            if (!_isListening)
-                await StartListening();
+            WaitFilter waitFilter = FilterBuilder.To(to).Build();
+            return await WaitFor<TMessage>(waitFilter, options);
         }
 
-        private async Task StartListening()
+        public async Task<TMessage> WaitFor<TMessage>(
+            WaitFilter waitFilter = null,
+            WaitOptions options = null)
         {
+            var timeoutToken = new CancellationTokenSource(TimeSpan.FromSeconds(options.Timeout));
+            waitFilter = waitFilter ?? new WaitFilter();
+            var typeName = _messageMapper.ResolveTypeName<TMessage>();
+            waitFilter.Predicates.Add((m) => m.Type == typeName);
 
-            var channel = GrpcChannel.ForAddress("https://localhost:5001");
-            var client = new Magnet.Protos.Messenger.MessengerClient(channel);
-
-            AsyncServerStreamingCall<Protos.MagnetMessage> messages =
-                client.GetMessages(new Protos.MessagesRequest { ClientName = "all" });
-                
+            var completion = new TaskCompletionSource<TMessage>();
+            timeoutToken.Token.Register(() => completion.SetCanceled());
 
             try
             {
-                await foreach (Protos.MagnetMessage msg in messages.ResponseStream.ReadAllAsync())
+                _messageStreamClient.RegisterMessageReceivedHandler(_options.ClientName, (msg) =>
                 {
-                    Console.Write(msg.Type);
-                }
+                    var match = MatchFilter(waitFilter, msg);
+                    if (match)
+                    {
+                        timeoutToken.Dispose();
+                        TMessage mapped = _messageMapper.Map<TMessage>(msg);
+                        completion.SetResult(mapped);
+                    }
+                });
             }
             catch (Exception ex)
             {
-                var a = ex;
+                completion.SetException(ex);
             }
 
-            //_messageBus.RegisterMessageHandler(_options.ClientName, (message, token) =>
-            //{
-            //    _messages.Add(message);
-            //    foreach (Action<MagnetMessage> handler in _waitHandlers)
-            //    {
-            //        handler(message);
-            //    }
-            //    return Task.CompletedTask;
-            //});
-            _isListening = true;
-        }
-
-
-        private async Task RegisterWait(Action<MagnetMessage> handler, WaitFilter filter = null)
-        {
-            await EnsureListening();
-            _waitHandlers.Add(handler);
-        }
-
-        public async Task<TMessage> WaitFor<TMessage>(WaitFilter waitFilter = null, WaitOptions options = null)
-        {
-            //waitFilter.Predicate()
-
-            CancellationToken timeoutToken =
-                new CancellationTokenSource(TimeSpan.FromSeconds(60)).Token;
-            var completion = new TaskCompletionSource<TMessage>();
-            timeoutToken.Register(() => completion.SetCanceled());
-
-            await RegisterWait((message) =>
-            {
-                try
-                {
-                    TMessage mapped = _messageMapper.Map<TMessage>(message);
-                    completion.SetResult(mapped);
-                }
-                catch (Exception ex)
-                {
-                    completion.SetException(ex);
-                }
-            });
-
             return await completion.Task;
+        }
+
+        private bool MatchFilter(WaitFilter filter, MagnetMessage message)
+        {
+            foreach (Predicate<MagnetMessage> predicate in filter.Predicates)
+            {
+                if (!predicate(message))
+                    return false;
+            }
+            return true;
         }
     }
 }

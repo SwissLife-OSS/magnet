@@ -22,14 +22,19 @@ namespace Magnet.Client.Tests
 
         private static IServiceProvider BuildServiceProvider()
         {
-            IConfiguration config = new ConfigurationBuilder()
-                        .AddJsonFile("appsettings.json")
-                        .AddJsonFile("appsettings.user.json", optional: true)
-                        .Build();
-
             IServiceCollection services = new ServiceCollection();
-            services.AddMagnet(config);
-            services.AddServiceBus(config);
+            services.AddSingleton<IMessageStreamClient, MessageStreamClient>();
+
+            services.AddSingleton(new MagnetOptions
+            {
+                ClientName = "a",
+                Grpc = new GrpcOptions
+                {
+                    Address = "https://localhost:5001"
+                }
+            });
+
+            services.AddSingleton(c => c.GetService<MagnetOptions>().Grpc);
             return services.BuildServiceProvider();
         }
 
