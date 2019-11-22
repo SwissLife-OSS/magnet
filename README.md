@@ -11,7 +11,7 @@ It makes is super easy to write Selenium tests against a Onboarding process etc.
 
 - [x] Sendgrid Email
 - [x] Twilio SMS
-- [] Generic Events
+- [ ] Generic Events
 
 ### Messaging Integrations
 
