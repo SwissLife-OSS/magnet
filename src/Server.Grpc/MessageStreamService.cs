@@ -1,28 +1,23 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Magnet.Protos;
 using Microsoft.Extensions.Logging;
-using System.Threading;
 
-namespace Magnet.Host
+namespace Magnet.Grpc
 {
-    public class MessageService : Messenger.MessengerBase, IDisposable
+    public class MessageStreamService : Messenger.MessengerBase, IDisposable
     {
-        private readonly ILogger<MessageService> _logger;
+        private readonly ILogger<MessageStreamService> _logger;
         private readonly IMessageBus _messageBus;
 
-        public MessageService(ILogger<MessageService> logger, IMessageBus messageBus)
+        public MessageStreamService(ILogger<MessageStreamService> logger, IMessageBus messageBus)
         {
             _logger = logger;
             _messageBus = messageBus;
-        }
-
-        public void Dispose()
-        {
-            _messageBus.Dispose();
         }
 
         public override Task GetMessages(
@@ -63,14 +58,13 @@ namespace Magnet.Host
                 }
             });
 
-            var mres = new  ManualResetEventSlim(false);
+            var mres = new ManualResetEventSlim(false);
             while (true)
             {
                 if (context.CancellationToken.IsCancellationRequested)
                 {
                     Console.WriteLine("Canceled while running.");
                     break;
-                    //context.CancellationToken.ThrowIfCancellationRequested();
                 }
                 try
                 {
@@ -78,18 +72,28 @@ namespace Magnet.Host
                 }
                 catch (OperationCanceledException)
                 {
-                    
+
                     Console.WriteLine("The wait operation was canceled.");
                     break;
                 }
 
-                Console.Write("Working...");
-                // Simulating work.
                 Thread.SpinWait(500000);
             }
             return Task.CompletedTask;
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _messageBus.Dispose();
+            }
+        }
     }
 }
-
-

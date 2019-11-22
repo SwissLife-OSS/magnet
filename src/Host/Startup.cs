@@ -9,8 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Magnet.Messaging.AzureServiceBus;
-using Magnet.Host;
 using Microsoft.Extensions.Logging;
+using Magnet.Grpc;
 
 namespace Magnet.Sample
 {
@@ -30,12 +30,7 @@ namespace Magnet.Sample
             services.AddControllers()
                     .AddApplicationPart(typeof(SendGridEmail.EmailController).Assembly);
             services.AddMagnet();
-            services.AddScoped<MessageService>(c =>
-           {
-           return new MessageService(
-                c.GetService<ILogger<MessageService>>(),
-                c.GetService<IMessageBus>());
-            });
+            services.AddScoped<MessageStreamService>();
             services.AddServiceBus(Configuration);
         }
 
@@ -53,7 +48,7 @@ namespace Magnet.Sample
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<MessageService>();
+                endpoints.MapGrpcService<MessageStreamService>();
                 endpoints.MapControllers();
             });
         }

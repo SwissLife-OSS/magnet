@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Host", "Host\Host.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Twilio.Sms", "Twilio.Sms\Twilio.Sms.csproj", "{569AFE62-4A59-4F4B-9DFF-13ADD6172BDC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abstractions", "Abstractions\Abstractions.csproj", "{AB52F46D-E69E-4DC0-8DCC-FC516765A308}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.Abstractions", "Abstractions\Server.Abstractions.csproj", "{AB52F46D-E69E-4DC0-8DCC-FC516765A308}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messaging.AzureServiceBus", "Messaging.AzureServiceBus\Messaging.AzureServiceBus.csproj", "{0E2E6C7A-EBA7-4469-83FA-690AE9E37C82}"
 EndProject
@@ -24,6 +24,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{A124B845-9851-4CC8-BEC0-8F78438EE202}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Tests", "Client.Tests\Client.Tests.csproj", "{56072C57-6DA7-4C92-A351-76EFD5B913DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{3677DF71-D570-4B66-ABB9-296C8C4635DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{33560B8C-45A0-4AA0-9807-60CDB5019819}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Grpc", "Server.Grpc\Server.Grpc.csproj", "{57E0E3EA-EEF4-4B86-9D92-FE3ED16183A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +69,14 @@ Global
 		{56072C57-6DA7-4C92-A351-76EFD5B913DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56072C57-6DA7-4C92-A351-76EFD5B913DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56072C57-6DA7-4C92-A351-76EFD5B913DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33560B8C-45A0-4AA0-9807-60CDB5019819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33560B8C-45A0-4AA0-9807-60CDB5019819}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33560B8C-45A0-4AA0-9807-60CDB5019819}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33560B8C-45A0-4AA0-9807-60CDB5019819}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57E0E3EA-EEF4-4B86-9D92-FE3ED16183A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57E0E3EA-EEF4-4B86-9D92-FE3ED16183A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57E0E3EA-EEF4-4B86-9D92-FE3ED16183A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57E0E3EA-EEF4-4B86-9D92-FE3ED16183A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +91,8 @@ Global
 		{0E2E6C7A-EBA7-4469-83FA-690AE9E37C82} = {BD8383A7-9D59-4C9A-8500-F413E3833A69}
 		{1023F2F8-4F9B-4197-A82C-9AE8BC6E528F} = {A124B845-9851-4CC8-BEC0-8F78438EE202}
 		{56072C57-6DA7-4C92-A351-76EFD5B913DE} = {A124B845-9851-4CC8-BEC0-8F78438EE202}
+		{33560B8C-45A0-4AA0-9807-60CDB5019819} = {3677DF71-D570-4B66-ABB9-296C8C4635DE}
+		{57E0E3EA-EEF4-4B86-9D92-FE3ED16183A9} = {BD8383A7-9D59-4C9A-8500-F413E3833A69}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {55A77196-CAD4-4D29-9E89-8A6E961AB1B3}

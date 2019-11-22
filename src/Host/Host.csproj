@@ -5,17 +5,13 @@
     <AssemblyName>Magnet.Sample</AssemblyName>
     <RootNamespace>Magnet.Sample</RootNamespace>
   </PropertyGroup>
-
-
-  <ItemGroup>
-    <Protobuf Include="Protos\magnet.proto" GrpcServices="Server" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.24.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Messaging.AzureServiceBus\Messaging.AzureServiceBus.csproj" />
     <ProjectReference Include="..\SendGridEmail\SendGrid.Email.csproj" />
+    <ProjectReference Include="..\Server.Grpc\Server.Grpc.csproj" />
     <ProjectReference Include="..\Server\Core\Server.Core.csproj" />
     <ProjectReference Include="..\Twilio.Sms\Twilio.Sms.csproj" />
   </ItemGroup>
