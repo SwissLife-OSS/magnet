@@ -2,7 +2,7 @@ Work in Progress
 
 ## Getting Started
 
-Squadron is a solution to test systems where receiving messages like Email and SMS is required.
+Magnet is a solution to test systems where receiving messages like Email and SMS is required.
 It makes is super easy to write Selenium tests against a Onboarding process etc.
 
 ## Features
