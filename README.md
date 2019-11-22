@@ -2,7 +2,29 @@ Work in Progress
 
 ## Getting Started
 
+Squadron is a solution to test systems where receiving messages like Email and SMS is required.
+It makes is super easy to write Selenium tests against a Onboarding process etc.
+
 ## Features
+
+### Providers
+
+- [x] Sendgrid Email
+- [x] Twilio SMS
+- [] Generic Events
+
+### Messaging Integrations
+
+- [x] Azure ServiceBus
+
+### Persistence
+
+- [ ] MongoDB
+
+### Transport
+
+- [ ] GRPC
+- [ ] SignalR
 
 ## Community
 

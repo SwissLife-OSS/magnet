@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option csharp_namespace = "Magnet.Protos";
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+
+package magnet;
+
+service Messenger{
+  rpc GetMessages( MessagesRequest) returns ( stream MagnetMessage );
+}
+
+message MessagesRequest {
+  string clientName = 1;
+}
+
+message MagnetMessage{
+
+  string type = 1;
+  string from = 2;
+  string body = 3;
+  string provider = 4;
+  repeated string to = 5;
+  google.protobuf.Timestamp ReceivedAt = 6;
+
+  map<string, string> properties = 7;
+}
