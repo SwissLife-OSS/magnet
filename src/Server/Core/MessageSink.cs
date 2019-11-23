@@ -14,7 +14,6 @@ namespace Magnet
             _messageBus = messageBus;
         }
 
-
         public async Task<string> ProcessMessageAsync(MagnetMessage message)
         {
             message.Id = Guid.NewGuid();

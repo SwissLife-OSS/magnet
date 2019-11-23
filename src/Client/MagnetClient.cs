@@ -35,7 +35,7 @@ namespace Magnet.Client
                 WaitFilter waitFilter = null,
                 WaitOptions options = null)
         {
-            options = options ?? new WaitOptions { Timeout = 120 };
+            options = options ?? new WaitOptions();
             var timeoutToken = new CancellationTokenSource(TimeSpan.FromSeconds(options.Timeout));
             waitFilter = waitFilter ?? new WaitFilter();
             var typeName = _messageMapper.ResolveTypeName<TMessage>();
@@ -47,9 +47,10 @@ namespace Magnet.Client
             try
             {
                 MagnetMessage message = await _messageStreamClient
-                    .GetNextAsync(_options.ClientName, default);
+                    .GetNextAsync(_options.ClientName, timeoutToken.Token);
 
                 var match = MatchFilter(waitFilter, message);
+                await AddReceiveReceiptAsync(message, match, timeoutToken.Token);
 
                 if (match)
                 {
@@ -57,58 +58,36 @@ namespace Magnet.Client
                     completion.SetResult(mapped);
                     timeoutToken.Dispose();
                 }
+               
             }
             catch (Exception ex)
             {
                 completion.SetException(ex);
+                timeoutToken.Dispose();
             }
 
             return await completion.Task;
         }
 
-
-
-        public async Task<TMessage> WaitFor2<TMessage>(
-        WaitFilter waitFilter = null,
-        WaitOptions options = null)
+        private async Task AddReceiveReceiptAsync(
+            MagnetMessage message,
+            bool match,
+            CancellationToken cancellationToken)
         {
-            options = options ?? new WaitOptions { Timeout = 120 };
-            var timeoutToken = new CancellationTokenSource(TimeSpan.FromSeconds(options.Timeout));
-            waitFilter = waitFilter ?? new WaitFilter();
-            var typeName = _messageMapper.ResolveTypeName<TMessage>();
-            waitFilter.Predicates.Add((m) => m.Type == typeName);
-
-            var completion = new TaskCompletionSource<TMessage>();
-            timeoutToken.Token.Register(() => completion.SetCanceled());
-
             try
             {
-                await _messageStreamClient.RegisterMessageReceivedHandler(_options.ClientName, (msg) =>
+                await _messageStreamClient.AddReceivedReceiptAsync(new MessageReceivedReceipt
                 {
-                    var match = MatchFilter(waitFilter, msg);
-                    _messageStreamClient.AddReadReceiptAsync(new MessageReceivedReceipt
-                    {
-                        MessageId = msg.Id,
-                        IsMatch = match,
-                        ClientName = _options.ClientName,
-                        ReceivedAt = DateTime.UtcNow
-                    });
-
-                    if (match)
-                    {
-                        TMessage mapped = _messageMapper.Map<TMessage>(msg);
-                        completion.SetResult(mapped);
-                        timeoutToken.Dispose();
-                        _messageStreamClient.UnSubscribe(_options.ClientName, "");
-                    }
-                });
+                    ClientName = _options.ClientName,
+                    IsMatch = match,
+                    MessageId = message.Id,
+                    ReceivedAt = DateTime.UtcNow
+                }, cancellationToken);
             }
-            catch (Exception ex)
+            catch
             {
-                completion.SetException(ex);
+                //dont fail...
             }
-
-            return await completion.Task;
         }
 
         private bool MatchFilter(WaitFilter filter, MagnetMessage message)

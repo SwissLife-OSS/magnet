@@ -10,10 +10,10 @@ namespace Magnet
     {
         Task<string> PublishAsync(MagnetMessage message);
 
-        Task<MagnetMessage> GetNextAsync(string name);
-
         void RegisterMessageHandler(
             string name,
             Func<MagnetMessage, CancellationToken, Task> handler);
+
+        Task<MagnetMessage> GetNextAsync(string name, CancellationToken cancellationToken);
     }
 }

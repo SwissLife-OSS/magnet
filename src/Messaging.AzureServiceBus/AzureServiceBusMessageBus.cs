@@ -43,10 +43,11 @@ namespace Magnet.Messaging.AzureServiceBus
         }
 
 
-        public async Task<MagnetMessage> GetNextAsync(string name)
+        public async Task<MagnetMessage> GetNextAsync(string name, CancellationToken cancellationToken)
         {
             var client = new SubscriptionClient(_options.ConnectionString, _options.Topic, name);
-            var complete = new TaskCompletionSource<MagnetMessage>();
+            var completion = new TaskCompletionSource<MagnetMessage>();
+            cancellationToken.Register(() => completion.SetCanceled());
 
             try
             {
@@ -56,16 +57,16 @@ namespace Magnet.Messaging.AzureServiceBus
                     MagnetMessage magnetMsg = JsonConvert.DeserializeObject<MagnetMessage>(json);
                     await client.CompleteAsync(message.SystemProperties.LockToken);
                     await client.CloseAsync();
-                    complete.SetResult(magnetMsg);
+                    completion.SetResult(magnetMsg);
                 },
                 new MessageHandlerOptions(ExceptionReceivedHandler)
                 { MaxConcurrentCalls = 1, AutoComplete = false });
             }
             catch ( Exception ex)
             {
-                complete.SetException(ex);
+                completion.SetException(ex);
             }
-            return await complete.Task;
+            return await completion.Task;
         }
 
 
@@ -95,10 +96,16 @@ namespace Magnet.Messaging.AzureServiceBus
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
             _subscriptions.ForEach(s => s
-                     .CloseAsync()
-                    .GetAwaiter()
-                    .GetResult());
+                .CloseAsync()
+                .GetAwaiter()
+                .GetResult());
         }
     }
 }

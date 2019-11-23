@@ -1,0 +1,16 @@
+version: "3"
+services:
+  magnet:
+    container_name: magnet
+    image: magnet:dev1
+    ports:
+      - 5005:80
+    volumes:
+      - ./appsettings.user.json:/app/appsettings.user.json
+    links:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - 27018:27017

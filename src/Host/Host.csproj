@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyName>Magnet.Sample</AssemblyName>
-    <RootNamespace>Magnet.Sample</RootNamespace>
+    <AssemblyName>Magnet.Server</AssemblyName>
+    <RootNamespace>Magnet.Server</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.24.0" />

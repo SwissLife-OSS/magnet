@@ -36,7 +36,9 @@ namespace Magnet.Client
             }
         }
 
-        public async Task AddReadReceiptAsync(MessageReceivedReceipt readReceipt)
+        public async Task AddReceivedReceiptAsync(
+            MessageReceivedReceipt readReceipt,
+            CancellationToken cancellationToken)
         {
             var client = new Magnet.Protos.Messenger.MessengerClient(_channel);
             await client.AddReadReceiptAsync(new Protos.ReceivedReceipt
@@ -45,7 +47,7 @@ namespace Magnet.Client
                 MessageId = readReceipt.MessageId.ToString("N"),
                 ReceivedAt = Timestamp.FromDateTime(readReceipt.ReceivedAt),
                 IsMatch = readReceipt.IsMatch
-            });
+            }, cancellationToken: cancellationToken);
         }
 
 
@@ -78,10 +80,7 @@ namespace Magnet.Client
             return msg;
         }
 
-        public Task UnSubscribe(string clientName, string token)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public Task<MagnetMessage> GetNextAsync(string clientName, CancellationToken cancellationToken)
         {

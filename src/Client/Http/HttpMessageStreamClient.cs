@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -19,31 +20,38 @@ namespace Magnet.Client
             _httpClientFactory = httpClientFactory;
         }
 
-        public Task AddReadReceiptAsync(MessageReceivedReceipt readReceipt)
+        public async Task AddReceivedReceiptAsync(
+            MessageReceivedReceipt readReceipt,
+            CancellationToken cancellationToken)
         {
-            return Task.CompletedTask;
+            HttpClient client = _httpClientFactory.CreateClient("Magnet");
+
+            var request = new HttpRequestMessage(
+                HttpMethod.Post,
+                $"{client.BaseAddress}stream/receipt");
+
+            request.Content = new StringContent(
+                JsonConvert.SerializeObject(readReceipt),
+                Encoding.UTF8,
+                "application/json");
+
+            HttpResponseMessage result = await client.SendAsync(request, default);
+            result.EnsureSuccessStatusCode();
         }
 
-        public Task RegisterMessageReceivedHandler(string clientName, Action<MagnetMessage> handler)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UnSubscribe(string clientName, string token)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<MagnetMessage> GetNextAsync(
             string clientName,
             CancellationToken cancellationToken)
         {
             HttpClient client = _httpClientFactory.CreateClient("Magnet");
-            var reqeust = new HttpRequestMessage(
+            
+            var request = new HttpRequestMessage(
                 HttpMethod.Get,
                 $"{client.BaseAddress}stream/{clientName}");
 
-            HttpResponseMessage result = await client.SendAsync(reqeust, cancellationToken);
+            HttpResponseMessage result = await client.SendAsync(request, cancellationToken);
+            result.EnsureSuccessStatusCode();
             string json = await result.Content.ReadAsStringAsync();
             MagnetMessage message = JsonConvert.DeserializeObject<MagnetMessage>(json);
             return message;

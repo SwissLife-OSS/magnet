@@ -27,7 +27,9 @@ namespace Magnet.Client
                 .Build();
         }
 
-        public Task AddReadReceiptAsync(MessageReceivedReceipt readReceipt)
+        public Task AddReceivedReceiptAsync(
+            MessageReceivedReceipt readReceipt,
+            CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }

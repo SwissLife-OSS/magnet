@@ -12,6 +12,6 @@ namespace Magnet.Client
 
     public class WaitOptions
     {
-        public int Timeout { get; set; } = 120;
+        public int Timeout { get; set; } = 60;
     }
 }

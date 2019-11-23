@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 
-namespace Magnet.Sample.Hubs
+namespace Magnet.SignalR
 {
     public class MessageHub : Hub
     {
@@ -24,7 +24,6 @@ namespace Magnet.Sample.Hubs
             _messageListener = messageListener;
             _messageStore = messageStore;
         }
-
 
         public override Task OnConnectedAsync()
         {
@@ -45,27 +44,5 @@ namespace Magnet.Sample.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, clientName);
             _messageListener.Subsribe(clientName);
         }
-    }
-
-
-    public class MessageListener
-    {
-        private readonly IHubContext<MessageHub> _hubContext;
-        private readonly IMessageBus _messageBus;
-
-        public MessageListener(IHubContext<MessageHub> hubContext, IMessageBus messageBus)
-        {
-            _hubContext = hubContext;
-            _messageBus = messageBus;
-        }
-
-        public void Subsribe(string clientName)
-        {
-            _messageBus.RegisterMessageHandler(clientName, async (msg, token) =>
-            {
-                await _hubContext.Clients.Group(clientName).SendAsync("newMessage", msg, token);
-            });
-        }
-
     }
 }

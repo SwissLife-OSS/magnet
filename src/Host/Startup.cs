@@ -12,9 +12,8 @@ using Magnet.Messaging.AzureServiceBus;
 using Microsoft.Extensions.Logging;
 using Magnet.Grpc;
 using Magnet.Store.Mongo;
-using Magnet.Sample.Hubs;
 
-namespace Magnet.Sample
+namespace Magnet.Server
 {
     public class Startup
     {
@@ -25,21 +24,17 @@ namespace Magnet.Sample
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
-            services.AddControllers()
-                    .AddApplicationPart(typeof(SendGridEmail.EmailController).Assembly);
-            services.AddMagnet();
-            services.AddScoped<MessageStreamService>();
-            services.AddServiceBus(Configuration);
-            services.AddMongoStore(Configuration);
-            services.AddSingleton<MessageListener>();
-            services.AddSignalR();
+            services.AddControllers();
+            services.AddMagnet()
+                        .AddSendGridEmail()
+                        .AddTwilioSms()
+                        .AddAzureServiceBus(Configuration)
+                        .AddMongoStore(Configuration);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -53,9 +48,9 @@ namespace Magnet.Sample
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<MessageStreamService>();
+                //endpoints.MapGrpcService<MessageStreamService>();
                 endpoints.MapControllers();
-                endpoints.MapHub<MessageHub>("messagehub");
+                //endpoints.MapHub<MessageHub>("messagehub");
             });
 
             app.ApplicationServices.GetService<DataChangeTracker>();

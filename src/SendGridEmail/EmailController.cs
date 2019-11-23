@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SendGridEmail
+namespace Magnet.Providers.SendGrid.Email
 {
     [Route("sendgridemail")]
     public class EmailController : Controller

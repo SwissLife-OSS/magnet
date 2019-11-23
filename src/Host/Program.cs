@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Magnet.Sample
+namespace Magnet.Server
 {
     public class Program
     {
@@ -17,13 +17,17 @@ namespace Magnet.Sample
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-           Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration( builder =>
+           Host.CreateDefaultBuilder(args)
+                .ConfigureLogging( configure =>
                 {
-                    builder.AddJsonFile("appsettings.json");
-                    builder.AddJsonFile("appsettings.user.json", optional:true);
-                    builder.AddEnvironmentVariables();
+                    configure.AddConsole();
                 })
+                .ConfigureAppConfiguration(builder =>
+               {
+                   builder.AddJsonFile("appsettings.json");
+                   builder.AddJsonFile("appsettings.user.json", optional: true);
+                   builder.AddEnvironmentVariables();
+               })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
