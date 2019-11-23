@@ -13,6 +13,7 @@
     <ProjectReference Include="..\SendGridEmail\SendGrid.Email.csproj" />
     <ProjectReference Include="..\Server.Grpc\Server.Grpc.csproj" />
     <ProjectReference Include="..\Server\Core\Server.Core.csproj" />
+    <ProjectReference Include="..\Store.Mongo\Store.Mongo.csproj" />
     <ProjectReference Include="..\Twilio.Sms\Twilio.Sms.csproj" />
   </ItemGroup>
 

@@ -2,26 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Net.Client;
 
 namespace Magnet.Client
 {
-    public class MessageStreamClient : IMessageStreamClient
+    public class GrpcMessageStreamClient : IMessageStreamClient
     {
         private readonly GrpcOptions _grpcOptions;
+        private readonly GrpcChannel _channel;
         Action<MagnetMessage> _handler = null;
 
-        public MessageStreamClient(GrpcOptions grpcOptions)
+        public GrpcMessageStreamClient(GrpcOptions grpcOptions)
         {
             _grpcOptions = grpcOptions;
+            _channel = GrpcChannel.ForAddress(_grpcOptions.Address);
         }
 
         private async Task GetMessagesAsync(string clientName)
         {
-            var channel = GrpcChannel.ForAddress(_grpcOptions.Address);
-            var client = new Magnet.Protos.Messenger.MessengerClient(channel);
+            
+            var client = new Magnet.Protos.Messenger.MessengerClient(_channel);
 
             AsyncServerStreamingCall<Protos.MagnetMessage> messages =
                 client.GetMessages(new Protos.MessagesRequest { ClientName = clientName });
@@ -32,10 +36,24 @@ namespace Magnet.Client
             }
         }
 
-        public void RegisterMessageReceivedHandler(string clientName, Action<MagnetMessage> handler)
+        public async Task AddReadReceiptAsync(MessageReceivedReceipt readReceipt)
+        {
+            var client = new Magnet.Protos.Messenger.MessengerClient(_channel);
+            await client.AddReadReceiptAsync(new Protos.ReceivedReceipt
+            {
+                ClientName = readReceipt.ClientName,
+                MessageId = readReceipt.MessageId.ToString("N"),
+                ReceivedAt = Timestamp.FromDateTime(readReceipt.ReceivedAt),
+                IsMatch = readReceipt.IsMatch
+            });
+        }
+
+
+        public Task RegisterMessageReceivedHandler(string clientName, Action<MagnetMessage> handler)
         {
             _handler = handler;
             GetMessagesAsync(clientName);
+            return Task.CompletedTask;
         }
 
         private MagnetMessage ConvertToMagnetMessage(Protos.MagnetMessage proto)
@@ -48,6 +66,7 @@ namespace Magnet.Client
 
             var msg = new MagnetMessage
             {
+                Id = Guid.Parse(proto.Id),
                 Type = proto.Type,
                 Provider = proto.Provider,
                 Body = proto.Body,
@@ -57,6 +76,16 @@ namespace Magnet.Client
                 To = new List<string>(proto.To.Select(x => x))
             };
             return msg;
+        }
+
+        public Task UnSubscribe(string clientName, string token)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<MagnetMessage> GetNextAsync(string clientName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

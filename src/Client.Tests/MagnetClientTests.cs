@@ -18,23 +18,18 @@ namespace Magnet.Client.Tests
             MagnetClient magnet = service.GetService<MagnetClient>();
             SmsMessage sms = await magnet.WaitFor<SmsMessage>();
 
+            SmsMessage sms2 = await magnet.WaitFor<SmsMessage>();
+
         }
 
         private static IServiceProvider BuildServiceProvider()
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddSingleton<IMessageStreamClient, MessageStreamClient>();
+            services.AddMagnet("a")
+                           .UseHttp("http://localhost:5000");
+                        //.UseGrpc("https://localhost:5001");
+                        //.UseSignalR("http://localhost:5000");
 
-            services.AddSingleton(new MagnetOptions
-            {
-                ClientName = "a",
-                Grpc = new GrpcOptions
-                {
-                    Address = "https://localhost:5001"
-                }
-            });
-
-            services.AddSingleton(c => c.GetService<MagnetOptions>().Grpc);
             return services.BuildServiceProvider();
         }
 

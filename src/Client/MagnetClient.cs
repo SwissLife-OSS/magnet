@@ -30,10 +30,12 @@ namespace Magnet.Client
             return await WaitFor<TMessage>(waitFilter, options);
         }
 
+
         public async Task<TMessage> WaitFor<TMessage>(
-            WaitFilter waitFilter = null,
-            WaitOptions options = null)
+                WaitFilter waitFilter = null,
+                WaitOptions options = null)
         {
+            options = options ?? new WaitOptions { Timeout = 120 };
             var timeoutToken = new CancellationTokenSource(TimeSpan.FromSeconds(options.Timeout));
             waitFilter = waitFilter ?? new WaitFilter();
             var typeName = _messageMapper.ResolveTypeName<TMessage>();
@@ -44,14 +46,60 @@ namespace Magnet.Client
 
             try
             {
-                _messageStreamClient.RegisterMessageReceivedHandler(_options.ClientName, (msg) =>
+                MagnetMessage message = await _messageStreamClient
+                    .GetNextAsync(_options.ClientName, default);
+
+                var match = MatchFilter(waitFilter, message);
+
+                if (match)
+                {
+                    TMessage mapped = _messageMapper.Map<TMessage>(message);
+                    completion.SetResult(mapped);
+                    timeoutToken.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                completion.SetException(ex);
+            }
+
+            return await completion.Task;
+        }
+
+
+
+        public async Task<TMessage> WaitFor2<TMessage>(
+        WaitFilter waitFilter = null,
+        WaitOptions options = null)
+        {
+            options = options ?? new WaitOptions { Timeout = 120 };
+            var timeoutToken = new CancellationTokenSource(TimeSpan.FromSeconds(options.Timeout));
+            waitFilter = waitFilter ?? new WaitFilter();
+            var typeName = _messageMapper.ResolveTypeName<TMessage>();
+            waitFilter.Predicates.Add((m) => m.Type == typeName);
+
+            var completion = new TaskCompletionSource<TMessage>();
+            timeoutToken.Token.Register(() => completion.SetCanceled());
+
+            try
+            {
+                await _messageStreamClient.RegisterMessageReceivedHandler(_options.ClientName, (msg) =>
                 {
                     var match = MatchFilter(waitFilter, msg);
+                    _messageStreamClient.AddReadReceiptAsync(new MessageReceivedReceipt
+                    {
+                        MessageId = msg.Id,
+                        IsMatch = match,
+                        ClientName = _options.ClientName,
+                        ReceivedAt = DateTime.UtcNow
+                    });
+
                     if (match)
                     {
-                        timeoutToken.Dispose();
                         TMessage mapped = _messageMapper.Map<TMessage>(msg);
                         completion.SetResult(mapped);
+                        timeoutToken.Dispose();
+                        _messageStreamClient.UnSubscribe(_options.ClientName, "");
                     }
                 });
             }

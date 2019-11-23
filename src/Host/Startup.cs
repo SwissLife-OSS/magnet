@@ -11,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using Magnet.Messaging.AzureServiceBus;
 using Microsoft.Extensions.Logging;
 using Magnet.Grpc;
+using Magnet.Store.Mongo;
+using Magnet.Sample.Hubs;
 
 namespace Magnet.Sample
 {
@@ -32,6 +34,9 @@ namespace Magnet.Sample
             services.AddMagnet();
             services.AddScoped<MessageStreamService>();
             services.AddServiceBus(Configuration);
+            services.AddMongoStore(Configuration);
+            services.AddSingleton<MessageListener>();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +55,10 @@ namespace Magnet.Sample
             {
                 endpoints.MapGrpcService<MessageStreamService>();
                 endpoints.MapControllers();
+                endpoints.MapHub<MessageHub>("messagehub");
             });
+
+            app.ApplicationServices.GetService<DataChangeTracker>();
         }
     }
 }

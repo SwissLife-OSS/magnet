@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Magnet.Client.Mappers;
-using Magnet.Mappers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,29 +9,68 @@ namespace Magnet.Client
 {
     public static class MagnetClientServiceCollectionExtensions
     {
-        public static IServiceCollection AddMagnet(this IServiceCollection services,
-                                           IConfiguration configuration)
+        public static MagnetClientBuilder AddMagnet(
+            this IServiceCollection services,
+            string clientName)
+        {
+            services.AddDefaultServices();
+            var builder = new MagnetClientBuilder(services);
+            builder.WithClientName(clientName);
+            return builder;
+        }
+
+
+        public static MagnetClientBuilder AddMagnet(this IServiceCollection services)
+        {
+            services.AddDefaultServices();
+            return new MagnetClientBuilder(services);
+        }
+
+        private static IServiceCollection AddDefaultServices(this IServiceCollection services)
         {
             services.AddTransient<MagnetClient>();
-
-            var typeReg = new MessageTypeRegistration
-            {
-                MessageType = typeof(EmailMessage),
-                Name = "Email",
-                Mapper = new EmailMapper()
-            };
-            var sms = new MessageTypeRegistration
-            {
-                MessageType = typeof(SmsMessage),
-                Name = "Sms",
-                Mapper = new SmsMapper()
-            };
-
-            services.AddSingleton(new MagnetOptions { ClientName = "all" });
-            services.AddSingleton(typeReg);
             services.AddSingleton<MessageMapperFactory>();
-            services.AddSingleton(sms);
+            services.AddSingleton(DefaultMessageTypeRegistrations.Email);
+            services.AddSingleton(DefaultMessageTypeRegistrations.Sms);
             return services;
+        }
+
+
+        public static MagnetClientBuilder AddMagnet(this IServiceCollection services,
+                                           IConfiguration configuration)
+        {
+            MagnetOptions options = configuration
+                .GetSection("Magnet")
+                .Get<MagnetOptions>();
+
+            if ( options == null)
+            {
+                throw new MagnetConfigurationException(
+                    "No Magnet section found in configuration");
+            }
+            if ( options.ClientName == null)
+            {
+                throw new MagnetConfigurationException(
+                    "No ClientName found in Magnet configuration section");
+            }
+
+            MagnetClientBuilder builder = services.AddMagnet(options.ClientName);
+#if (NETSTANDARD2_1)
+            if ( options.Grpc != null)
+            {
+                builder.UseGrpc(options.Grpc.Address);
+            }
+#endif
+
+            return builder;
+        }
+    }
+
+    public class MagnetConfigurationException : Exception
+    {
+        public MagnetConfigurationException(string message)
+            : base(message)
+        {
         }
     }
 }

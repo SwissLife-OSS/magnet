@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +17,8 @@ namespace Magnet
 
         public async Task<string> ProcessMessageAsync(MagnetMessage message)
         {
+            message.Id = Guid.NewGuid();
+            message.ReceivedAt = DateTime.UtcNow;
             return await _messageBus.PublishAsync(message);
         }
     }

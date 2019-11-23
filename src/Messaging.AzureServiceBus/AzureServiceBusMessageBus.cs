@@ -35,11 +35,37 @@ namespace Magnet.Messaging.AzureServiceBus
 
             var sbMessage = new Message
             {
-                MessageId = Guid.NewGuid().ToString(),
+                MessageId = message.Id.ToString("N"),
                 Body = body,
                 Label = message.Type
             };
             return sbMessage;
+        }
+
+
+        public async Task<MagnetMessage> GetNextAsync(string name)
+        {
+            var client = new SubscriptionClient(_options.ConnectionString, _options.Topic, name);
+            var complete = new TaskCompletionSource<MagnetMessage>();
+
+            try
+            {
+                client.RegisterMessageHandler(async (message, token) =>
+                {
+                    string json = Encoding.UTF8.GetString(message.Body);
+                    MagnetMessage magnetMsg = JsonConvert.DeserializeObject<MagnetMessage>(json);
+                    await client.CompleteAsync(message.SystemProperties.LockToken);
+                    await client.CloseAsync();
+                    complete.SetResult(magnetMsg);
+                },
+                new MessageHandlerOptions(ExceptionReceivedHandler)
+                { MaxConcurrentCalls = 1, AutoComplete = false });
+            }
+            catch ( Exception ex)
+            {
+                complete.SetException(ex);
+            }
+            return await complete.Task;
         }
 
 
@@ -48,7 +74,6 @@ namespace Magnet.Messaging.AzureServiceBus
             Func<MagnetMessage, CancellationToken, Task> handler)
         {
             var client = new SubscriptionClient(_options.ConnectionString, _options.Topic, name);
-            _subscriptions.Add(client);
             client.RegisterMessageHandler(async (message, token) =>
             {
                 string json = Encoding.UTF8.GetString(message.Body);

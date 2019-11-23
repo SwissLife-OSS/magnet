@@ -6,6 +6,12 @@ namespace Magnet
 {
     public class MagnetMessage
     {
+        public MagnetMessage()
+        {
+        }
+
+        public Guid Id { get; set; }
+
         public string Type { get; set; }
 
         public DateTime ReceivedAt { get; set; }

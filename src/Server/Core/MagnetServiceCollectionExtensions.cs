@@ -1,8 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Xunit.Abstractions;
 
 namespace Magnet
 {
@@ -11,6 +10,7 @@ namespace Magnet
         public static IServiceCollection AddMagnet(this IServiceCollection services)
         {
             services.AddSingleton<IMessageSink, MessageSink>();
+            services.AddSingleton<DataChangeTracker>();
             return services;
         }
     }
