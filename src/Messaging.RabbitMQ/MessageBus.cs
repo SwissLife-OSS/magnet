@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Polly;
+using Polly.Retry;
 
 namespace Magnet.Messaging.RabbitMQ
 {
@@ -147,15 +148,22 @@ namespace Magnet.Messaging.RabbitMQ
 
         private IModel GetChannel()
         {
+            RetryPolicy policy = Policy
+                 .Handle<Exception>()
+                 .WaitAndRetry(5, i => TimeSpan.FromSeconds(3));
 
-            if (_connection == null)
-            {
-                _connection = _connectionFactory.CreateConnection();
-            }
+            PolicyResult<IModel> result = policy.ExecuteAndCapture<IModel>(() =>
+               {
+                    if (_connection == null)
+                    {
+                        _connection = _connectionFactory.CreateConnection();
+                    }
+                    IModel channel = _connection.CreateModel();
+                    PrepareModel(channel);
+                    return channel;
+               });
 
-            IModel channel = _connection.CreateModel();
-            PrepareModel(channel);
-            return channel;
+            return result.Result;
         }
 
         public void Dispose()
