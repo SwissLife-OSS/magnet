@@ -21,7 +21,6 @@ namespace Magnet.Store.Mongo
             return builder;
         }
 
-
         public static MagnetServerBuilder AddMongoStore(
                this MagnetServerBuilder builder,
                DatabaseOptions options)

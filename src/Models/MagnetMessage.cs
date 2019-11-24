@@ -22,7 +22,7 @@ namespace Magnet
 
         public string Body { get; set; }
 
-        public IReadOnlyDictionary<string, object> Properties { get; set; }
+        public IReadOnlyDictionary<string, string> Properties { get; set; }
         public string Provider { get; set; }
     }
 }

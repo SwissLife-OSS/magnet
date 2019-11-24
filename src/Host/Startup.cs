@@ -12,7 +12,9 @@ using Magnet.Messaging.AzureServiceBus;
 using Microsoft.Extensions.Logging;
 using Magnet.Grpc;
 using Magnet.Store.Mongo;
-using Magnet.Messaging.RabbitMQ;
+using HotChocolate.AspNetCore;
+using Magnet.GraphQL;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace Magnet.Server
 {
@@ -27,6 +29,12 @@ namespace Magnet.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //SendGrid parser Sync IO issue
+            //https://github.com/Jericho/StrongGrid/issues/300
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
             services.AddGrpc();
             services.AddControllers();
             services.AddMagnet()
@@ -35,6 +43,18 @@ namespace Magnet.Server
                         .AddRabbitMQ(Configuration)
                         //.AddAzureServiceBus(Configuration)
                         .AddMongoStore(Configuration);
+
+            services.AddGraphQLServices();
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                builder =>
+                {
+                    builder.AllowAnyOrigin();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyHeader();
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -43,10 +63,12 @@ namespace Magnet.Server
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors();
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseGraphQL();
+            app.UsePlayground();
 
             app.UseEndpoints(endpoints =>
             {

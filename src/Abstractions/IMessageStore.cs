@@ -13,5 +13,6 @@ namespace Magnet
         Task AddReadReceiptAsync(
             MessageReceivedReceipt receipt,
             CancellationToken cancellationToken);
+        Task<List<MessageRecord>> GetAllAsync(CancellationToken cancellationToken);
     }
 }

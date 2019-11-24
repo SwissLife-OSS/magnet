@@ -63,7 +63,7 @@ namespace Magnet.Grpc
                         ReceivedAt = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(msg.ReceivedAt),
                     };
 
-                    foreach (KeyValuePair<string, object> p in msg.Properties)
+                    foreach (KeyValuePair<string, string> p in msg.Properties)
                     {
                         reply.Properties.Add(p.Key, p.Value.ToString());
                     }

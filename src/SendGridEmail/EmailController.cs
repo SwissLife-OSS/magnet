@@ -33,7 +33,7 @@ namespace Magnet.Providers.SendGrid.Email
 
         private MagnetMessage CreateMessage(InboundEmail inboundEmail)
         {
-            var properties = new Dictionary<string, object>();
+            var properties = new Dictionary<string, string>();
             properties.Add("Html", inboundEmail.Html);
             properties.Add("SendGrid-Message-ID", 
                    inboundEmail.Headers

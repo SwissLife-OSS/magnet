@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Polly;
 
 namespace Magnet.Messaging.RabbitMQ
 {
@@ -62,11 +63,16 @@ namespace Magnet.Messaging.RabbitMQ
             {
                 channel.BasicQos(0, 1, false);
                 var consumer = new EventingBasicConsumer(channel);
-                consumer.Received += (model, ea) =>
+
+                EventHandler<BasicDeliverEventArgs> eventHandler = null;
+                eventHandler =
+                    delegate (object obj, BasicDeliverEventArgs ea)
                 {
                     MagnetMessage msg = GetMessageFromBody(ea.Body);
                     completion.SetResult(msg);
+                    consumer.Received -= eventHandler;
                 };
+                consumer.Received += eventHandler;
                 string consumerTag = channel.BasicConsume(name, true, consumer);
             }
             catch (Exception ex)

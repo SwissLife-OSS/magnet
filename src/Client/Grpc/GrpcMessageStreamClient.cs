@@ -60,7 +60,7 @@ namespace Magnet.Client
 
         private MagnetMessage ConvertToMagnetMessage(Protos.MagnetMessage proto)
         {
-            var props = new Dictionary<string, object>();
+            var props = new Dictionary<string, string>();
             foreach (KeyValuePair<string, string> p in proto.Properties)
             {
                 props.Add(p.Key, p.Value);

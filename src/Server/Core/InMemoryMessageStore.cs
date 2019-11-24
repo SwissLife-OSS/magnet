@@ -37,5 +37,18 @@ namespace Magnet
             });
             return Task.CompletedTask;
         }
+
+        public Task<List<MessageRecord>> GetAllAsync(CancellationToken cancellationToken)
+        {
+            var messages =  _messages
+                                .OrderByDescending(x => x.ReceivedAt)
+                                .Take(100)
+                                .ToList();
+
+            
+
+
+            return Task.FromResult(messages);
+        }
     }
 }

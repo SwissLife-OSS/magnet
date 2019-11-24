@@ -27,7 +27,7 @@ namespace Magnet.Providers.Twilio.Sms
 
         private MagnetMessage CreateMessage(TwilioSmsRequest twilioSmsRequest)
         {
-            var properties = new Dictionary<string, object>();
+            var properties = new Dictionary<string, string>();
             properties.Add("Twilio-Message-ID", twilioSmsRequest.SmsSid);
 
             return new MagnetMessage

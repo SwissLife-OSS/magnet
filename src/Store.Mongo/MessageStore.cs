@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace Magnet.Store.Mongo
 {
@@ -62,5 +64,29 @@ namespace Magnet.Store.Mongo
                 options: new UpdateOptions { IsUpsert = false },
                 cancellationToken);
         }
+
+
+        public async Task<List<MessageRecord>> GetAllAsync(CancellationToken cancellationToken)
+        {
+            return await _dbContext.Messages.AsQueryable()
+                        .OrderByDescending(x => x.ReceivedAt)
+                        .Take(100)
+                        .ToListAsync(cancellationToken);
+        }
+
+        public async Task<List<MessageRecord>> GetAllAsync(
+            IQueryable<MessageRecord> query,
+            CancellationToken cancellationToken)
+        {
+
+
+
+            return await _dbContext.Messages.AsQueryable()
+                        .OrderByDescending(x => x.ReceivedAt)
+                        .Take(100)
+                        .ToListAsync(cancellationToken);
+        }
+
+
     }
 }
