@@ -30,10 +30,12 @@ namespace Magnet.Client
             return await WaitFor<TMessage>(waitFilter, options);
         }
 
+
         public async Task<TMessage> WaitFor<TMessage>(
-            WaitFilter waitFilter = null,
-            WaitOptions options = null)
+                WaitFilter waitFilter = null,
+                WaitOptions options = null)
         {
+            options = options ?? new WaitOptions();
             var timeoutToken = new CancellationTokenSource(TimeSpan.FromSeconds(options.Timeout));
             waitFilter = waitFilter ?? new WaitFilter();
             var typeName = _messageMapper.ResolveTypeName<TMessage>();
@@ -44,23 +46,48 @@ namespace Magnet.Client
 
             try
             {
-                _messageStreamClient.RegisterMessageReceivedHandler(_options.ClientName, (msg) =>
+                MagnetMessage message = await _messageStreamClient
+                    .GetNextAsync(_options.ClientName, timeoutToken.Token);
+
+                var match = MatchFilter(waitFilter, message);
+                await AddReceiveReceiptAsync(message, match, timeoutToken.Token);
+
+                if (match)
                 {
-                    var match = MatchFilter(waitFilter, msg);
-                    if (match)
-                    {
-                        timeoutToken.Dispose();
-                        TMessage mapped = _messageMapper.Map<TMessage>(msg);
-                        completion.SetResult(mapped);
-                    }
-                });
+                    TMessage mapped = _messageMapper.Map<TMessage>(message);
+                    completion.SetResult(mapped);
+                    timeoutToken.Dispose();
+                }
+               
             }
             catch (Exception ex)
             {
                 completion.SetException(ex);
+                timeoutToken.Dispose();
             }
 
             return await completion.Task;
+        }
+
+        private async Task AddReceiveReceiptAsync(
+            MagnetMessage message,
+            bool match,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                await _messageStreamClient.AddReceivedReceiptAsync(new MessageReceivedReceipt
+                {
+                    ClientName = _options.ClientName,
+                    IsMatch = match,
+                    MessageId = message.Id,
+                    ReceivedAt = DateTime.UtcNow
+                }, cancellationToken);
+            }
+            catch
+            {
+                //dont fail...
+            }
         }
 
         private bool MatchFilter(WaitFilter filter, MagnetMessage message)

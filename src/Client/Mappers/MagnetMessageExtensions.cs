@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Magnet
+namespace Magnet.Client.Mappers
 {
     public static class MagnetMessageExtensions
     {

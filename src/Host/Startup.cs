@@ -11,8 +11,12 @@ using Microsoft.Extensions.Hosting;
 using Magnet.Messaging.AzureServiceBus;
 using Microsoft.Extensions.Logging;
 using Magnet.Grpc;
+using Magnet.Store.Mongo;
+using HotChocolate.AspNetCore;
+using Magnet.GraphQL;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
-namespace Magnet.Sample
+namespace Magnet.Server
 {
     public class Startup
     {
@@ -23,34 +27,57 @@ namespace Magnet.Sample
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //SendGrid parser Sync IO issue
+            //https://github.com/Jericho/StrongGrid/issues/300
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
             services.AddGrpc();
-            services.AddControllers()
-                    .AddApplicationPart(typeof(SendGridEmail.EmailController).Assembly);
-            services.AddMagnet();
-            services.AddScoped<MessageStreamService>();
-            services.AddServiceBus(Configuration);
+            services.AddControllers();
+            services.AddMagnet()
+                        .AddSendGridEmail()
+                        .AddTwilioSms()
+                        .AddRabbitMQ(Configuration)
+                        //.AddAzureServiceBus(Configuration)
+                        .AddMongoStore(Configuration);
+
+            services.AddGraphQLServices();
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                builder =>
+                {
+                    builder.AllowAnyOrigin();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyHeader();
+                });
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors();
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseGraphQL();
+            app.UsePlayground();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<MessageStreamService>();
+                //endpoints.MapGrpcService<MessageStreamService>();
                 endpoints.MapControllers();
+                //endpoints.MapHub<MessageHub>("messagehub");
             });
+
+            app.ApplicationServices.GetService<DataChangeTracker>();
         }
     }
 }

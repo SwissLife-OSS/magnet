@@ -13,5 +13,7 @@ namespace Magnet
         void RegisterMessageHandler(
             string name,
             Func<MagnetMessage, CancellationToken, Task> handler);
+
+        Task<MagnetMessage> GetNextAsync(string name, CancellationToken cancellationToken);
     }
 }

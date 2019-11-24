@@ -300,3 +300,4 @@ src/Published
 wwwroot/
 src/Ui/reports/
 *.user.json
+Published

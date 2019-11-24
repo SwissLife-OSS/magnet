@@ -1,19 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyName>Magnet.Sample</AssemblyName>
-    <RootNamespace>Magnet.Sample</RootNamespace>
+    <AssemblyName>Magnet.Server</AssemblyName>
+    <RootNamespace>Magnet.Server</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.24.0" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-preview.54" />
+    <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="11.0.0-preview.54" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GraphQL\GraphQL.csproj" />
     <ProjectReference Include="..\Messaging.AzureServiceBus\Messaging.AzureServiceBus.csproj" />
+    <ProjectReference Include="..\Messaging.RabbitMQ\Messaging.RabbitMQ.csproj" />
     <ProjectReference Include="..\SendGridEmail\SendGrid.Email.csproj" />
     <ProjectReference Include="..\Server.Grpc\Server.Grpc.csproj" />
     <ProjectReference Include="..\Server\Core\Server.Core.csproj" />
+    <ProjectReference Include="..\Store.Mongo\Store.Mongo.csproj" />
     <ProjectReference Include="..\Twilio.Sms\Twilio.Sms.csproj" />
   </ItemGroup>
-
 </Project>

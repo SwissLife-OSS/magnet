@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Magnet.Protos;
 using Microsoft.Extensions.Logging;
@@ -13,11 +14,31 @@ namespace Magnet.Grpc
     {
         private readonly ILogger<MessageStreamService> _logger;
         private readonly IMessageBus _messageBus;
+        private readonly IMessageStore _messageStore;
 
-        public MessageStreamService(ILogger<MessageStreamService> logger, IMessageBus messageBus)
+        public MessageStreamService(
+            ILogger<MessageStreamService> logger,
+            IMessageBus messageBus,
+            IMessageStore messageStore)
         {
             _logger = logger;
             _messageBus = messageBus;
+            _messageStore = messageStore;
+        }
+
+        public async override Task<Empty> AddReadReceipt(ReceivedReceipt request, ServerCallContext context)
+        {
+            await _messageStore.AddReadReceiptAsync(
+                new MessageReceivedReceipt
+                {
+                    MessageId = Guid.Parse(request.MessageId),
+                    ClientName = request.ClientName,
+                    ReceivedAt = request.ReceivedAt.ToDateTime(),
+                    IsMatch = request.IsMatch
+                },
+                context.CancellationToken);
+            ;
+            return new Empty();
         }
 
         public override Task GetMessages(
@@ -34,6 +55,7 @@ namespace Magnet.Grpc
                 {
                     var reply = new Protos.MagnetMessage
                     {
+                        Id = msg.Id.ToString("N"),
                         Type = msg.Type,
                         From = msg.From,
                         Body = msg.Body,
@@ -41,7 +63,7 @@ namespace Magnet.Grpc
                         ReceivedAt = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(msg.ReceivedAt),
                     };
 
-                    foreach (KeyValuePair<string, object> p in msg.Properties)
+                    foreach (KeyValuePair<string, string> p in msg.Properties)
                     {
                         reply.Properties.Add(p.Key, p.Value.ToString());
                     }
@@ -72,7 +94,7 @@ namespace Magnet.Grpc
                 }
                 catch (OperationCanceledException)
                 {
-
+                    _messageBus.Dispose();
                     Console.WriteLine("The wait operation was canceled.");
                     break;
                 }
@@ -92,7 +114,7 @@ namespace Magnet.Grpc
         {
             if (disposing)
             {
-                _messageBus.Dispose();
+                //_messageBus.Dispose();
             }
         }
     }

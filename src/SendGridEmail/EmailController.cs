@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SendGridEmail
+namespace Magnet.Providers.SendGrid.Email
 {
     [Route("sendgridemail")]
     public class EmailController : Controller
@@ -33,7 +33,7 @@ namespace SendGridEmail
 
         private MagnetMessage CreateMessage(InboundEmail inboundEmail)
         {
-            var properties = new Dictionary<string, object>();
+            var properties = new Dictionary<string, string>();
             properties.Add("Html", inboundEmail.Html);
             properties.Add("SendGrid-Message-ID", 
                    inboundEmail.Headers

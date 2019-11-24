@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Magnet.AzureServiceBus</AssemblyName>
+    <RootNamespace>Magnet</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
