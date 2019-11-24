@@ -30,7 +30,6 @@ namespace Magnet.Store.Mongo
             builder.Services.AddSingleton(options);
             builder.Services.AddSingleton((c) =>
                new MessageDbContext(new MongoClient(options.ConnectionString), options));
-            builder.Services.AddAutoMapper(typeof(MappingProfile));
             return builder;
         }
     }

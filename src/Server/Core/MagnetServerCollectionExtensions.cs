@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -12,8 +13,9 @@ namespace Magnet
         {
             var builder = new MagnetServerBuilder(services);
             services.AddSingleton<IMessageSink, MessageSink>();
-            services.AddSingleton<IMessageStore, NoOpMessageStore>();
+            services.AddSingleton<IMessageStore, InMemoryMessageStore>();
             services.AddSingleton<DataChangeTracker>();
+            services.AddAutoMapper(typeof(MappingProfile));
             return builder;
         }
     }

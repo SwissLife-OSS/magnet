@@ -42,8 +42,8 @@ namespace TestClient
         private static IServiceProvider BuildServiceProvider()
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddMagnet("x")
-                        .UseHttp("http://localhost:5005");
+            services.AddMagnet("b")
+                        .UseHttp("https://magnet2.a.portals.swisslife.ch");
                         //.UseGrpc("https://localhost:5001")
                         //.UseSignalR("http://localhost:5000");
             return services.BuildServiceProvider();

@@ -1,6 +1,6 @@
 using AutoMapper;
 
-namespace Magnet.Store.Mongo
+namespace Magnet
 {
     public class MappingProfile : Profile
     {
