@@ -37,6 +37,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Mongo", "Store.Mongo\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.SignalR", "Server.SignalR\Server.SignalR.csproj", "{EBEB8A89-848F-4FE7-94A2-E59B4CFDEDD3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messaging.RabbitMQ", "Messaging.RabbitMQ\Messaging.RabbitMQ.csproj", "{541537B7-213B-4174-9267-1FA1E8A0B187}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,10 @@ Global
 		{EBEB8A89-848F-4FE7-94A2-E59B4CFDEDD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBEB8A89-848F-4FE7-94A2-E59B4CFDEDD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBEB8A89-848F-4FE7-94A2-E59B4CFDEDD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{541537B7-213B-4174-9267-1FA1E8A0B187}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{541537B7-213B-4174-9267-1FA1E8A0B187}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{541537B7-213B-4174-9267-1FA1E8A0B187}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{541537B7-213B-4174-9267-1FA1E8A0B187}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,6 +120,7 @@ Global
 		{60C31DA7-7E7C-4B82-873D-843B523879E5} = {A124B845-9851-4CC8-BEC0-8F78438EE202}
 		{9DB8BDD7-CA6D-4878-9624-B28064E71603} = {BD8383A7-9D59-4C9A-8500-F413E3833A69}
 		{EBEB8A89-848F-4FE7-94A2-E59B4CFDEDD3} = {BD8383A7-9D59-4C9A-8500-F413E3833A69}
+		{541537B7-213B-4174-9267-1FA1E8A0B187} = {BD8383A7-9D59-4C9A-8500-F413E3833A69}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {55A77196-CAD4-4D29-9E89-8A6E961AB1B3}

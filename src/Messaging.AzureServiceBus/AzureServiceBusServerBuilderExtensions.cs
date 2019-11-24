@@ -24,7 +24,7 @@ namespace Magnet.Messaging.AzureServiceBus
             AzureServiceBusOptions options)
         {
             builder.Services.AddSingleton(options);
-            builder.Services.AddSingleton<IMessageBus, AzureServiceBusMessageBus>();
+            builder.Services.AddSingleton<IMessageBus, MessageBus>();
             return builder;
         }
 

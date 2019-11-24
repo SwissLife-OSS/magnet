@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Magnet.Messaging.AzureServiceBus
 {
-    public class AzureServiceBusMessageBus : IMessageBus
+    public class MessageBus : IMessageBus
     {
         private readonly AzureServiceBusOptions _options;
         private ITopicClient _topicClient;
         private List<ISubscriptionClient> _subscriptions = new List<ISubscriptionClient>();
 
-        public AzureServiceBusMessageBus(AzureServiceBusOptions options)
+        public MessageBus(AzureServiceBusOptions options)
         {
             _options = options;
             _topicClient = new TopicClient(options.ConnectionString, options.Topic);

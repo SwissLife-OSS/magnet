@@ -36,13 +36,13 @@ namespace TestClient
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
             Console.WriteLine("Disconecting...");
-        }
+        }   
 
 
         private static IServiceProvider BuildServiceProvider()
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddMagnet("a")
+            services.AddMagnet("x")
                         .UseHttp("http://localhost:5005");
                         //.UseGrpc("https://localhost:5001")
                         //.UseSignalR("http://localhost:5000");

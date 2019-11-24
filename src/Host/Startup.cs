@@ -12,6 +12,7 @@ using Magnet.Messaging.AzureServiceBus;
 using Microsoft.Extensions.Logging;
 using Magnet.Grpc;
 using Magnet.Store.Mongo;
+using Magnet.Messaging.RabbitMQ;
 
 namespace Magnet.Server
 {
@@ -31,7 +32,8 @@ namespace Magnet.Server
             services.AddMagnet()
                         .AddSendGridEmail()
                         .AddTwilioSms()
-                        .AddAzureServiceBus(Configuration)
+                        .AddRabbitMQ(Configuration)
+                        //.AddAzureServiceBus(Configuration)
                         .AddMongoStore(Configuration);
         }
 

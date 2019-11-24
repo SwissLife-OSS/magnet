@@ -1,0 +1,38 @@
+version: "3"
+services:
+  magnet:
+    container_name: magnet
+    image: magnet:dev1
+    ports:
+      - 5005:80
+    volumes:
+      - ./appsettings.json:/app/appsettings.json
+    links:
+      - mongo
+      - rabbit
+    depends_on:
+      - rabbit
+      - mongo
+
+  mongo:
+    container_name: magnet_mongo
+    image: mongo
+    ports:
+      - 27018:27017
+  rabbit:
+    container_name: magnet_rabbit
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=magnet
+      - RABBITMQ_DEFAULT_PASS=supersecret
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    healthcheck:
+      timeout: 5s
+      interval: 5s
+      retries: 5
+      test:
+        - "CMD"
+        - "rabbitmqctl"
+        - "status"
