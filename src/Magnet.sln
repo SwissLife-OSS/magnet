@@ -37,9 +37,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Mongo", "Store.Mongo\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.SignalR", "Server.SignalR\Server.SignalR.csproj", "{EBEB8A89-848F-4FE7-94A2-E59B4CFDEDD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messaging.RabbitMQ", "Messaging.RabbitMQ\Messaging.RabbitMQ.csproj", "{541537B7-213B-4174-9267-1FA1E8A0B187}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messaging.RabbitMQ", "Messaging.RabbitMQ\Messaging.RabbitMQ.csproj", "{541537B7-213B-4174-9267-1FA1E8A0B187}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQL", "GraphQL\GraphQL.csproj", "{55B14976-03FD-4015-AB13-33B9C95F8FBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQL", "GraphQL\GraphQL.csproj", "{55B14976-03FD-4015-AB13-33B9C95F8FBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageGun", "MessageGun\MessageGun.csproj", "{F66F43A8-5D39-4548-9766-4968BC59E1CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +109,10 @@ Global
 		{55B14976-03FD-4015-AB13-33B9C95F8FBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55B14976-03FD-4015-AB13-33B9C95F8FBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55B14976-03FD-4015-AB13-33B9C95F8FBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F66F43A8-5D39-4548-9766-4968BC59E1CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F66F43A8-5D39-4548-9766-4968BC59E1CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F66F43A8-5D39-4548-9766-4968BC59E1CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F66F43A8-5D39-4548-9766-4968BC59E1CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,6 +134,7 @@ Global
 		{EBEB8A89-848F-4FE7-94A2-E59B4CFDEDD3} = {BD8383A7-9D59-4C9A-8500-F413E3833A69}
 		{541537B7-213B-4174-9267-1FA1E8A0B187} = {BD8383A7-9D59-4C9A-8500-F413E3833A69}
 		{55B14976-03FD-4015-AB13-33B9C95F8FBA} = {BD8383A7-9D59-4C9A-8500-F413E3833A69}
+		{F66F43A8-5D39-4548-9766-4968BC59E1CA} = {A124B845-9851-4CC8-BEC0-8F78438EE202}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {55A77196-CAD4-4D29-9E89-8A6E961AB1B3}
