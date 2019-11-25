@@ -11,8 +11,8 @@ namespace Magnet.Client.Tests
 {
     public class MagnetClientTests
     {
-        [Fact]
-        public async Task A()
+        [Fact( Skip = "Local only")]
+        public async Task WaitFor_SmsMessage_Recived()
         {
             IServiceProvider service = BuildServiceProvider();
             MagnetClient magnet = service.GetService<MagnetClient>();
