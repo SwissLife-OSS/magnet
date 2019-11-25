@@ -4,6 +4,18 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Magnet.MessageGun</AssemblyName>
     <RootNamespace>Magnet</RootNamespace>
+    <PackageId>Magnet.MessageGun</PackageId>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>

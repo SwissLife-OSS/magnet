@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Text;
 using Magnet.Client.Mappers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

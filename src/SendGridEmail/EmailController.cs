@@ -1,14 +1,12 @@
-using Magnet;
 using Microsoft.AspNetCore.Mvc;
 using StrongGrid;
 using StrongGrid.Models.Webhooks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Magnet.Providers.SendGrid.Email
+namespace Magnet.Providers.SendGrid
 {
     [Route("sendgridemail")]
     public class EmailController : Controller

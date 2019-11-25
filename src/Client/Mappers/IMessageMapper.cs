@@ -1,6 +1,3 @@
-using System;
-using System.Text;
-
 namespace Magnet.Client.Mappers
 {
     public interface IMessageMapper

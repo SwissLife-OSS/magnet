@@ -4,7 +4,20 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Magnet.Store.Mongo</AssemblyName>
     <RootNamespace>Magnet.Store.Mongo</RootNamespace>
+    <PackageId>Magnet.Store.Mongo</PackageId>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />

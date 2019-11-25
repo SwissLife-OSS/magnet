@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -6,7 +5,7 @@ using System.Threading.Tasks;
 using HotChocolate.Types;
 
 namespace Magnet.GraphQL
-{ 
+{
     public class QueryType : ObjectType<Query>
     {
         protected override void Configure(

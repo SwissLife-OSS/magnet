@@ -1,12 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Grpc.Core;
-using Grpc.Net.Client;
-using Magnet;
 using Magnet.Client;
-using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace TestClient
@@ -27,9 +21,6 @@ namespace TestClient
             while (true)
             {
                 SmsMessage sms = await mg.WaitForSms("+41798074288");
-                //SmsMessage sms = await mg.WaitFor<SmsMessage>(
-                //    FilterBuilder.To("sasas")
-                //    .Build());
                 Console.WriteLine(sms.From);
             }
 
@@ -43,9 +34,7 @@ namespace TestClient
         {
             IServiceCollection services = new ServiceCollection();
             services.AddMagnet("b")
-                        .UseHttp("https://magnet2.a.portals.swisslife.ch");
-                        //.UseGrpc("https://localhost:5001")
-                        //.UseSignalR("http://localhost:5000");
+                        .UseHttp("http://localhost:5000");
             return services.BuildServiceProvider();
         }
     }

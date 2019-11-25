@@ -5,7 +5,20 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>Magnet.Client</AssemblyName>
     <RootNamespace>Magnet.Client</RootNamespace>
+    <PackageId>Magnet.Client</PackageId>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <Compile Remove="Grpc/GrpcMessageStreamClient.cs" />

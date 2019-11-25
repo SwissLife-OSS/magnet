@@ -2,9 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyName>Magnet.SignalR</AssemblyName>
-    <RootNamespace>Magnet.SignalR</RootNamespace>
+    <AssemblyName>Magnet.Server.SignalR</AssemblyName>
+    <RootNamespace>Magnet.Server.SignalR</RootNamespace>
+    <PackageId>Magnet.Server.SignalR</PackageId>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
