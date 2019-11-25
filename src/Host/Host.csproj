@@ -14,7 +14,6 @@
     <ProjectReference Include="..\Messaging.AzureServiceBus\Messaging.AzureServiceBus.csproj" />
     <ProjectReference Include="..\Messaging.RabbitMQ\Messaging.RabbitMQ.csproj" />
     <ProjectReference Include="..\SendGridEmail\SendGrid.Email.csproj" />
-    <ProjectReference Include="..\Server.Grpc\Server.Grpc.csproj" />
     <ProjectReference Include="..\Server\Core\Server.Core.csproj" />
     <ProjectReference Include="..\Store.Mongo\Store.Mongo.csproj" />
     <ProjectReference Include="..\Twilio.Sms\Twilio.Sms.csproj" />

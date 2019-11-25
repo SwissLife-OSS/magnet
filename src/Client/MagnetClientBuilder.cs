@@ -28,16 +28,6 @@ namespace Magnet.Client
             return this;
         }
 
-#if (NETSTANDARD2_1)
-        public MagnetClientBuilder UseGrpc(string address)
-        {
-            _services.AddSingleton<IMessageStreamClient>(c => new GrpcMessageStreamClient(
-                new GrpcOptions { Address = address }));
-
-            return this;
-        }
-#endif
-
         public MagnetClientBuilder UseSignalR(string endpoint)
         {
             _services.AddSingleton<IMessageStreamClient>(c => new SignalRMessageStreamClient(

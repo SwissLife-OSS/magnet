@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Magnet.Messaging.AzureServiceBus;
 using Microsoft.Extensions.Logging;
-using Magnet.Grpc;
 using Magnet.Store.Mongo;
 using HotChocolate.AspNetCore;
 using Magnet.GraphQL;
