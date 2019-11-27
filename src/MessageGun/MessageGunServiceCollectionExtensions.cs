@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Magnet
@@ -10,17 +11,13 @@ namespace Magnet
             return services;
         }
 
-
         public static IServiceCollection AddMessageGun(
             this IServiceCollection services,
             MessageGunOptions options)
         {
             services.AddSingleton(options);
             services.AddSingleton<IMessageGun, MessageGun>();
-
             return services;
         }
-
-
     }
 }
