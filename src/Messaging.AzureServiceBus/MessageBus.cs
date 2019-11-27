@@ -1,4 +1,3 @@
-using Magnet;
 using Microsoft.Azure.ServiceBus;
 using Newtonsoft.Json;
 using System;

@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Magnet.Messaging.AzureServiceBus;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -11,8 +7,8 @@ namespace Magnet.Client.Tests
 {
     public class MagnetClientTests
     {
-        [Fact]
-        public async Task A()
+        [Fact( Skip = "Local only")]
+        public async Task WaitFor_SmsMessage_Recived()
         {
             IServiceProvider service = BuildServiceProvider();
             MagnetClient magnet = service.GetService<MagnetClient>();

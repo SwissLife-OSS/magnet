@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Magnet.Providers.Twilio.Sms;
+using Magnet.Providers.Twilio;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Magnet

@@ -5,7 +5,20 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>Magnet.Client</AssemblyName>
     <RootNamespace>Magnet.Client</RootNamespace>
+    <PackageId>Magnet.Client</PackageId>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <Compile Remove="Grpc/GrpcMessageStreamClient.cs" />
@@ -21,12 +34,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
-    <PackageReference Include="Google.Protobuf" Version="3.10.1" />
-    <PackageReference Include="Grpc.Net.Client" Version="2.25.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.25.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
 
@@ -37,11 +44,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' AND '$(Configuration)' == 'Debug'  ">
-    <Protobuf Include="Grpc\magnet.proto" GrpcServices="Client" />
   </ItemGroup>
 
 

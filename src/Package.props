@@ -11,6 +11,9 @@
     <PackageTags>magnet swisslife email sms sendgrid twilio</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageIconUrl>https://github.com/SwissLife-OSS/magnet/raw/master/logo.png</PackageIconUrl>
+    <Description>
+      Framework to receive messages like Sms and Emails in integration tests.
+    </Description>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -25,7 +28,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19554-01" PrivateAssets="All"/>
   </ItemGroup>
 
 </Project>

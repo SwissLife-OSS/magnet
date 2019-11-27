@@ -1,4 +1,4 @@
-﻿namespace Magnet.Providers.Twilio.Sms
+namespace Magnet.Providers.Twilio
 {
     public class TwilioSmsRequest
     {

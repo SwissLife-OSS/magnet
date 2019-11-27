@@ -2,9 +2,23 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>Magnet.GraphQL</AssemblyName>
+    <AssemblyName>Magnet.Server.GraphQL</AssemblyName>
     <RootNamespace>Magnet.GraphQL</RootNamespace>
+    <PackageTags>magnet swisslife email sms sendgrid twilio</PackageTags>
+    <PackageId>Magnet.Server.GraphQL</PackageId>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
 
   <ItemGroup>
     <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-preview.26" />
@@ -15,5 +29,5 @@
     <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
 
-  
+
 </Project>

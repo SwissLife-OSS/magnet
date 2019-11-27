@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Magnet.Client;
 
 namespace Magnet.Client.Mappers
 {

@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Magnet.Providers.Twilio.Sms
+namespace Magnet.Providers.Twilio
 {
     [Route("twiliosms")]
     public class SmsController : Controller

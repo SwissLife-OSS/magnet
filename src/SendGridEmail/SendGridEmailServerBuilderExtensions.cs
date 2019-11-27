@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Magnet.Providers.SendGrid.Email;
+using Magnet.Providers.SendGrid;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Magnet
 {
-    public static class SendGridServerBuilderExtensions
+    public static class SendGridEmailServerBuilderExtensions
     {
         public static MagnetServerBuilder AddSendGridEmail(this MagnetServerBuilder builder)
         {

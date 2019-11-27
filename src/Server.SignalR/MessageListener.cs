@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR;
 
-namespace Magnet.SignalR
+namespace Magnet.Server.SignalR
 {
     public class MessageListener
     {

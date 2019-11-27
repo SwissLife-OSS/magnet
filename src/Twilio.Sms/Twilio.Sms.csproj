@@ -1,10 +1,23 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.0</TargetFramework>
-        <AssemblyName>Magnet.Providers.Twilio.Sms</AssemblyName>
-        <RootNamespace>Magnet.Providers.Twilio.Sms</RootNamespace>
+        <AssemblyName>Magnet.Providers.Twilio</AssemblyName>
+        <RootNamespace>Magnet.Providers.Twilio</RootNamespace>
+      <PackageId>Magnet.Providers.Twilio</PackageId>
+      <IsPackable>true</IsPackable>
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <DebugType>portable</DebugType>
+      <DebugSymbols>true</DebugSymbols>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <DebugType>pdbonly</DebugType>
+      <DebugSymbols>true</DebugSymbols>
+    </PropertyGroup>
+
 
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />

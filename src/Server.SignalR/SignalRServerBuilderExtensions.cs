@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Magnet.SignalR;
-using Microsoft.Extensions.Configuration;
+using Magnet.Server.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Magnet

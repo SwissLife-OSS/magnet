@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Magnet.Client.Mappers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +16,6 @@ namespace Magnet.Client
             return builder;
         }
 
-
         public static MagnetClientBuilder AddMagnet(this IServiceCollection services)
         {
             services.AddDefaultServices();
@@ -34,7 +30,6 @@ namespace Magnet.Client
             services.AddSingleton(DefaultMessageTypeRegistrations.Sms);
             return services;
         }
-
 
         public static MagnetClientBuilder AddMagnet(this IServiceCollection services,
                                            IConfiguration configuration)
@@ -55,22 +50,7 @@ namespace Magnet.Client
             }
 
             MagnetClientBuilder builder = services.AddMagnet(options.ClientName);
-#if (NETSTANDARD2_1)
-            if ( options.Grpc != null)
-            {
-                builder.UseGrpc(options.Grpc.Address);
-            }
-#endif
-
             return builder;
-        }
-    }
-
-    public class MagnetConfigurationException : Exception
-    {
-        public MagnetConfigurationException(string message)
-            : base(message)
-        {
         }
     }
 }
