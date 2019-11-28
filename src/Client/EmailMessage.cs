@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Magnet
+namespace Magnet.Client
 {
     public class EmailMessage 
     {
