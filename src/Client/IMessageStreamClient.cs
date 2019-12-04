@@ -12,5 +12,7 @@ namespace Magnet.Client
         Task<MagnetMessage> GetNextAsync(
             string clientName,
             CancellationToken cancellationToken);
+        Task<string> Subscribe(string clientName);
+        Task UnSubscribe(string clientName);
     }
 }

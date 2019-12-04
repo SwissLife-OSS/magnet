@@ -43,17 +43,52 @@ namespace Magnet.Client
             string clientName,
             CancellationToken cancellationToken)
         {
-            HttpClient client = _httpClientFactory.CreateClient("Magnet");
-            
-            var request = new HttpRequestMessage(
+            HttpResponseMessage result = await SendRequestAsync(
                 HttpMethod.Get,
-                $"{client.BaseAddress}stream/{clientName}");
+                $"stream/{clientName}",
+                cancellationToken);
 
-            HttpResponseMessage result = await client.SendAsync(request, cancellationToken);
             result.EnsureSuccessStatusCode();
             string json = await result.Content.ReadAsStringAsync();
             MagnetMessage message = JsonConvert.DeserializeObject<MagnetMessage>(json);
             return message;
+        }
+
+        public async Task<string> Subscribe(string clientName)
+        {
+            HttpResponseMessage result = await SendRequestAsync(
+                HttpMethod.Post,
+                $"stream/subscribe/{clientName}",
+                default);
+
+            result.EnsureSuccessStatusCode();
+            string name = await result.Content.ReadAsStringAsync();
+            return name;
+        }
+
+        public async Task UnSubscribe(string clientName)
+        {
+            HttpResponseMessage result = await SendRequestAsync(
+                    HttpMethod.Post,
+                    $"stream/subscribe/{clientName}",
+                    default);
+
+            result.EnsureSuccessStatusCode();
+        }
+
+        public async Task<HttpResponseMessage> SendRequestAsync(
+            HttpMethod method,
+            string url,
+            CancellationToken cancellationToken)
+        {
+            HttpClient client = _httpClientFactory.CreateClient("Magnet");
+
+            var request = new HttpRequestMessage(
+                method,
+                $"{client.BaseAddress}{url}");
+
+            HttpResponseMessage result = await client.SendAsync(request, cancellationToken);
+            return result;
         }
     }
 }

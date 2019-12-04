@@ -2,10 +2,10 @@ using System.Threading.Tasks;
 
 namespace Magnet.Client
 {
-    public static class SmsMagnetClientExtensions
+    public static class SmsReceiverExtensions
     {
         public static async Task<SmsMessage> WaitForSms(
-            this MagnetClient client,
+            this MessageReceiver client,
             string to,
             WaitOptions options= null)
         {
@@ -13,4 +13,5 @@ namespace Magnet.Client
             return await client.WaitFor<SmsMessage>(filter, options);
         }
     }
+
 }
