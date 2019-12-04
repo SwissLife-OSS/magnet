@@ -50,11 +50,21 @@ namespace Magnet.Client
             });
         }
 
+        public Task<string> Subscribe(string clientName)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task UnSubscribe(string clientName, string token)
         {
             await _connection.InvokeAsync("UnSubscribe", clientName, token);
             await _connection.StopAsync();
         }
+
+        public Task UnSubscribe(string clientName)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

@@ -106,5 +106,15 @@ namespace Magnet.Messaging.AzureServiceBus
                 .GetAwaiter()
                 .GetResult());
         }
+
+        public Task<string> SubscribeAsync(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UnSubscribeAsync(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

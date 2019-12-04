@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Magnet.Server.SignalR</AssemblyName>
     <RootNamespace>Magnet.Server.SignalR</RootNamespace>
     <PackageId>Magnet.Server.SignalR</PackageId>
@@ -26,5 +26,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Abstractions\Server.Abstractions.csproj" />
   </ItemGroup>
-  
+
 </Project>

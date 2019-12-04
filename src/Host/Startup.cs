@@ -69,7 +69,7 @@ namespace Magnet.Server
                 //endpoints.MapHub<MessageHub>("messagehub");
             });
 
-            app.ApplicationServices.GetService<DataChangeTracker>();
+            //app.ApplicationServices.GetService<DataChangeTracker>();
         }
     }
 }

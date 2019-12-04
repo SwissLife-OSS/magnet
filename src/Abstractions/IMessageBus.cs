@@ -13,5 +13,7 @@ namespace Magnet
             Func<MagnetMessage, CancellationToken, Task> handler);
 
         Task<MagnetMessage> GetNextAsync(string name, CancellationToken cancellationToken);
+        Task<string> SubscribeAsync(string name);
+        Task UnSubscribeAsync(string name);
     }
 }

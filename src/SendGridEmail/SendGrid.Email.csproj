@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Magnet.Providers.SendGrid</AssemblyName>
     <RootNamespace>Magnet.Providers.SendGrid</RootNamespace>
     <PackageId>Magnet.Providers.SendGrid</PackageId>
@@ -25,7 +25,7 @@
         <PrivateAssets>all</PrivateAssets>
       </PackageReference>
   </ItemGroup>
-    
+
   <ItemGroup>
     <ProjectReference Include="..\Abstractions\Server.Abstractions.csproj" />
   </ItemGroup>

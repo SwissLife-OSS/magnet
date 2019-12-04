@@ -35,7 +35,7 @@ namespace Magnet.Messaging.RabbitMQ
             channel.BasicQos(0, 1, false);
 
             int tryCount = 0;
-            while (tryCount < 20)
+            while (tryCount < 30)
             {
                 tryCount++;
                 BasicGetResult res = channel.BasicGet(name, false);
@@ -54,9 +54,6 @@ namespace Magnet.Messaging.RabbitMQ
         public async Task<MagnetMessage> GetNextAsync(string name, CancellationToken cancellationToken)
         {
             using IModel channel = GetChannel();
-
-            channel.ExchangeDeclare(exchange: _options.ExchangeName, type: ExchangeType.Fanout);
-            PrepareQueue(channel, name);
 
             var completion = new TaskCompletionSource<MagnetMessage>();
             cancellationToken.Register(() => completion.SetCanceled());
@@ -80,9 +77,26 @@ namespace Magnet.Messaging.RabbitMQ
             {
                 completion.SetException(ex);
             }
-
             return await completion.Task;
         }
+
+
+        public Task<string> SubscribeAsync(string name)
+        {
+            using IModel channel = GetChannel();
+            var queueName = $"{name}-{Guid.NewGuid().ToString("N").Substring(6)}";
+            PrepareQueue(channel, queueName);
+            return Task.FromResult(queueName);
+        }
+
+        public Task UnSubscribeAsync(string name)
+        {
+            using IModel channel = GetChannel();
+            channel.QueueDelete(name, ifUnused: false, ifEmpty: false);
+
+            return Task.CompletedTask;
+        }
+
 
         private static MagnetMessage GetMessageFromBody(byte[] body)
         {
@@ -94,7 +108,6 @@ namespace Magnet.Messaging.RabbitMQ
         public Task<string> PublishAsync(MagnetMessage message)
         {
             using IModel channel = GetChannel();
-
             var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
             channel.BasicPublish(exchange: _options.ExchangeName,
                                  routingKey: "",
@@ -110,22 +123,38 @@ namespace Magnet.Messaging.RabbitMQ
             {
                 lock (_lock)
                 {
-                    channel.ExchangeDeclare(exchange: _options.ExchangeName, type: ExchangeType.Fanout);
-                    foreach (var consumer in _options.ConsumerQueues)
-                    {
-                        PrepareQueue(channel, consumer);
-                    }
+                    channel.ExchangeDeclare(
+                        exchange: _options.ExchangeName,
+                        type: ExchangeType.Fanout);
+                    ProperaStoreQueue(channel);
                     _initialized = true;
                 }
             }
         }
 
+
+        private void ProperaStoreQueue(IModel channel)
+        {
+            string storeQueueName = "store";
+            channel.QueueDeclare(storeQueueName, true, false, false, null);
+            channel.QueueBind(queue: storeQueueName,
+                  exchange: _options.ExchangeName,
+                  routingKey: "");
+        }
+
         private void PrepareQueue(IModel channel, string name)
         {
             var args = new Dictionary<string, object>();
-            args.Add("x-message-ttl", _options.MessageTtl);
-            channel.QueueDeclare(name, true, false, false, null);
-            channel.QueueBind(queue: name,
+            args.Add("x-message-ttl", _options.MessageTtl * 1000);
+            channel.QueueDeclare(
+                queue: name,
+                durable: false,
+                exclusive: false,
+                autoDelete: false,
+                args);
+
+            channel.QueueBind(
+                  queue: name,
                   exchange: _options.ExchangeName,
                   routingKey: "");
         }
@@ -144,6 +173,8 @@ namespace Magnet.Messaging.RabbitMQ
             };
             string consumerTag = channel.BasicConsume(name, true, consumer);
         }
+
+
 
 
         private IModel GetChannel()

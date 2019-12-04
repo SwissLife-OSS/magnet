@@ -12,10 +12,6 @@ namespace Magnet.Client.Tests
         {
             IServiceProvider service = BuildServiceProvider();
             MagnetClient magnet = service.GetService<MagnetClient>();
-            SmsMessage sms = await magnet.WaitFor<SmsMessage>();
-
-            SmsMessage sms2 = await magnet.WaitFor<SmsMessage>();
-
         }
 
         private static IServiceProvider BuildServiceProvider()
