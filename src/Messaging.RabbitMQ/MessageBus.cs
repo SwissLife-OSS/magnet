@@ -164,7 +164,6 @@ namespace Magnet.Messaging.RabbitMQ
             Func<MagnetMessage, CancellationToken, Task> handler)
         {
             IModel channel = GetChannel();
-            PrepareQueue(channel, name);
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += (model, ea) =>
             {

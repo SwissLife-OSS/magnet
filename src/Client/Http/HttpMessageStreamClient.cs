@@ -70,7 +70,7 @@ namespace Magnet.Client
         {
             HttpResponseMessage result = await SendRequestAsync(
                     HttpMethod.Post,
-                    $"stream/subscribe/{clientName}",
+                    $"stream/unsubscribe/{clientName}",
                     default);
 
             result.EnsureSuccessStatusCode();
