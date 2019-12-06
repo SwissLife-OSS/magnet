@@ -44,17 +44,21 @@ namespace Magnet.Client
 
             try
             {
-                MagnetMessage message = await _magnetClient.MessageStreamClient
-                    .GetNextAsync(_queueName, timeoutToken.Token);
-
-                var match = MatchFilter(waitFilter, message);
-                await AddReceiveReceiptAsync(message, match, timeoutToken.Token);
-
-                if (match)
+                while (!timeoutToken.Token.IsCancellationRequested)
                 {
-                    TMessage mapped = _magnetClient.MessageMapper.Map<TMessage>(message);
-                    completion.SetResult(mapped);
-                    timeoutToken.Dispose();
+                    MagnetMessage message = await _magnetClient.MessageStreamClient
+                        .GetNextAsync(_queueName, timeoutToken.Token);
+
+                    var match = MatchFilter(waitFilter, message);
+                    await AddReceiveReceiptAsync(message, match, timeoutToken.Token);
+
+                    if (match)
+                    {
+                        TMessage mapped = _magnetClient.MessageMapper.Map<TMessage>(message);
+                        completion.SetResult(mapped);
+                        timeoutToken.Dispose();
+                        break;
+                    }
                 }
             }
             catch (Exception ex)

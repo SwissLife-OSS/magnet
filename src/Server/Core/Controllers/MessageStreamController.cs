@@ -32,7 +32,7 @@ namespace Magnet.Controllers
             return Ok(queueName);
         }
 
-        [Route("unsubscribe/{clientName}")]
+        [Route("unsubscribe/{queueName}")]
         [HttpPost]
         public async Task<IActionResult> UnSubscribe(string queueName, CancellationToken cancellationToken)
         {
