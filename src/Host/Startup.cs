@@ -64,12 +64,8 @@ namespace Magnet.Server
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapGrpcService<MessageStreamService>();
                 endpoints.MapControllers();
-                //endpoints.MapHub<MessageHub>("messagehub");
             });
-
-            //app.ApplicationServices.GetService<DataChangeTracker>();
         }
     }
 }
