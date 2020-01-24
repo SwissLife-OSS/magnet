@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Magnet.Client.Mappers
 {
@@ -17,6 +20,12 @@ namespace Magnet.Client.Mappers
                     .ChangeType(message.Properties[name], typeof(T));
             }
             return default;
+        }
+
+        public static IDictionary<string, string> GetPropertiesFiltered(this MagnetMessage message, params string[] excludeNames)
+        {
+            return message.Properties.Where(x => !excludeNames.Contains(x.Key))
+                .ToDictionary(k => k.Key, k => k.Value);
         }
     }
 }

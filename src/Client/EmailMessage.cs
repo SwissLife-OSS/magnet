@@ -12,5 +12,9 @@ namespace Magnet.Client
         public string Html { get; set; }
         public IReadOnlyList<string> To { get; set; }
         public Guid Id { get; internal set; }
+
+        public string Subject { get; set; }
+
+        public IReadOnlyDictionary<string, string> Properties { get; set; }
     }
 }

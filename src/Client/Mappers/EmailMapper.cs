@@ -2,7 +2,6 @@ using System.Collections.Generic;
 
 namespace Magnet.Client.Mappers
 {
-
     public class EmailMapper : IMessageMapper<EmailMessage>
     {
         public EmailMessage FromMagetMessage(MagnetMessage magnetMessage)
@@ -13,30 +12,13 @@ namespace Magnet.Client.Mappers
                 From = magnetMessage.From,
                 To = new List<string>(magnetMessage.To),
                 ReceivedAt = magnetMessage.ReceivedAt,
-
                 Text = magnetMessage.Body,
-                Html = magnetMessage.GetPropertyValue<string>("Html")
+                Html = magnetMessage.GetPropertyValue<string>("Html"),
+                Subject = magnetMessage.GetPropertyValue<string>("Subject"),
+                Properties = new Dictionary<string, string>(
+                    magnetMessage.GetPropertiesFiltered("Html", "Subject"))
             };
             return email;
         }
-
-        //public MagnetMessage ToMagnetMessage(EmailMessage message)
-        //{
-        //    var props = new Dictionary<string, object>();
-        //    if ( message.Html != null)
-        //        props.Add("Html", message.Html);
-
-        //    var msg = new MagnetMessage
-        //    {
-        //        Type = "Email",
-        //        Body = message.Text,
-        //        ReceivedAt = message.ReceivedAt,
-        //        From = message.From,
-        //        Properties = props,
-        //        To = new List<string>(message.To)
-        //    };
-        //    return msg;
-        //}
-
     }
 }
