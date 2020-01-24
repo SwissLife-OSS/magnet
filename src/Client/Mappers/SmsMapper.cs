@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Magnet.Client.Mappers
 {
     public class SmsMapper : IMessageMapper<SmsMessage>
@@ -11,6 +13,8 @@ namespace Magnet.Client.Mappers
                 To = magnetMessage.To[0],
                 ReceivedAt = magnetMessage.ReceivedAt,
                 Body = magnetMessage.Body,
+                Properties = new Dictionary<string, string>(
+                    magnetMessage.GetPropertiesFiltered("Html", "Subject"))
             };
             return sms;
         }
