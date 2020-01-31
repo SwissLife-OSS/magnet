@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Client.AzureDevOps\Client.AzureDevOps.csproj" />
     <ProjectReference Include="..\Client\Client.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>

@@ -15,10 +15,10 @@ namespace Magnet.Server
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
            Host.CreateDefaultBuilder(args)
-                .ConfigureLogging( configure =>
-                {
-                    configure.AddConsole();
-                })
+                .ConfigureLogging(configure =>
+               {
+                   configure.AddConsole();
+               })
                 .ConfigureAppConfiguration(builder =>
                {
                    builder.AddJsonFile("appsettings.json");

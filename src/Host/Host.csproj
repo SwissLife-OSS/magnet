@@ -10,6 +10,7 @@
     <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="11.0.0-preview.54" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AzureDevOps.WebHooks\AzureDevOps.WebHooks.csproj" />
     <ProjectReference Include="..\GraphQL\GraphQL.csproj" />
     <ProjectReference Include="..\Messaging.AzureServiceBus\Messaging.AzureServiceBus.csproj" />
     <ProjectReference Include="..\Messaging.RabbitMQ\Messaging.RabbitMQ.csproj" />

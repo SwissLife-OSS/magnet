@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Magnet.Client;
+using Magnet.Client.AzureDevOps;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace TestClient
@@ -16,8 +17,16 @@ namespace TestClient
             {
                 while (true)
                 {
-                    SmsMessage sms = await receiver.WaitForSms("+41798074288");
-                    Console.WriteLine(sms.From);
+                    //WorkItemEventMessage wi = await receiver.WaitForWorkItemUpdatedEvent(
+                    //    17006,
+                    //    new WaitOptions { Timeout = 120 });
+
+                    WorkItemEventMessage wi = await receiver.WaitForWorkItemCreatedEvent(
+                        "Magnet",
+                        new WaitOptions { Timeout = 120 });
+
+
+                    Console.WriteLine(wi.Message);
                 }
             }
 
@@ -31,6 +40,7 @@ namespace TestClient
         {
             IServiceCollection services = new ServiceCollection();
             services.AddMagnet("abcda")
+                        .RegisterAzureDevOps()
                         .UseHttp("http://localhost:5000");
             return services.BuildServiceProvider();
         }

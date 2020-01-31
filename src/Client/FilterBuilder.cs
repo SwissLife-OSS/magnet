@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using Magnet.Client.Mappers;
 
 namespace Magnet.Client
 {
@@ -14,6 +15,11 @@ namespace Magnet.Client
                         .WithTo(to);
         }
 
+        public static FilterBuilder New()
+        {
+            return new FilterBuilder();
+        }
+
         public FilterBuilder WithTo(string to)
         {
             _predicates.Add((msg) => msg.To.Contains(to));
@@ -23,6 +29,19 @@ namespace Magnet.Client
         public FilterBuilder WithFrom(string from)
         {
             _predicates.Add((msg) => msg.From.Equals(from));
+            return this;
+        }
+
+        public FilterBuilder WithContainsProperty(string name)
+        {
+            _predicates.Add(x => x.Properties.ContainsKey(name));
+            return this;
+        }
+
+        public FilterBuilder WithProperty(string name, string value)
+        {
+            _predicates.Add(x => x.GetPropertyValue<string>(name)
+                .Equals(value, StringComparison.OrdinalIgnoreCase));
             return this;
         }
 

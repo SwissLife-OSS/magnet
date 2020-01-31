@@ -33,6 +33,7 @@ namespace Magnet.Providers.SendGrid
         {
             var properties = new Dictionary<string, string>();
             properties.Add("Html", inboundEmail.Html);
+            properties.Add("Subject", inboundEmail.Subject);
             properties.Add("SendGrid-Message-ID", 
                    inboundEmail.Headers
                                 .FirstOrDefault(x => x.Key == "Message-ID").Value);

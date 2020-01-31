@@ -32,9 +32,11 @@ namespace Magnet.Server
             services.AddMagnet()
                         .AddSendGridEmail()
                         .AddTwilioSms()
+                        .AddAzureDevOps()
                         .AddRabbitMQ(Configuration)
                         //.AddAzureServiceBus(Configuration)
                         .AddMongoStore(Configuration);
+
 
             services.AddGraphQLServices();
             services.AddCors(options =>

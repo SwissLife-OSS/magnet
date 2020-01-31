@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace Magnet.Client
 {
@@ -13,5 +13,4 @@ namespace Magnet.Client
             return await client.WaitFor<EmailMessage>(filter, options);
         }
     }
-
 }

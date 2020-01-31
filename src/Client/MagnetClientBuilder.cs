@@ -11,7 +11,6 @@ namespace Magnet.Client
         public MagnetClientBuilder(IServiceCollection services)
         {
             _services = services;
-
         }
 
         public MagnetClientBuilder AddMessageType<TMessageType>(
