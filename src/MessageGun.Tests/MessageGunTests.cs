@@ -38,13 +38,15 @@ namespace Magnet
 
         }
 
-        private static async Task<MagnetMessage> GetMessageFromRequest(HttpRequestMessage sentRequest)
+        private static async Task<MagnetMessage> GetMessageFromRequest(
+            HttpRequestMessage sentRequest)
         {
             var json = await sentRequest.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<MagnetMessage>(json);
         }
 
-        private IHttpClientFactory CreateHttpClientFactoryMock( Action<HttpRequestMessage> beforeSendRequest  )
+        private IHttpClientFactory CreateHttpClientFactoryMock(
+            Action<HttpRequestMessage> beforeSendRequest  )
         {
             Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> handler =
                 (HttpRequestMessage message, CancellationToken token) =>
@@ -63,10 +65,11 @@ namespace Magnet
 
         public class DelegatingHandlerStub : DelegatingHandler
         {
-            private readonly Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> _handlerFunc;
+            private readonly Func<HttpRequestMessage,
+                CancellationToken, Task<HttpResponseMessage>> _handlerFunc;
 
-
-            public DelegatingHandlerStub(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> handlerFunc)
+            public DelegatingHandlerStub(
+                Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> handlerFunc)
             {
                 _handlerFunc = handlerFunc;
             }

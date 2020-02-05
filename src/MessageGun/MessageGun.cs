@@ -26,7 +26,7 @@ namespace Magnet
             HttpClient client = _httpClientFactory.CreateClient(_options.HttpClientName);
             var request = new HttpRequestMessage(
                 HttpMethod.Post,
-                $"{client.BaseAddress.ToString().Trim('/')}/message/new");
+                $"{client.BaseAddress.ToString().Trim('/')}/message");
 
             MagnetMessage message = builder.Build();
 
