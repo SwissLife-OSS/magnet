@@ -14,6 +14,7 @@ namespace Magnet.Providers.Twilio.Sms
         }
 
         [Route("")]
+        [Route("new")]
         [HttpPost]
         public async Task<IActionResult> New([FromBody] MagnetMessage message)
         {
