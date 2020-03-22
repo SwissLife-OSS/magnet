@@ -40,8 +40,13 @@ namespace Magnet.Client
 
         public FilterBuilder WithProperty(string name, string value)
         {
-            _predicates.Add(x => x.GetPropertyValue<string>(name)
-                .Equals(value, StringComparison.OrdinalIgnoreCase));
+            _predicates.Add(x =>
+            {
+                var value = x.GetPropertyValue<string>(name);
+                if (value != null)
+                    return value.Equals(value, StringComparison.OrdinalIgnoreCase);
+                return false;
+            });
             return this;
         }
 

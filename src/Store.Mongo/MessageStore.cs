@@ -74,6 +74,15 @@ namespace Magnet.Store.Mongo
                         .ToListAsync(cancellationToken);
         }
 
+        public async Task<MessageRecord> GetById(
+            Guid id,
+            CancellationToken cancellationToken)
+        {
+            return await _dbContext.Messages.AsQueryable()
+                        .Where( x => x.Id == id)
+                        .FirstOrDefaultAsync(cancellationToken);
+        }
+
         public async Task<List<MessageRecord>> GetAllAsync(
             IQueryable<MessageRecord> query,
             CancellationToken cancellationToken)

@@ -86,6 +86,7 @@ namespace Magnet.Messaging.RabbitMQ
             using IModel channel = GetChannel();
             var queueName = $"{name}-{Guid.NewGuid().ToString("N").Substring(6)}";
             PrepareQueue(channel, queueName);
+
             return Task.FromResult(queueName);
         }
 
@@ -172,8 +173,6 @@ namespace Magnet.Messaging.RabbitMQ
             };
             string consumerTag = channel.BasicConsume(name, true, consumer);
         }
-
-
 
 
         private IModel GetChannel()
