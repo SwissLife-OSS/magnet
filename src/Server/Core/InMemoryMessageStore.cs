@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,11 @@ namespace Magnet
 
 
             return Task.FromResult(messages);
+        }
+
+        public Task<MessageRecord> GetById(Guid id, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

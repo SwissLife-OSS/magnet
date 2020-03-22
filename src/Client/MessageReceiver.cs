@@ -95,8 +95,15 @@ namespace Magnet.Client
         {
             foreach (Predicate<MagnetMessage> predicate in filter.Predicates)
             {
-                if (!predicate(message))
+                try
+                {
+                    if (!predicate(message))
+                        return false;
+                }
+                catch
+                {
                     return false;
+                }
             }
             return true;
         }

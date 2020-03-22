@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,5 +13,6 @@ namespace Magnet
             MessageReceivedReceipt receipt,
             CancellationToken cancellationToken);
         Task<List<MessageRecord>> GetAllAsync(CancellationToken cancellationToken);
+        Task<MessageRecord> GetById(Guid id, CancellationToken cancellationToken);
     }
 }

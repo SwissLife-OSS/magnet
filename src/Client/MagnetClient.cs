@@ -1,11 +1,8 @@
-using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Magnet.Client.Mappers;
 
 namespace Magnet.Client
 {
-
     public class MagnetClient
     {
         internal MessageMapperFactory MessageMapper { get; }
@@ -27,6 +24,5 @@ namespace Magnet.Client
             var queueName = await MessageStreamClient.Subscribe(Options.ClientName);
             return new MessageReceiver(this, queueName);
         }
-
     }
 }
