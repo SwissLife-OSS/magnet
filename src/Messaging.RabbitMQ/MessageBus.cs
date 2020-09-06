@@ -25,32 +25,6 @@ namespace Magnet.Messaging.RabbitMQ
             _options = options;
         }
 
-        public async Task<MagnetMessage> GetNextAsyncWithLoop(
-            string name,
-            CancellationToken cancellationToken)
-        {
-            using IConnection connection = _connectionFactory.CreateConnection();
-            using IModel channel = connection.CreateModel();
-
-            channel.BasicQos(0, 1, false);
-
-            int tryCount = 0;
-            while (tryCount < 30)
-            {
-                tryCount++;
-                BasicGetResult res = channel.BasicGet(name, false);
-                if (res != null)
-                {
-                    MagnetMessage message = GetMessageFromBody(res.Body);
-
-                    channel.BasicAck(res.DeliveryTag, false);
-                    return message;
-                }
-                await Task.Delay(1000);
-            }
-            return null;
-        }
-
         public async Task<MagnetMessage> GetNextAsync(string name, CancellationToken cancellationToken)
         {
             using IModel channel = GetChannel();
@@ -66,7 +40,7 @@ namespace Magnet.Messaging.RabbitMQ
                 eventHandler =
                     delegate (object obj, BasicDeliverEventArgs ea)
                 {
-                    MagnetMessage msg = GetMessageFromBody(ea.Body);
+                    MagnetMessage msg = GetMessageFromBody(ea.Body.ToArray());
                     completion.SetResult(msg);
                     consumer.Received -= eventHandler;
                 };
@@ -133,7 +107,6 @@ namespace Magnet.Messaging.RabbitMQ
             }
         }
 
-
         private void ProperaStoreQueue(IModel channel)
         {
             string storeQueueName = "store";
@@ -168,12 +141,11 @@ namespace Magnet.Messaging.RabbitMQ
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += (model, ea) =>
             {
-                MagnetMessage msg = GetMessageFromBody(ea.Body);
+                MagnetMessage msg = GetMessageFromBody(ea.Body.ToArray());
                 handler(msg, default);
             };
             string consumerTag = channel.BasicConsume(name, true, consumer);
         }
-
 
         private IModel GetChannel()
         {
@@ -183,13 +155,13 @@ namespace Magnet.Messaging.RabbitMQ
 
             PolicyResult<IModel> result = policy.ExecuteAndCapture<IModel>(() =>
                {
-                    if (_connection == null)
-                    {
-                        _connection = _connectionFactory.CreateConnection();
-                    }
-                    IModel channel = _connection.CreateModel();
-                    PrepareModel(channel);
-                    return channel;
+                   if (_connection == null)
+                   {
+                       _connection = _connectionFactory.CreateConnection();
+                   }
+                   IModel channel = _connection.CreateModel();
+                   PrepareModel(channel);
+                   return channel;
                });
 
             return result.Result;
@@ -203,7 +175,10 @@ namespace Magnet.Messaging.RabbitMQ
 
         protected virtual void Dispose(bool disposing)
         {
-            _connection.Dispose();
+            if (_connection is { })
+            {
+                _connection.Dispose();
+            }
         }
     }
 }
