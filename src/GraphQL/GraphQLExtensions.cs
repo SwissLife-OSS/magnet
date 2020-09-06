@@ -17,6 +17,7 @@ namespace Magnet.GraphQL
         {
             return SchemaBuilder.New()
                 .AddQueryType<QueryType>()
+                .AddAuthorizeDirectiveType()
                 .AddServices(serviceProvider)
                 .Create();
         }

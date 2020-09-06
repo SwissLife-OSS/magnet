@@ -21,7 +21,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-preview.26" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-preview.123" />
   </ItemGroup>
 
   <ItemGroup>

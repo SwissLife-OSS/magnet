@@ -24,9 +24,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="RabbitMQ.Client" Version="5.1.2" />
-    <PackageReference Include="Polly" Version="7.1.1" />
-
+    <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
+    <PackageReference Include="Polly" Version="7.2.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,8 +6,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.24.0" />
-    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-preview.54" />
-    <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="11.0.0-preview.54" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-preview.123" />
+    <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="11.0.0-preview.123" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>

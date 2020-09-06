@@ -28,7 +28,6 @@ namespace Magnet
             {
                 HostName = options.Hostname,
                 Port = options.Port
-                
             };
 
             if ( options.UserName != null)
