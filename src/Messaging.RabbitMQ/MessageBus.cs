@@ -8,6 +8,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Polly;
 using Polly.Retry;
+using Microsoft.Extensions.Logging;
 
 namespace Magnet.Messaging.RabbitMQ
 {
@@ -15,14 +16,19 @@ namespace Magnet.Messaging.RabbitMQ
     {
         private readonly ConnectionFactory _connectionFactory;
         private readonly RabbitMQOptions _options;
+        private readonly ILogger<MessageBus> _logger;
         private static object _lock = new object();
         private bool _initialized = false;
         private IConnection _connection;
 
-        public MessageBus(ConnectionFactory connectionFactory, RabbitMQOptions options)
+        public MessageBus(
+            ConnectionFactory connectionFactory,
+            RabbitMQOptions options,
+            ILogger<MessageBus> logger)
         {
             _connectionFactory = connectionFactory;
             _options = options;
+            _logger = logger;
         }
 
         public async Task<MagnetMessage> GetNextAsync(string name, CancellationToken cancellationToken)
@@ -71,7 +77,6 @@ namespace Magnet.Messaging.RabbitMQ
 
             return Task.CompletedTask;
         }
-
 
         private static MagnetMessage GetMessageFromBody(byte[] body)
         {
@@ -137,12 +142,21 @@ namespace Magnet.Messaging.RabbitMQ
             string name,
             Func<MagnetMessage, CancellationToken, Task> handler)
         {
+            _logger.LogInformation("RegisterMessageHandler: {name}", name);
+
             IModel channel = GetChannel();
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += (model, ea) =>
             {
-                MagnetMessage msg = GetMessageFromBody(ea.Body.ToArray());
-                handler(msg, default);
+                try
+                {
+                    MagnetMessage msg = GetMessageFromBody(ea.Body.ToArray());
+                    handler(msg, default);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error on Received");
+                }
             };
             string consumerTag = channel.BasicConsume(name, true, consumer);
         }
@@ -175,9 +189,16 @@ namespace Magnet.Messaging.RabbitMQ
 
         protected virtual void Dispose(bool disposing)
         {
-            if (_connection is { })
+            try
             {
-                _connection.Dispose();
+                if (_connection is { })
+                {
+                    _connection.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Could not dispose MessageBus");
             }
         }
     }

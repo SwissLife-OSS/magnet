@@ -26,7 +26,7 @@ namespace Magnet.Server
                    builder.AddEnvironmentVariables();
                }).ConfigureServices(services =>
                {
-                   //services.AddHostedService<BackgroundWorker>();
+                   services.AddHostedService<BackgroundWorker>();
                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
