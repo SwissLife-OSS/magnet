@@ -27,16 +27,20 @@ namespace Magnet.Server
             {
                 options.AllowSynchronousIO = true;
             });
-            services.AddGrpc();
             services.AddControllers();
             services.AddMagnet()
                         .AddSendGridEmail()
                         .AddTwilioSms()
                         .AddAzureDevOps()
                         .AddRabbitMQ(Configuration)
-                        //.AddAzureServiceBus(Configuration)
                         .AddMongoStore(Configuration);
 
+            services.AddAuthorization(o => o.AddPolicy(
+                "Magnet.Read",
+                p => p.RequireAssertion(c =>
+                {
+                    return true;
+                })));
 
             services.AddGraphQLServices();
             services.AddCors(options =>
