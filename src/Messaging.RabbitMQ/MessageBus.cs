@@ -28,10 +28,7 @@ namespace Magnet.Messaging.RabbitMQ
         {
             _connectionFactory = connectionFactory;
             _options = options;
-<<<<<<< HEAD
             _logger = logger;
-=======
->>>>>>> master
         }
 
         public async Task<MagnetMessage> GetNextAsync(string name, CancellationToken cancellationToken)
@@ -62,7 +59,6 @@ namespace Magnet.Messaging.RabbitMQ
             }
             return await completion.Task;
         }
-
 
         public Task<string> SubscribeAsync(string name)
         {
@@ -151,7 +147,6 @@ namespace Magnet.Messaging.RabbitMQ
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += (model, ea) =>
             {
-<<<<<<< HEAD
                 try
                 {
                     MagnetMessage msg = GetMessageFromBody(ea.Body.ToArray());
@@ -161,10 +156,6 @@ namespace Magnet.Messaging.RabbitMQ
                 {
                     _logger.LogError(ex, "Error on Received");
                 }
-=======
-                MagnetMessage msg = GetMessageFromBody(ea.Body.ToArray());
-                handler(msg, default);
->>>>>>> master
             };
             string consumerTag = channel.BasicConsume(name, true, consumer);
         }
@@ -197,7 +188,6 @@ namespace Magnet.Messaging.RabbitMQ
 
         protected virtual void Dispose(bool disposing)
         {
-<<<<<<< HEAD
             try
             {
                 if (_connection is { })
@@ -208,11 +198,11 @@ namespace Magnet.Messaging.RabbitMQ
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Could not dispose MessageBus");
-=======
-            if (_connection is { })
-            {
-                _connection.Dispose();
->>>>>>> master
+
+                if (_connection is { })
+                {
+                    _connection.Dispose();
+                }
             }
         }
     }
