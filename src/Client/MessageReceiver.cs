@@ -37,7 +37,7 @@ namespace Magnet.Client
             waitFilter.Predicates.Add((m) => m.Type == typeName);
 
             var completion = new TaskCompletionSource<TMessage>();
-            timeoutToken.Token.Register(() => completion.SetCanceled());
+            timeoutToken.Token.Register(() => completion.TrySetCanceled());
 
             try
             {
