@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,7 +26,6 @@ namespace Magnet.Client
             return await WaitFor<TMessage>(waitFilter, options);
         }
 
-
         public async Task<TMessage> WaitFor<TMessage>(
                 WaitFilter waitFilter = null,
                 WaitOptions options = null)
@@ -40,7 +37,7 @@ namespace Magnet.Client
             waitFilter.Predicates.Add((m) => m.Type == typeName);
 
             var completion = new TaskCompletionSource<TMessage>();
-            timeoutToken.Token.Register(() => completion.SetCanceled());
+            timeoutToken.Token.Register(() => completion.TrySetCanceled());
 
             try
             {
@@ -56,7 +53,6 @@ namespace Magnet.Client
                     {
                         TMessage mapped = _magnetClient.MessageMapper.Map<TMessage>(message);
                         completion.SetResult(mapped);
-                        timeoutToken.Dispose();
                         break;
                     }
                 }
@@ -64,6 +60,9 @@ namespace Magnet.Client
             catch (Exception ex)
             {
                 completion.SetException(ex);
+            }
+            finally
+            {
                 timeoutToken.Dispose();
             }
 
