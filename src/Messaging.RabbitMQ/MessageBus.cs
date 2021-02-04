@@ -144,13 +144,13 @@ namespace Magnet.Messaging.RabbitMQ
             _logger.LogInformation("RegisterMessageHandler: {name}", name);
 
             IModel channel = GetChannel();
-            var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += (model, ea) =>
+            var consumer = new AsyncEventingBasicConsumer(channel);
+            consumer.Received += async (model, ea) =>
             {
                 try
                 {
                     MagnetMessage msg = GetMessageFromBody(ea.Body.ToArray());
-                    handler(msg, default);
+                    await handler(msg, default);
                 }
                 catch (Exception ex)
                 {
