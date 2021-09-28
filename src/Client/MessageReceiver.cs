@@ -52,14 +52,14 @@ namespace Magnet.Client
                     if (match)
                     {
                         TMessage mapped = _magnetClient.MessageMapper.Map<TMessage>(message);
-                        completion.SetResult(mapped);
+                        completion.TrySetResult(mapped);
                         break;
                     }
                 }
             }
             catch (Exception ex)
             {
-                completion.SetException(ex);
+                completion.TrySetException(ex);
             }
             finally
             {
