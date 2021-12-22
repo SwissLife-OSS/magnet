@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>Magnet.Providers.AzureDevOps</AssemblyName>
     <RootNamespace>Magnet.Providers.AzureDevOps</RootNamespace>
     <PackageId>Magnet.Providers.AzureDevOps</PackageId>

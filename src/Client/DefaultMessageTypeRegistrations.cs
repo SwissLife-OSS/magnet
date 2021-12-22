@@ -8,11 +8,11 @@ namespace Magnet.Client
     {
         public static readonly MessageTypeRegistration Email =
              new MessageTypeRegistration
-            {
-                Name = "Email",
-                MessageType = typeof(EmailMessage),
-                Mapper = new EmailMapper()
-            };
+             {
+                 Name = "Email",
+                 MessageType = typeof(EmailMessage),
+                 Mapper = new EmailMapper()
+             };
 
         public static readonly MessageTypeRegistration Sms =
              new MessageTypeRegistration

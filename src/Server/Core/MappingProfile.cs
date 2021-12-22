@@ -1,12 +1,11 @@
 using AutoMapper;
 
-namespace Magnet
+namespace Magnet;
+
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-            this.CreateMap<MagnetMessage, MessageRecord>();
-        }
+        this.CreateMap<MagnetMessage, MessageRecord>();
     }
 }

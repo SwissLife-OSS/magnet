@@ -27,13 +27,6 @@ namespace Magnet.Client
             return this;
         }
 
-        public MagnetClientBuilder UseSignalR(string endpoint)
-        {
-            _services.AddSingleton<IMessageStreamClient>(c => new SignalRMessageStreamClient(
-                new SignalROptions { Endpoint = endpoint }, c.GetService<MagnetOptions>()));
-            return this;
-        }
-
         public MagnetClientBuilder UseHttp(string baseUrl)
         {
             _services.AddSingleton<IMessageStreamClient, HttpMessageStreamClient>();
@@ -48,6 +41,7 @@ namespace Magnet.Client
             {
                 ClientName = name
             });
+
             return this;
         }
     }

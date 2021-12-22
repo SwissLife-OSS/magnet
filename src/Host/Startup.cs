@@ -1,77 +1,75 @@
+using Magnet.GraphQL;
+using Magnet.Store.Mongo;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Magnet.Store.Mongo;
-using HotChocolate.AspNetCore;
-using Magnet.GraphQL;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 
-namespace Magnet.Server
+namespace Magnet.Server;
+
+public class Startup
 {
-    public class Startup
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
+        Configuration = configuration;
+    }
+
+    public IConfiguration Configuration { get; }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        //SendGrid parser Sync IO issue
+        //https://github.com/Jericho/StrongGrid/issues/300
+        services.Configure<KestrelServerOptions>(options =>
         {
-            Configuration = configuration;
-        }
+            options.AllowSynchronousIO = true;
+        });
+        services.AddControllers();
+        services.AddMagnet()
+                    .AddSendGridEmail()
+                    .AddTwilioSms()
+                    .AddAzureDevOps()
+                    .AddRabbitMQ(Configuration)
+                    .AddMongoStore(Configuration);
 
-        public IConfiguration Configuration { get; }
+        services.AddAuthorization(o => o.AddPolicy(
+            "Magnet.Read",
+            p => p.RequireAssertion(c =>
+            {
+                return true;
+            })));
 
-        public void ConfigureServices(IServiceCollection services)
+        services.AddGraphQLServices();
+        services.AddCors(options =>
         {
-            //SendGrid parser Sync IO issue
-            //https://github.com/Jericho/StrongGrid/issues/300
-            services.Configure<KestrelServerOptions>(options =>
+            options.AddDefaultPolicy(
+            builder =>
             {
-                options.AllowSynchronousIO = true;
+                builder.AllowAnyOrigin();
+                builder.AllowAnyMethod();
+                builder.AllowAnyHeader();
             });
-            services.AddControllers();
-            services.AddMagnet()
-                        .AddSendGridEmail()
-                        .AddTwilioSms()
-                        .AddAzureDevOps()
-                        .AddRabbitMQ(Configuration)
-                        .AddMongoStore(Configuration);
+        });
+    }
 
-            services.AddAuthorization(o => o.AddPolicy(
-                "Magnet.Read",
-                p => p.RequireAssertion(c =>
-                {
-                    return true;
-                })));
-
-            services.AddGraphQLServices();
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(
-                builder =>
-                {
-                    builder.AllowAnyOrigin();
-                    builder.AllowAnyMethod();
-                    builder.AllowAnyHeader();
-                });
-            });
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            app.UseCors();
-            app.UseRouting();
-
-            app.UseAuthorization();
-            app.UseGraphQL();
-            app.UsePlayground();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseDeveloperExceptionPage();
         }
+        app.UseCors();
+        app.UseRouting();
+
+        app.UseAuthorization();
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+            endpoints.MapGraphQL();
+        });
+
     }
 }

@@ -4,45 +4,44 @@ using Magnet.Client;
 using Magnet.Client.AzureDevOps;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TestClient
+namespace TestClient;
+
+class Program
 {
-    class Program
+    static async Task Main(string[] args)
     {
-        static async Task Main(string[] args)
-        {
-            IServiceProvider services = BuildServiceProvider();
-            MagnetClient mg = services.GetService<MagnetClient>();
+        IServiceProvider services = BuildServiceProvider();
+        MagnetClient mg = services.GetService<MagnetClient>();
 
-            using (MessageReceiver receiver = await mg.StartAsync())
+        using (MessageReceiver receiver = await mg.StartAsync())
+        {
+            while (true)
             {
-                while (true)
-                {
-                    //WorkItemEventMessage wi = await receiver.WaitForWorkItemUpdatedEvent(
-                    //    17006,
-                    //    new WaitOptions { Timeout = 120 });
+                //WorkItemEventMessage wi = await receiver.WaitForWorkItemUpdatedEvent(
+                //    17006,
+                //    new WaitOptions { Timeout = 120 });
 
-                    WorkItemEventMessage wi = await receiver.WaitForWorkItemCreatedEvent(
-                        "Magnet",
-                        new WaitOptions { Timeout = 120 });
+                WorkItemEventMessage wi = await receiver.WaitForWorkItemCreatedEvent(
+                    "Magnet",
+                    new WaitOptions { Timeout = 120 });
 
 
-                    Console.WriteLine(wi.Message);
-                }
+                Console.WriteLine(wi.Message);
             }
-
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
-            Console.WriteLine("Disconecting...");
         }
 
+        Console.WriteLine("Press any key to exit...");
+        Console.ReadKey();
+        Console.WriteLine("Disconecting...");
+    }
 
-        private static IServiceProvider BuildServiceProvider()
-        {
-            IServiceCollection services = new ServiceCollection();
-            services.AddMagnet("abcda")
-                        .RegisterAzureDevOps()
-                        .UseHttp("http://localhost:5000");
-            return services.BuildServiceProvider();
-        }
+
+    private static IServiceProvider BuildServiceProvider()
+    {
+        IServiceCollection services = new ServiceCollection();
+        services.AddMagnet("abcda")
+                    .RegisterAzureDevOps()
+                    .UseHttp("http://localhost:5000");
+        return services.BuildServiceProvider();
     }
 }

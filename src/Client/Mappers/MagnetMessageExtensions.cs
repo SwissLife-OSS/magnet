@@ -16,7 +16,7 @@ namespace Magnet.Client.Mappers
         {
             if (message.Properties != null && message.Properties.ContainsKey(name))
             {
-                return (T) Convert
+                return (T)Convert
                     .ChangeType(message.Properties[name], typeof(T));
             }
             return default;

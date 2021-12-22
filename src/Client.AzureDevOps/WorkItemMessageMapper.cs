@@ -1,4 +1,4 @@
-﻿using Magnet.Client.Mappers;
+using Magnet.Client.Mappers;
 using Newtonsoft.Json;
 
 namespace Magnet.Client.AzureDevOps

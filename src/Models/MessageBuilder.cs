@@ -25,7 +25,7 @@ namespace Magnet
 
         private MessageBuilder()
         {
-            
+
         }
 
         private MessageBuilder(string type, string provider)

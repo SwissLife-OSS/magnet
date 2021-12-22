@@ -38,12 +38,12 @@ namespace Magnet.Client
                 .GetSection("Magnet")
                 .Get<MagnetOptions>();
 
-            if ( options == null)
+            if (options == null)
             {
                 throw new MagnetConfigurationException(
                     "No Magnet section found in configuration");
             }
-            if ( options.ClientName == null)
+            if (options.ClientName == null)
             {
                 throw new MagnetConfigurationException(
                     "No ClientName found in Magnet configuration section");

@@ -10,7 +10,7 @@ namespace Magnet.Client
         public string Body { get; set; }
         public DateTime ReceivedAt { get; internal set; }
         public Guid Id { get; internal set; }
-        public IReadOnlyDictionary<string, string> Properties { get;  set; }
+        public IReadOnlyDictionary<string, string> Properties { get; set; }
     }
 
 }

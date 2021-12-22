@@ -2,18 +2,17 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Magnet
+namespace Magnet;
+
+public interface IMessageBus : IDisposable
 {
-    public interface IMessageBus : IDisposable
-    {
-        Task<string> PublishAsync(MagnetMessage message);
+    Task<string> PublishAsync(MagnetMessage message);
 
-        void RegisterMessageHandler(
-            string name,
-            Func<MagnetMessage, CancellationToken, Task> handler);
+    void RegisterMessageHandler(
+        string name,
+        Func<MagnetMessage, CancellationToken, Task> handler);
 
-        Task<MagnetMessage> GetNextAsync(string name, CancellationToken cancellationToken);
-        Task<string> SubscribeAsync(string name);
-        Task UnSubscribeAsync(string name);
-    }
+    Task<MagnetMessage> GetNextAsync(string name, CancellationToken cancellationToken);
+    Task<string> SubscribeAsync(string name);
+    Task UnSubscribeAsync(string name);
 }

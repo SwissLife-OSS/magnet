@@ -1,29 +1,28 @@
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Magnet
+namespace Magnet;
+
+public class MagnetServerBuilder
 {
-    public class MagnetServerBuilder
+    public IServiceCollection Services { get; }
+
+    public MagnetServerBuilder(IServiceCollection servies)
     {
-        public IServiceCollection Services { get; }
+        Services = servies;
+    }
 
-        public MagnetServerBuilder(IServiceCollection servies)
+    public MagnetServerBuilder SetMessageStore<TStore>()
+
+        where TStore : class, IMessageStore
+    {
+        ServiceDescriptor existing = Services
+            .FirstOrDefault(x => x.ServiceType == typeof(IMessageStore));
+        if (existing != null)
         {
-            Services = servies;
+            Services.Remove(existing);
         }
-
-        public MagnetServerBuilder SetMessageStore<TStore>()
-
-            where TStore : class, IMessageStore
-        {
-            ServiceDescriptor existing = Services
-                .FirstOrDefault(x => x.ServiceType == typeof(IMessageStore));
-            if (existing != null)
-            {
-                Services.Remove(existing);
-            }
-            Services.AddSingleton<IMessageStore, TStore>();
-            return this;
-        }
+        Services.AddSingleton<IMessageStore, TStore>();
+        return this;
     }
 }

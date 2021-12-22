@@ -1,7 +1,6 @@
-namespace Magnet
+namespace Magnet;
+
+public class MessageGunOptions
 {
-    public class MessageGunOptions
-    {
-        public string HttpClientName { get; set; } = "Magnet";
-    }
+    public string HttpClientName { get; set; } = "Magnet";
 }
