@@ -20,8 +20,6 @@ public class MagnetClientTests
         IServiceCollection services = new ServiceCollection();
         services.AddMagnet("a")
                        .UseHttp("http://localhost:5000");
-        //.UseGrpc("https://localhost:5001");
-        //.UseSignalR("http://localhost:5000");
 
         return services.BuildServiceProvider();
     }

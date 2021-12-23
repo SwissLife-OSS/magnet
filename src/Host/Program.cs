@@ -26,8 +26,8 @@ public class Program
                builder.AddEnvironmentVariables();
            }).ConfigureServices(services =>
            {
-                   //services.AddHostedService<BackgroundWorker>();
-               })
+               //services.AddHostedService<BackgroundWorker>();
+           })
             .ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder.UseStartup<Startup>();

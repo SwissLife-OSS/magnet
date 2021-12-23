@@ -1,4 +1,3 @@
-using System;
 using HotChocolate;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +9,8 @@ public static class GraphQLExtensions
         this IServiceCollection services)
     {
         services.AddGraphQLServer()
-            .AddQueryType<QueryType>()
+            .AddQueryType()
+            .AddTypeExtension<MessageQueries>()
             .AddType<MessageType>()
             .AddAuthorization();
 

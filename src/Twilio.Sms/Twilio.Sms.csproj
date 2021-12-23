@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="StrongGrid" Version="0.84.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -42,6 +42,7 @@ class Program
         services.AddMagnet("abcda")
                     .RegisterAzureDevOps()
                     .UseHttp("http://localhost:5000");
+
         return services.BuildServiceProvider();
     }
 }
