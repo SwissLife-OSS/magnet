@@ -1,6 +1,6 @@
 import React from "react";
-import Nav from "../../components/Nav/Nav";
 import Button from "@mui/material/Button";
+import { Nav } from "../../components";
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
@@ -11,16 +11,17 @@ const useStyles = makeStyles({
   },
   image: {
     width: "100%",
+    marginTop: 70,
   },
   message: {
-    fontSize: "40px",
+    fontSize: "30px",
     textAlign: "center",
   },
   returnLink: {
     textDecoration: "none",
   },
   returnButton: {
-    marginTop: "30px !important",
+    marginTop: "15px !important",
   },
 });
 
@@ -36,14 +37,14 @@ const NotFound: React.FC = () => {
           <img
             className={classes.image}
             alt="not found"
-            src="/images/not_found.webp"
+            src="/images/not_found.jpg"
           />
         </Grid>
         <Grid item xs={0} lg={4}></Grid>
         <Grid item xs={0} lg={4}></Grid>
         <Grid className={classes.message} item xs={12} lg={4}>
-          Page not Found
-          <br></br>
+          The page you are looking for isn't here
+          <br />
           <Link className={classes.returnLink} to={"/"}>
             <Button className={classes.returnButton} variant="contained">
               Go to Home

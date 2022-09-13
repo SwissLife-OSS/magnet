@@ -1,11 +1,31 @@
 import React from "react";
-import Nav from "../../components/Nav/Nav";
+import { Nav, MessageList } from "../../components";
+import { Grid } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles({
+  titlePosition: {
+    textAlign: "center",
+    marginTop: "35px",
+  },
+});
 
 const Home: React.FC = () => {
+  const classes = useStyles();
+
   return (
     <>
       <Nav />
-      <div>Home</div>
+      <Grid container>
+        <Grid item xs={0} lg={2}></Grid>
+        <Grid item xs={12} lg={8}>
+          <h2 className={classes.titlePosition}>
+            The latest data are displayed here
+          </h2>
+          <MessageList />
+        </Grid>
+        <Grid item xs={0} lg={2}></Grid>
+      </Grid>
     </>
   );
 };
