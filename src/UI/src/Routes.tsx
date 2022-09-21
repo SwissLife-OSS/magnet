@@ -5,6 +5,7 @@ import {
   Home as HomeView,
   NotFound as NotFoundView,
   MessageDetail as MessageDetailView,
+  MessageDetailError as MessageDetailErrorView,
 } from "./views";
 
 const Routing: React.FC = () => {
@@ -14,6 +15,7 @@ const Routing: React.FC = () => {
         <Routes>
           <Route path="/" element={<HomeView />} />
           <Route path="/message/:id" element={<MessageDetailView />} />
+          <Route path="/message" element={<MessageDetailErrorView />} />
           <Route path="*" element={<NotFoundView />} />
         </Routes>
       </Router>

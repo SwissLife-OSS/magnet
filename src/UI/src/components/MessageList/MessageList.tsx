@@ -6,6 +6,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { makeStyles } from "@mui/styles";
+import { graphql } from "babel-plugin-relay/macro";
+import { useLazyLoadQuery } from "react-relay";
+import { MessageListQuery } from "./__generated__/MessageListQuery.graphql";
+
 
 const useStyles = makeStyles({
   tableMargin: {
@@ -13,25 +17,28 @@ const useStyles = makeStyles({
   },
 });
 
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 12, 4.0),
-  createData("Ice cream", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 5.5),
-];
-
 const MessageList: React.FC = () => {
   const classes = useStyles();
+
+  const { messages } = useLazyLoadQuery<MessageListQuery>(
+    graphql`
+      query MessageListQuery {
+        messages {
+          id
+          title
+          receivedAt
+          type
+          provider
+        }
+      }
+    `,
+    { fetchPolicy: "store-or-network" }
+  );
+
+  const getDateTime = (date: any) => {
+    let newDate = new Date(date);
+    return newDate.toLocaleString();
+  };
 
   return (
     <TableContainer className={classes.tableMargin}>
@@ -39,35 +46,31 @@ const MessageList: React.FC = () => {
         <TableHead>
           <TableRow>
             <TableCell>Title</TableCell>
-            <TableCell>To</TableCell>
             <TableCell>When</TableCell>
             <TableCell>Type</TableCell>
             <TableCell>Provider</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {messages?.map((message) => (
             <TableRow
-              key={row.name}
+              key={message?.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               onClick={() => {
-                window.location.href = `/message/${row.name}`;
+                window.location.href = `/message/${message?.id}`;
               }}
             >
               <TableCell component="th" scope="row">
-                {row.name}
+                {message?.title}
               </TableCell>
               <TableCell component="th" scope="row">
-                {row.calories}
+                {getDateTime(message?.receivedAt)}
               </TableCell>
               <TableCell component="th" scope="row">
-                {row.fat}
+                {message?.type}
               </TableCell>
               <TableCell component="th" scope="row">
-                {row.carbs}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {row.protein}
+                {message?.provider}
               </TableCell>
             </TableRow>
           ))}

@@ -1,0 +1,57 @@
+directive @authorize(
+  """
+  Defines when when the resolver shall be executed.By default the resolver is
+  executed after the policy has determined that the current user is allowed to
+  access the field.
+  """
+  apply: ApplyPolicy! = BEFORE_RESOLVER
+
+  """
+  The name of the authorization policy that determines access to the annotated resource.
+  """
+  policy: String
+
+  """Roles that are allowed to access the annotated resource."""
+  roles: [String!]
+) on SCHEMA | OBJECT | FIELD_DEFINITION
+
+enum ApplyPolicy {
+  BEFORE_RESOLVER
+  AFTER_RESOLVER
+}
+
+"""The `DateTime` scalar represents an ISO-8601 compliant date time type."""
+scalar DateTime
+
+type KeyValuePairOfStringAndString {
+  key: String!
+  value: String!
+}
+
+type MessageReceivedLog {
+  clientName: String
+  isMatch: Boolean!
+  receivedAt: DateTime!
+}
+
+type MessageRecord {
+  body: String
+  from: String!
+  id: ID!
+  primaryReceipient: String!
+  properties: [KeyValuePairOfStringAndString!]
+  provider: String!
+  receivedAt: DateTime!
+  receivedLog: [MessageReceivedLog]
+  title: String!
+  to: [String]
+  type: String!
+}
+
+type Query {
+  message(id: Uuid!): MessageRecord
+  messages: [MessageRecord]
+}
+
+scalar Uuid
+

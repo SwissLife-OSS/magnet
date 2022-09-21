@@ -17,6 +17,7 @@
     "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
     "@types/react-relay": "^14.1.1",
+    "get-graphql-schema": "^2.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-relay": "^14.1.0",
@@ -29,12 +30,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "yarn relay && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "relay": "yarn run relay-compiler",
-    "get-schema": "get-graphql-schema http://localhost:5092/graphql > ./schema.graphql"
+    "get-schema": "get-graphql-schema http://localhost:5000/ > ./schema.graphql"
   },
   "eslintConfig": {
     "extends": [

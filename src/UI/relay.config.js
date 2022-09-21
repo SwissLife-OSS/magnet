@@ -1,4 +1,3 @@
-"use strict";
 module.exports = {
   schema: "./schema.graphql",
   src: "src",
@@ -18,5 +17,5 @@ module.exports = {
   eagerEsModules: false,
   noFutureProofEnums: true,
   language: "typescript",
-  artifactDirectory: "src/__generated__",
+  // artifactDirectory: "./src/__generated__",
 };
