@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using HotChocolate.Types.Relay;
 
 namespace Magnet.GraphQL
 {
@@ -14,6 +15,7 @@ namespace Magnet.GraphQL
             _store = store;
         }
 
+        [UsePaging]
         public async Task<List<MessageRecord>> GetMessages(CancellationToken cancellationToken)
         {
             return await _store.GetAllAsync(cancellationToken);
