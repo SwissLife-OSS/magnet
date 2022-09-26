@@ -19,7 +19,10 @@ const useStyles = makeStyles({
   },
   dataTitle: {
     fontSize: "24px",
-    marginTop: "25px",
+    marginTop: "35px",
+  },
+  tableMargin: {
+    marginBottom: "50px",
   },
 });
 
@@ -60,9 +63,25 @@ const MessageDetail: React.FC = () => {
     { fetchPolicy: "store-or-network" }
   );
 
+  if (message == null) {
+    window.location.href = "/message";
+  }
+
   const getDateTime = (date: any) => {
+    if (date == null) {
+      return "";
+    }
     let newDate = new Date(date);
+
     return newDate.toLocaleString();
+  };
+
+  const getBody = (message: any) => {
+    if (message.type === "Email") {
+      return <span dangerouslySetInnerHTML={{ __html: message?.body }} />;
+    } else {
+      return message.body;
+    }
   };
 
   return (
@@ -73,16 +92,34 @@ const MessageDetail: React.FC = () => {
         <Grid item xs={12} lg={8}>
           <h1 className={classes.dataTitle}>Title</h1>
           {message?.title}
+        </Grid>
+        <Grid item xs={0} lg={2}></Grid>
+        <Grid item xs={0} lg={2}></Grid>
+        <Grid item xs={12} md={4} lg={2}>
           <h1 className={classes.dataTitle}>Type</h1>
           {message?.type}
+        </Grid>
+        <Grid item xs={12} md={4} lg={2}>
           <h1 className={classes.dataTitle}>Received at</h1>
           {getDateTime(message?.receivedAt)}
+        </Grid>
+        <Grid item xs={12} md={4} lg={2}>
           <h1 className={classes.dataTitle}>Provider</h1>
           {message?.provider}
+        </Grid>
+        <Grid item xs={12} md={4} lg={2}>
           <h1 className={classes.dataTitle}>From</h1>
           {message?.from}
+        </Grid>
+        <Grid item xs={0} lg={2}></Grid>
+        <Grid item xs={0} lg={2}></Grid>
+        <Grid item xs={12} lg={8}>
           <h1 className={classes.dataTitle}>Body</h1>
-          {message?.body}
+          {getBody(message)}
+        </Grid>
+        <Grid item xs={0} lg={2}></Grid>
+        <Grid item xs={0} lg={2}></Grid>
+        <Grid item xs={12} lg={8}>
           <h1 className={classes.dataTitle}>To</h1>
           <TableContainer>
             <Table sx={{ minWidth: 650 }}>
@@ -103,8 +140,12 @@ const MessageDetail: React.FC = () => {
               </TableBody>
             </Table>
           </TableContainer>
+        </Grid>
+        <Grid item xs={0} lg={2}></Grid>
+        <Grid item xs={0} lg={2}></Grid>
+        <Grid item xs={12} lg={8}>
           <h1 className={classes.dataTitle}>Received Log</h1>
-          <TableContainer>
+          <TableContainer className={classes.tableMargin}>
             <Table sx={{ minWidth: 650 }}>
               <TableHead>
                 <TableRow>

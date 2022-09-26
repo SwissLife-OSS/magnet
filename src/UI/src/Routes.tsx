@@ -7,6 +7,7 @@ import {
   MessageDetail as MessageDetailView,
   MessageDetailError as MessageDetailErrorView,
 } from "./views";
+import PaginationTest from "./views/PaginationTest";
 
 const Routing: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const Routing: React.FC = () => {
           <Route path="/" element={<HomeView />} />
           <Route path="/message/:id" element={<MessageDetailView />} />
           <Route path="/message" element={<MessageDetailErrorView />} />
+          <Route path="/pagination" element={<PaginationTest />} />
           <Route path="*" element={<NotFoundView />} />
         </Routes>
       </Router>

@@ -48,9 +48,52 @@ type MessageRecord {
   type: String!
 }
 
+"""A connection to a list of items."""
+type MessageRecordConnection {
+  """A list of edges."""
+  edges: [MessageRecordEdge!]
+
+  """A flattened list of the nodes."""
+  nodes: [MessageRecord]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type MessageRecordEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: MessageRecord
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+
+  """
+  Indicates whether more edges exist following the set defined by the clients arguments.
+  """
+  hasNextPage: Boolean!
+
+  """
+  Indicates whether more edges exist prior the set defined by the clients arguments.
+  """
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+}
+
+scalar PaginationAmount
+
 type Query {
   message(id: Uuid!): MessageRecord
-  messages: [MessageRecord]
+  messages(after: String, before: String, first: PaginationAmount, last: PaginationAmount): MessageRecordConnection
 }
 
 scalar Uuid
