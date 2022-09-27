@@ -5,6 +5,8 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
 import { Button } from "@mui/material";
 import { graphql } from "babel-plugin-relay/macro";
@@ -35,12 +37,14 @@ const useStyles = makeStyles({
 });
 
 const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
-  const { data, hasNext, loadNext } = usePaginationFragment(
+  const classes = useStyles();
+
+  let { data, hasNext, loadNext, refetch } = usePaginationFragment(
     graphql`
       fragment MessageListFragment_query on Query
       @argumentDefinitions(
         cursor: { type: "String" }
-        count: { type: "PaginationAmount", defaultValue: 5 }
+        count: { type: "PaginationAmount", defaultValue: 20 }
       )
       @refetchable(queryName: "MessageListRefetchableQuery") {
         messages(after: $cursor, first: $count)
@@ -73,12 +77,18 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
     fragmentRef
   );
 
-  const classes = useStyles();
-
   const getDateTime = (date: any) => {
     let newDate = new Date(date);
     return newDate.toLocaleString();
   };
+
+  if (data == null) {
+    return (
+      <Box sx={{ display: "flex" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <>
@@ -134,7 +144,7 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
           variant="contained"
           disabled={!hasNext}
           onClick={() => {
-            loadNext(1);
+            loadNext(20);
           }}
         >
           Load More
@@ -144,7 +154,7 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
         <Button
           variant="contained"
           onClick={() => {
-            window.location.href = "/";
+            refetch({}, { fetchPolicy: "network-only" });
           }}
         >
           Reload

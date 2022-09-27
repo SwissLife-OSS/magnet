@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ded217814d47b4c6ed966fcf4ad17cc9>>
+ * @generated SignedSource<<7eb59fb9b97cfee1ca84f5da0e1eabb1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -25,7 +25,7 @@ export type MessageListRefetchableQuery = {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "defaultValue": 5,
+    "defaultValue": 20,
     "kind": "LocalArgument",
     "name": "count"
   },
@@ -279,16 +279,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "909741a5ec43b4f2d63b168d14f0a200",
+    "cacheID": "8045baf7f078d7e96d7d29463fd72d81",
     "id": null,
     "metadata": {},
     "name": "MessageListRefetchableQuery",
     "operationKind": "query",
-    "text": "query MessageListRefetchableQuery(\n  $count: PaginationAmount = 5\n  $cursor: String\n) {\n  ...MessageListFragment_query_1G22uz\n}\n\nfragment MessageListFragment_query_1G22uz on Query {\n  messages(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        title\n        to\n        receivedAt\n        type\n        provider\n        body\n        from\n        primaryReceipient\n        properties {\n          key\n          value\n        }\n        receivedLog {\n          clientName\n          isMatch\n          receivedAt\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query MessageListRefetchableQuery(\n  $count: PaginationAmount = 20\n  $cursor: String\n) {\n  ...MessageListFragment_query_1G22uz\n}\n\nfragment MessageListFragment_query_1G22uz on Query {\n  messages(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        title\n        to\n        receivedAt\n        type\n        provider\n        body\n        from\n        primaryReceipient\n        properties {\n          key\n          value\n        }\n        receivedLog {\n          clientName\n          isMatch\n          receivedAt\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "662f09c5e9b0af2f1a568a7cad499da8";
+(node as any).hash = "40e7080cb2e7289d326643debb640383";
 
 export default node;

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7cf535ffcfb739b045d41d9520dde860>>
+ * @generated SignedSource<<9aaa1eccc890a03be990563c1ae0d6c9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -24,7 +24,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 5
+    "value": 20
   }
 ],
 v1 = {
@@ -234,7 +234,7 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "messages(first:5)"
+        "storageKey": "messages(first:20)"
       },
       {
         "alias": null,
@@ -248,12 +248,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "8e735841cccc0b1ddd69c1fd34b18c50",
+    "cacheID": "de33c977a8696585750b93b7616f246a",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery {\n  ...MessageListFragment_query\n}\n\nfragment MessageListFragment_query on Query {\n  messages(first: 5) {\n    edges {\n      node {\n        id\n        title\n        to\n        receivedAt\n        type\n        provider\n        body\n        from\n        primaryReceipient\n        properties {\n          key\n          value\n        }\n        receivedLog {\n          clientName\n          isMatch\n          receivedAt\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeQuery {\n  ...MessageListFragment_query\n}\n\nfragment MessageListFragment_query on Query {\n  messages(first: 20) {\n    edges {\n      node {\n        id\n        title\n        to\n        receivedAt\n        type\n        provider\n        body\n        from\n        primaryReceipient\n        properties {\n          key\n          value\n        }\n        receivedLog {\n          clientName\n          isMatch\n          receivedAt\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
