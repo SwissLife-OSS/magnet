@@ -12,14 +12,37 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import SettingsIcon from "@mui/icons-material/Settings";
+import SendIcon from "@mui/icons-material/Send";
+import Tooltip from "@mui/material/Tooltip";
 
 const useStyles = makeStyles({
   dataSection: {
     marginTop: "20px",
   },
   dataTitle: {
-    fontSize: "24px",
+    fontSize: "20px",
     marginTop: "35px",
+    fontWeight: "400",
+  },
+  bodyTitle: {
+    fontSize: "20px",
+    fontWeight: "400",
+  },
+  cardMargin: {
+    marginTop: "30px",
   },
   tableMargin: {
     marginBottom: "50px",
@@ -90,32 +113,87 @@ const MessageDetail: React.FC = () => {
       <Grid className={classes.dataSection} container>
         <Grid item xs={0} lg={2}></Grid>
         <Grid item xs={12} lg={8}>
-          <h1 className={classes.dataTitle}>Title</h1>
-          {message?.title}
-        </Grid>
-        <Grid item xs={0} lg={2}></Grid>
-        <Grid item xs={0} lg={2}></Grid>
-        <Grid item xs={12} md={4} lg={2}>
-          <h1 className={classes.dataTitle}>Type</h1>
-          {message?.type}
-        </Grid>
-        <Grid item xs={12} md={4} lg={2}>
-          <h1 className={classes.dataTitle}>Received at</h1>
-          {getDateTime(message?.receivedAt)}
-        </Grid>
-        <Grid item xs={12} md={4} lg={2}>
-          <h1 className={classes.dataTitle}>Provider</h1>
-          {message?.provider}
-        </Grid>
-        <Grid item xs={12} md={4} lg={2}>
-          <h1 className={classes.dataTitle}>From</h1>
-          {message?.from}
-        </Grid>
-        <Grid item xs={0} lg={2}></Grid>
-        <Grid item xs={0} lg={2}></Grid>
-        <Grid item xs={12} lg={8}>
-          <h1 className={classes.dataTitle}>Body</h1>
-          {getBody(message)}
+          <Card className={classes.cardMargin} sx={{ minWidth: 275 }}>
+            <CardContent>
+              <Typography variant="h5" component="div">
+                {message?.title}
+              </Typography>
+            </CardContent>
+            <Box sx={{ width: "95%", bgcolor: "background.paper" }}>
+              <List component={Stack} direction="row">
+                <ListItem disablePadding>
+                  <Tooltip title="Type" arrow>
+                    <ListItemButton
+                      sx={{
+                        "&:hover": { backgroundColor: "transparent" },
+                        cursor: "default",
+                      }}
+                      disableRipple
+                    >
+                      <ListItemIcon>
+                        <ChatBubbleOutlineIcon />
+                      </ListItemIcon>
+                      <ListItemText>{message?.type}</ListItemText>
+                    </ListItemButton>
+                  </Tooltip>
+                </ListItem>
+                <ListItem disablePadding>
+                  <Tooltip title="Received At" arrow>
+                    <ListItemButton
+                      sx={{
+                        "&:hover": { backgroundColor: "transparent" },
+                        cursor: "default",
+                      }}
+                      disableRipple
+                    >
+                      <ListItemIcon>
+                        <AccessTimeIcon />
+                      </ListItemIcon>
+                      <ListItemText>
+                        {getDateTime(message?.receivedAt)}
+                      </ListItemText>
+                    </ListItemButton>
+                  </Tooltip>
+                </ListItem>
+                <ListItem disablePadding>
+                  <Tooltip title="Provider" arrow>
+                    <ListItemButton
+                      sx={{
+                        "&:hover": { backgroundColor: "transparent" },
+                        cursor: "default",
+                      }}
+                      disableRipple
+                    >
+                      <ListItemIcon>
+                        <SettingsIcon />
+                      </ListItemIcon>
+                      <ListItemText>{message?.provider}</ListItemText>
+                    </ListItemButton>
+                  </Tooltip>
+                </ListItem>
+                <ListItem disablePadding>
+                  <Tooltip title="From" arrow>
+                    <ListItemButton
+                      sx={{
+                        "&:hover": { backgroundColor: "transparent" },
+                        cursor: "default",
+                      }}
+                      disableRipple
+                    >
+                      <ListItemIcon>
+                        <SendIcon />
+                      </ListItemIcon>
+                      <ListItemText>{message?.from}</ListItemText>
+                    </ListItemButton>
+                  </Tooltip>
+                </ListItem>
+              </List>
+            </Box>
+            <CardContent>
+              <h1 className={classes.bodyTitle}>Body</h1>
+              {getBody(message)}
+            </CardContent>
+          </Card>
         </Grid>
         <Grid item xs={0} lg={2}></Grid>
         <Grid item xs={0} lg={2}></Grid>
@@ -167,7 +245,7 @@ const MessageDetail: React.FC = () => {
             </Table>
           </TableContainer>
         </Grid>
-        <Grid item xs={0} lg={2}></Grid>
+        {/* <Grid item xs={0} lg={2}></Grid> */}
       </Grid>
     </>
   );

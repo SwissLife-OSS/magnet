@@ -44,7 +44,7 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
       fragment MessageListFragment_query on Query
       @argumentDefinitions(
         cursor: { type: "String" }
-        count: { type: "PaginationAmount", defaultValue: 20 }
+        count: { type: "PaginationAmount", defaultValue: 30 }
       )
       @refetchable(queryName: "MessageListRefetchableQuery") {
         messages(after: $cursor, first: $count)
@@ -57,18 +57,6 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
               receivedAt
               type
               provider
-              body
-              from
-              primaryReceipient
-              properties {
-                key
-                value
-              }
-              receivedLog {
-                clientName
-                isMatch
-                receivedAt
-              }
             }
           }
         }
@@ -80,6 +68,26 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
   const getDateTime = (date: any) => {
     let newDate = new Date(date);
     return newDate.toLocaleString();
+  };
+
+  const getShortTitle = (title: any) => {
+    if (title != null && title.length > 50) {
+      return title.split(50) + "...";
+    } else {
+      return title;
+    }
+  };
+
+  const getFirstReceiver = (
+    receiverList: ReadonlyArray<string | null> | null
+  ) => {
+    if (receiverList == null) {
+      return "undefined";
+    }
+
+    if (receiverList.length > 0 && receiverList != null) {
+      return receiverList[0];
+    }
   };
 
   if (data == null) {
@@ -107,6 +115,7 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
           <TableHead>
             <TableRow>
               <TableCell>Title</TableCell>
+              <TableCell>To</TableCell>
               <TableCell>When</TableCell>
               <TableCell>Type</TableCell>
               <TableCell>Provider</TableCell>
@@ -123,7 +132,10 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
                 className={classes.rowCursorType}
               >
                 <TableCell component="th" scope="row">
-                  {element?.node?.title}
+                  {getShortTitle(element?.node?.title)}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {getFirstReceiver(element?.node?.to)}
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {getDateTime(element?.node?.receivedAt)}
@@ -144,7 +156,7 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
           variant="contained"
           disabled={!hasNext}
           onClick={() => {
-            loadNext(20);
+            loadNext(30);
           }}
         >
           Load More

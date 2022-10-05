@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<49f1f9b440b28f5984143dbc352993cd>>
+ * @generated SignedSource<<d76a9204d747c581854f494ea292e65a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,21 +14,9 @@ export type MessageListFragment_query$data = {
   readonly messages: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly body: string | null;
-        readonly from: string;
         readonly id: string;
-        readonly primaryReceipient: string;
-        readonly properties: ReadonlyArray<{
-          readonly key: string;
-          readonly value: string;
-        }> | null;
         readonly provider: string;
         readonly receivedAt: string;
-        readonly receivedLog: ReadonlyArray<{
-          readonly clientName: string | null;
-          readonly isMatch: boolean;
-          readonly receivedAt: string;
-        } | null> | null;
         readonly title: string;
         readonly to: ReadonlyArray<string | null> | null;
         readonly type: string;
@@ -45,18 +33,11 @@ export type MessageListFragment_query$key = {
 const node: ReaderFragment = (function(){
 var v0 = [
   "messages"
-],
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "receivedAt",
-  "storageKey": null
-};
+];
 return {
   "argumentDefinitions": [
     {
-      "defaultValue": 20,
+      "defaultValue": 30,
       "kind": "LocalArgument",
       "name": "count"
     },
@@ -136,7 +117,13 @@ return {
                   "name": "to",
                   "storageKey": null
                 },
-                (v1/*: any*/),
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "receivedAt",
+                  "storageKey": null
+                },
                 {
                   "alias": null,
                   "args": null,
@@ -149,78 +136,6 @@ return {
                   "args": null,
                   "kind": "ScalarField",
                   "name": "provider",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "body",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "from",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "primaryReceipient",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "KeyValuePairOfStringAndString",
-                  "kind": "LinkedField",
-                  "name": "properties",
-                  "plural": true,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "key",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "value",
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "MessageReceivedLog",
-                  "kind": "LinkedField",
-                  "name": "receivedLog",
-                  "plural": true,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "clientName",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "isMatch",
-                      "storageKey": null
-                    },
-                    (v1/*: any*/)
-                  ],
                   "storageKey": null
                 },
                 {
@@ -277,6 +192,6 @@ return {
 };
 })();
 
-(node as any).hash = "40e7080cb2e7289d326643debb640383";
+(node as any).hash = "edbb04475bd62f48c02d930455f81398";
 
 export default node;

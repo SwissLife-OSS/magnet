@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7eb59fb9b97cfee1ca84f5da0e1eabb1>>
+ * @generated SignedSource<<148f3475b563a0a330e2dcded61d2752>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -25,7 +25,7 @@ export type MessageListRefetchableQuery = {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "defaultValue": 20,
+    "defaultValue": 30,
     "kind": "LocalArgument",
     "name": "count"
   },
@@ -46,14 +46,7 @@ v1 = [
     "name": "first",
     "variableName": "count"
   }
-],
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "receivedAt",
-  "storageKey": null
-};
+];
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -132,7 +125,13 @@ return {
                     "name": "to",
                     "storageKey": null
                   },
-                  (v2/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "receivedAt",
+                    "storageKey": null
+                  },
                   {
                     "alias": null,
                     "args": null,
@@ -145,78 +144,6 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "provider",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "body",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "from",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "primaryReceipient",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "KeyValuePairOfStringAndString",
-                    "kind": "LinkedField",
-                    "name": "properties",
-                    "plural": true,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "key",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "value",
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "MessageReceivedLog",
-                    "kind": "LinkedField",
-                    "name": "receivedLog",
-                    "plural": true,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "clientName",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "isMatch",
-                        "storageKey": null
-                      },
-                      (v2/*: any*/)
-                    ],
                     "storageKey": null
                   },
                   {
@@ -279,16 +206,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "8045baf7f078d7e96d7d29463fd72d81",
+    "cacheID": "e3d1a80f336ebcd38afadaf0f50e3425",
     "id": null,
     "metadata": {},
     "name": "MessageListRefetchableQuery",
     "operationKind": "query",
-    "text": "query MessageListRefetchableQuery(\n  $count: PaginationAmount = 20\n  $cursor: String\n) {\n  ...MessageListFragment_query_1G22uz\n}\n\nfragment MessageListFragment_query_1G22uz on Query {\n  messages(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        title\n        to\n        receivedAt\n        type\n        provider\n        body\n        from\n        primaryReceipient\n        properties {\n          key\n          value\n        }\n        receivedLog {\n          clientName\n          isMatch\n          receivedAt\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query MessageListRefetchableQuery(\n  $count: PaginationAmount = 30\n  $cursor: String\n) {\n  ...MessageListFragment_query_1G22uz\n}\n\nfragment MessageListFragment_query_1G22uz on Query {\n  messages(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        title\n        to\n        receivedAt\n        type\n        provider\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "40e7080cb2e7289d326643debb640383";
+(node as any).hash = "edbb04475bd62f48c02d930455f81398";
 
 export default node;

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<9aaa1eccc890a03be990563c1ae0d6c9>>
+ * @generated SignedSource<<5a6dc735e2e720f923d769ff0ed2aef1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -24,16 +24,9 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 20
+    "value": 30
   }
-],
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "receivedAt",
-  "storageKey": null
-};
+];
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -101,7 +94,13 @@ return {
                     "name": "to",
                     "storageKey": null
                   },
-                  (v1/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "receivedAt",
+                    "storageKey": null
+                  },
                   {
                     "alias": null,
                     "args": null,
@@ -114,78 +113,6 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "provider",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "body",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "from",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "primaryReceipient",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "KeyValuePairOfStringAndString",
-                    "kind": "LinkedField",
-                    "name": "properties",
-                    "plural": true,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "key",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "value",
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "MessageReceivedLog",
-                    "kind": "LinkedField",
-                    "name": "receivedLog",
-                    "plural": true,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "clientName",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "isMatch",
-                        "storageKey": null
-                      },
-                      (v1/*: any*/)
-                    ],
                     "storageKey": null
                   },
                   {
@@ -234,7 +161,7 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "messages(first:20)"
+        "storageKey": "messages(first:30)"
       },
       {
         "alias": null,
@@ -248,12 +175,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "de33c977a8696585750b93b7616f246a",
+    "cacheID": "96f03535a8770b02068acef10dd2df9c",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery {\n  ...MessageListFragment_query\n}\n\nfragment MessageListFragment_query on Query {\n  messages(first: 20) {\n    edges {\n      node {\n        id\n        title\n        to\n        receivedAt\n        type\n        provider\n        body\n        from\n        primaryReceipient\n        properties {\n          key\n          value\n        }\n        receivedLog {\n          clientName\n          isMatch\n          receivedAt\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeQuery {\n  ...MessageListFragment_query\n}\n\nfragment MessageListFragment_query on Query {\n  messages(first: 30) {\n    edges {\n      node {\n        id\n        title\n        to\n        receivedAt\n        type\n        provider\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
