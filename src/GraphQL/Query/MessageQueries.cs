@@ -14,6 +14,7 @@ namespace Magnet.GraphQL;
 public  class MessageQueries
 {
     [Authorize(Policy = "Magnet.Read")]
+    [UsePaging]
     public async Task<List<MessageRecord>> GetMessages(
         [Service] IMessageStore store,
         CancellationToken cancellationToken)
