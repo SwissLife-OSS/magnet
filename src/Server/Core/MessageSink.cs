@@ -1,22 +1,21 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Magnet
+namespace Magnet;
+
+public class MessageSink : IMessageSink
 {
-    public class MessageSink : IMessageSink
+    private readonly IMessageBus _messageBus;
+
+    public MessageSink(IMessageBus messageBus)
     {
-        private readonly IMessageBus _messageBus;
+        _messageBus = messageBus;
+    }
 
-        public MessageSink(IMessageBus messageBus)
-        {
-            _messageBus = messageBus;
-        }
-
-        public async Task<string> ProcessMessageAsync(MagnetMessage message)
-        {
-            message.Id = Guid.NewGuid();
-            message.ReceivedAt = DateTime.UtcNow;
-            return await _messageBus.PublishAsync(message);
-        }
+    public async Task<string> ProcessMessageAsync(MagnetMessage message)
+    {
+        message.Id = Guid.NewGuid();
+        message.ReceivedAt = DateTime.UtcNow;
+        return await _messageBus.PublishAsync(message);
     }
 }

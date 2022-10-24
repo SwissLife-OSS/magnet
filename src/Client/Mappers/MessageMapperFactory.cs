@@ -1,34 +1,33 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Magnet.Client.Mappers
+namespace Magnet.Client.Mappers;
+
+public class MessageMapperFactory
 {
-    public class MessageMapperFactory
+    private readonly IEnumerable<MessageTypeRegistration> _typeRegistrations;
+
+    public MessageMapperFactory(IEnumerable<MessageTypeRegistration> typeRegistrations)
     {
-        private readonly IEnumerable<MessageTypeRegistration> _typeRegistrations;
-
-        public MessageMapperFactory(IEnumerable<MessageTypeRegistration> typeRegistrations)
-        {
-            _typeRegistrations = typeRegistrations;
-        }
+        _typeRegistrations = typeRegistrations;
+    }
 
 
-        public string ResolveTypeName<TMessage>()
-        {
-            MessageTypeRegistration map = GetMap<TMessage>();
-            return map.Name;
-        }
+    public string ResolveTypeName<TMessage>()
+    {
+        MessageTypeRegistration map = GetMap<TMessage>();
+        return map.Name;
+    }
 
-        public TMessage Map<TMessage>(MagnetMessage message)
-        {
-            MessageTypeRegistration map = GetMap<TMessage>();
-            return ((IMessageMapper<TMessage>)map.Mapper).FromMagetMessage(message);
-        }
+    public TMessage Map<TMessage>(MagnetMessage message)
+    {
+        MessageTypeRegistration map = GetMap<TMessage>();
+        return ((IMessageMapper<TMessage>)map.Mapper).FromMagetMessage(message);
+    }
 
-        private MessageTypeRegistration GetMap<TMessage>()
-        {
-            return _typeRegistrations
-                .FirstOrDefault(x => x.MessageType == typeof(TMessage));
-        }
+    private MessageTypeRegistration GetMap<TMessage>()
+    {
+        return _typeRegistrations
+            .FirstOrDefault(x => x.MessageType == typeof(TMessage));
     }
 }

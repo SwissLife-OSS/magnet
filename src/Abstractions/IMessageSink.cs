@@ -1,9 +1,8 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
-namespace Magnet
+namespace Magnet;
+
+public interface IMessageSink
 {
-    public interface IMessageSink
-    {
-        Task<string> ProcessMessageAsync(MagnetMessage message);
-    }
+    Task<string> ProcessMessageAsync(MagnetMessage message);
 }

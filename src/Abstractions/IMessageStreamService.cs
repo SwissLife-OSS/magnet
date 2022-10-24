@@ -1,8 +1,7 @@
-namespace Magnet
+namespace Magnet;
+
+public interface IMessageStreamService
 {
-    public interface IMessageStreamService
-    {
 
 
-    }
 }
