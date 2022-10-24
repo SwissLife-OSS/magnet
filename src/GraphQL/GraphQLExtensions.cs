@@ -1,25 +1,19 @@
-using System;
 using HotChocolate;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Magnet.GraphQL
-{
-    public static class GraphQLExtensions
-    {
-        public static void AddGraphQLServices(
-            this IServiceCollection services)
-        {
-            services.AddGraphQL(CreateSchema);
-        }
+namespace Magnet.GraphQL;
 
-        public static ISchema CreateSchema(
-            IServiceProvider serviceProvider)
-        {
-            return SchemaBuilder.New()
-                .AddQueryType<QueryType>()
-                .AddAuthorizeDirectiveType()
-                .AddServices(serviceProvider)
-                .Create();
-        }
+public static class GraphQLExtensions
+{
+    public static IServiceCollection AddGraphQLServices(
+        this IServiceCollection services)
+    {
+        services.AddGraphQLServer()
+            .AddQueryType()
+            .AddTypeExtension<MessageQueries>()
+            .AddType<MessageType>()
+            .AddAuthorization();
+
+        return services;
     }
 }

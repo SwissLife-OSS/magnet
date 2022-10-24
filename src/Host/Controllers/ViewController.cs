@@ -6,30 +6,29 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Magnet.Server.Controllers
+namespace Magnet.Server.Controllers;
+
+[Route("view")]
+[ApiController]
+public class ViewController : ControllerBase
 {
-    [Route("view")]
-    [ApiController]
-    public class ViewController : ControllerBase
+    private readonly IMessageStore _messageStore;
+
+    public ViewController(IMessageStore messageStore)
     {
-        private readonly IMessageStore _messageStore;
+        _messageStore = messageStore;
+    }
 
-        public ViewController(IMessageStore messageStore)
+    [Route("content/{id}")]
+    public async Task<IActionResult> Content(Guid id, CancellationToken cancellationToken)
+    {
+        MessageRecord message = await _messageStore.GetById(id, cancellationToken);
+        var html = message.Body;
+
+        if (string.IsNullOrEmpty(html))
         {
-            _messageStore = messageStore;
+            html = message.GetPropertyValue<string>("Html");
         }
-
-        [Route("content/{id}")]
-        public async Task<IActionResult> Content(Guid id, CancellationToken cancellationToken)
-        {
-            MessageRecord message = await _messageStore.GetById(id, cancellationToken);
-            var html = message.Body;
-
-            if ( string.IsNullOrEmpty(html))
-            {
-                html = message.GetPropertyValue<string>("Html");
-            }
-            return Content(html, "text/html");
-        }
+        return Content(html, "text/html");
     }
 }

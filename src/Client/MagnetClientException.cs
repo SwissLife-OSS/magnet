@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Magnet.Client
+namespace Magnet.Client;
+
+public class MagnetClientException : Exception
 {
-    public class MagnetClientException : Exception
+    public MagnetClientException(string message) : base(message)
     {
-        public MagnetClientException(string message) : base(message)
-        {
-        }
     }
 }

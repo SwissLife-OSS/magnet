@@ -1,9 +1,8 @@
-namespace Magnet.Store.Mongo
-{
-    public class DatabaseOptions
-    {
-        public string ConnectionString { get; set; }
+namespace Magnet.Store.Mongo;
 
-        public string Name { get; set; }
-    }
+public class DatabaseOptions
+{
+    public string ConnectionString { get; set; }
+
+    public string Name { get; set; }
 }

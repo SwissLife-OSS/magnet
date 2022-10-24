@@ -1,10 +1,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Magnet
+namespace Magnet;
+
+public interface IMessageGun
 {
-    public interface IMessageGun
-    {
-        Task TriggerAsync(MessageBuilder builder, CancellationToken cancellationToken);
-    }
+    Task TriggerAsync(MessageBuilder builder, CancellationToken cancellationToken);
 }

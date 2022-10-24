@@ -6,53 +6,52 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 
-namespace Magnet
+namespace Magnet;
+
+public class InMemoryMessageStore : IMessageStore
 {
-    public class InMemoryMessageStore : IMessageStore
+    private readonly IMapper _mapper;
+    private ConcurrentBag<MessageRecord> _messages = new ConcurrentBag<MessageRecord>();
+
+    public InMemoryMessageStore(IMapper mapper)
     {
-        private readonly IMapper _mapper;
-        private ConcurrentBag<MessageRecord> _messages = new ConcurrentBag<MessageRecord>();
+        _mapper = mapper;
+    }
 
-        public InMemoryMessageStore(IMapper mapper)
+    public Task AddAsync(MagnetMessage message, CancellationToken cancellationToken)
+    {
+        MessageRecord record = _mapper.Map<MessageRecord>(message);
+        _messages.Add(record);
+        return Task.CompletedTask;
+    }
+
+    public Task AddReadReceiptAsync(MessageReceivedReceipt receipt, CancellationToken cancellationToken)
+    {
+        MessageRecord msg = _messages.FirstOrDefault(x => x.Id == receipt.MessageId);
+        msg.ReceivedLog.Add(new MessageReceivedLog
         {
-            _mapper = mapper;
-        }
+            ClientName = receipt.ClientName,
+            IsMatch = receipt.IsMatch,
+            ReceivedAt = receipt.ReceivedAt
+        });
+        return Task.CompletedTask;
+    }
 
-        public Task AddAsync(MagnetMessage message, CancellationToken cancellationToken)
-        {
-            MessageRecord record = _mapper.Map<MessageRecord>(message);
-            _messages.Add(record);
-            return Task.CompletedTask;
-        }
-
-        public Task AddReadReceiptAsync(MessageReceivedReceipt receipt, CancellationToken cancellationToken)
-        {
-            MessageRecord msg = _messages.FirstOrDefault(x => x.Id == receipt.MessageId);
-            msg.ReceivedLog.Add(new MessageReceivedLog
-            {
-                ClientName = receipt.ClientName,
-                IsMatch = receipt.IsMatch,
-                ReceivedAt = receipt.ReceivedAt
-            });
-            return Task.CompletedTask;
-        }
-
-        public Task<List<MessageRecord>> GetAllAsync(CancellationToken cancellationToken)
-        {
-            var messages =  _messages
-                                .OrderByDescending(x => x.ReceivedAt)
-                                .Take(100)
-                                .ToList();
-
-            
+    public Task<List<MessageRecord>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        var messages = _messages
+                            .OrderByDescending(x => x.ReceivedAt)
+                            .Take(100)
+                            .ToList();
 
 
-            return Task.FromResult(messages);
-        }
 
-        public Task<MessageRecord> GetById(Guid id, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+
+        return Task.FromResult(messages);
+    }
+
+    public Task<MessageRecord> GetById(Guid id, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
     }
 }

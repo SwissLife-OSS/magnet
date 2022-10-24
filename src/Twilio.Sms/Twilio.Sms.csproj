@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>Magnet.Providers.Twilio</AssemblyName>
     <RootNamespace>Magnet.Providers.Twilio</RootNamespace>
     <PackageId>Magnet.Providers.Twilio</PackageId>
@@ -18,10 +18,8 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
-
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="StrongGrid" Version="0.61.0" />
   </ItemGroup>
 
   <ItemGroup>
