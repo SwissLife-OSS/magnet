@@ -57,6 +57,7 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
               receivedAt
               type
               provider
+              primaryReceipient
             }
           }
         }
@@ -75,18 +76,6 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
       return title.split(50) + "...";
     } else {
       return title;
-    }
-  };
-
-  const getFirstReceiver = (
-    receiverList: ReadonlyArray<string | null> | null
-  ) => {
-    if (receiverList == null) {
-      return "undefined";
-    }
-
-    if (receiverList.length > 0 && receiverList != null) {
-      return receiverList[0];
     }
   };
 
@@ -135,7 +124,7 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
                   {getShortTitle(element?.node?.title)}
                 </TableCell>
                 <TableCell component="th" scope="row">
-                  {getFirstReceiver(element?.node?.to)}
+                  {element?.node?.primaryReceipient}
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {getDateTime(element?.node?.receivedAt)}

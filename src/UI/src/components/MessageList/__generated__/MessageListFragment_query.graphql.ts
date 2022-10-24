@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d76a9204d747c581854f494ea292e65a>>
+ * @generated SignedSource<<60d43ea5c8287f047535bdd24c0265d9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,6 +15,7 @@ export type MessageListFragment_query$data = {
     readonly edges: ReadonlyArray<{
       readonly node: {
         readonly id: string;
+        readonly primaryReceipient: string;
         readonly provider: string;
         readonly receivedAt: string;
         readonly title: string;
@@ -142,6 +143,13 @@ return {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
+                  "name": "primaryReceipient",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
                 }
@@ -192,6 +200,6 @@ return {
 };
 })();
 
-(node as any).hash = "edbb04475bd62f48c02d930455f81398";
+(node as any).hash = "9a2ed8ca4f9a20b9a1230ca12b4109b6";
 
 export default node;

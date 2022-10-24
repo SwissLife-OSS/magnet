@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<148f3475b563a0a330e2dcded61d2752>>
+ * @generated SignedSource<<8b388251708436632cb921022dcb850c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -150,6 +150,13 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
+                    "name": "primaryReceipient",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "__typename",
                     "storageKey": null
                   }
@@ -206,16 +213,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e3d1a80f336ebcd38afadaf0f50e3425",
+    "cacheID": "9e0e32a1b8f69b7d996d8e2dc67adb92",
     "id": null,
     "metadata": {},
     "name": "MessageListRefetchableQuery",
     "operationKind": "query",
-    "text": "query MessageListRefetchableQuery(\n  $count: PaginationAmount = 30\n  $cursor: String\n) {\n  ...MessageListFragment_query_1G22uz\n}\n\nfragment MessageListFragment_query_1G22uz on Query {\n  messages(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        title\n        to\n        receivedAt\n        type\n        provider\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query MessageListRefetchableQuery(\n  $count: PaginationAmount = 30\n  $cursor: String\n) {\n  ...MessageListFragment_query_1G22uz\n}\n\nfragment MessageListFragment_query_1G22uz on Query {\n  messages(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        title\n        to\n        receivedAt\n        type\n        provider\n        primaryReceipient\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "edbb04475bd62f48c02d930455f81398";
+(node as any).hash = "9a2ed8ca4f9a20b9a1230ca12b4109b6";
 
 export default node;
