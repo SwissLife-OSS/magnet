@@ -1,10 +1,9 @@
-namespace Magnet.Messaging.AzureServiceBus
+namespace Magnet.Messaging.AzureServiceBus;
+
+public class AzureServiceBusOptions
 {
-    public class AzureServiceBusOptions
-    {
-        public string ConnectionString { get; set; }
+    public string ConnectionString { get; set; }
 
-        public string Topic { get; set; }
+    public string Topic { get; set; }
 
-    }
 }

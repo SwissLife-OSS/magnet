@@ -1,6 +1,6 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Magnet.Providers.AzureDevOps;
+namespace Magnet.Client.AzureDevOps;
 
 public class WorkItem
 {
@@ -11,5 +11,6 @@ public class WorkItem
     public string AreaPath { get; set; }
     public string IterationPath { get; set; }
     public string TeamProject { get; set; }
-    public Dictionary<string, string> Fields { get; set; } = new Dictionary<string, string>();
+    public IReadOnlyDictionary<string, string> Fields { get; set; }
+        = new Dictionary<string, string>();
 }

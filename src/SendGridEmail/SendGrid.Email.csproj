@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>Magnet.Providers.SendGrid</AssemblyName>
     <RootNamespace>Magnet.Providers.SendGrid</RootNamespace>
     <PackageId>Magnet.Providers.SendGrid</PackageId>
@@ -21,7 +21,7 @@
 
   <ItemGroup>
       <FrameworkReference Include="Microsoft.AspNetCore.App" />
-      <PackageReference Include="StrongGrid" Version="0.61.0">
+      <PackageReference Include="StrongGrid" Version="0.84.0">
         <PrivateAssets>all</PrivateAssets>
       </PackageReference>
   </ItemGroup>

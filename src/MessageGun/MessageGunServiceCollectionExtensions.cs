@@ -1,23 +1,22 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Magnet
-{
-    public static class MessageGunServiceCollectionExtensions
-    {
-        public static IServiceCollection AddMessageGun(this IServiceCollection services)
-        {
-            services.AddMessageGun(new MessageGunOptions());
-            return services;
-        }
+namespace Magnet;
 
-        public static IServiceCollection AddMessageGun(
-            this IServiceCollection services,
-            MessageGunOptions options)
-        {
-            services.AddSingleton(options);
-            services.AddSingleton<IMessageGun, MessageGun>();
-            return services;
-        }
+public static class MessageGunServiceCollectionExtensions
+{
+    public static IServiceCollection AddMessageGun(this IServiceCollection services)
+    {
+        services.AddMessageGun(new MessageGunOptions());
+        return services;
+    }
+
+    public static IServiceCollection AddMessageGun(
+        this IServiceCollection services,
+        MessageGunOptions options)
+    {
+        services.AddSingleton(options);
+        services.AddSingleton<IMessageGun, MessageGun>();
+        return services;
     }
 }

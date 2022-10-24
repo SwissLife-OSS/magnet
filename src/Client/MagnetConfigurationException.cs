@@ -1,12 +1,11 @@
-﻿using System;
+using System;
 
-namespace Magnet.Client
+namespace Magnet.Client;
+
+public class MagnetConfigurationException : Exception
 {
-    public class MagnetConfigurationException : Exception
+    public MagnetConfigurationException(string message)
+        : base(message)
     {
-        public MagnetConfigurationException(string message)
-            : base(message)
-        {
-        }
     }
 }
