@@ -141,15 +141,15 @@ public sealed class MessageBus : IMessageBus
 
         try
         {
-            Response<bool> exists = await _adminClient
+            bool exists = await _adminClient
                 .SubscriptionExistsAsync(_options.Topic, name, cancellationToken);
 
             if (!exists)
             {
-                Response<SubscriptionProperties> subscription = await _adminClient
+                SubscriptionProperties properties = await _adminClient
                     .CreateSubscriptionAsync(options, cancellationToken);
 
-                return subscription.Value.SubscriptionName;
+                return properties.SubscriptionName;
             }
 
             return name;
