@@ -2,7 +2,6 @@ using System;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Messaging.ServiceBus;
 using Azure.Messaging.ServiceBus.Administration;
 using Microsoft.Extensions.Logging;
@@ -56,6 +55,7 @@ public sealed class MessageBus : IMessageBus
         CancellationToken cancellationToken)
     {
         ServiceBusReceiver receiver = _client.CreateReceiver(
+            _options.Topic,
             name,
             new ServiceBusReceiverOptions
             {
@@ -97,7 +97,7 @@ public sealed class MessageBus : IMessageBus
         Func<MagnetMessage, CancellationToken, Task> handler,
         CancellationToken cancellationToken)
     {
-        await SubscribeAsync(name, cancellationToken);
+        await SubscribeAsync(name, true, cancellationToken);
 
         ServiceBusProcessor processor = _client.CreateProcessor(
             _options.Topic,
@@ -131,14 +131,18 @@ public sealed class MessageBus : IMessageBus
         await processor.StartProcessingAsync(cancellationToken);
     }
 
-    public async Task<string> SubscribeAsync(string name, CancellationToken cancellationToken)
+    public Task<string> SubscribeAsync(
+        string name,
+        CancellationToken cancellationToken)
     {
-        var options = new CreateSubscriptionOptions(_options.Topic, name)
-        {
-            AutoDeleteOnIdle = TimeSpan.FromMinutes(10),
-            RequiresSession = false
-        };
+        return SubscribeAsync(name, false, cancellationToken);
+    }
 
+    private async Task<string> SubscribeAsync(
+        string name,
+        bool durable,
+        CancellationToken cancellationToken)
+    {
         try
         {
             bool exists = await _adminClient
@@ -146,6 +150,12 @@ public sealed class MessageBus : IMessageBus
 
             if (!exists)
             {
+                var options = new CreateSubscriptionOptions(_options.Topic, name)
+                {
+                    AutoDeleteOnIdle = durable ? TimeSpan.MaxValue : TimeSpan.FromMinutes(10),
+                    RequiresSession = false
+                };
+
                 SubscriptionProperties properties = await _adminClient
                     .CreateSubscriptionAsync(options, cancellationToken);
 
