@@ -44,7 +44,7 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
       fragment MessageListFragment_query on Query
       @argumentDefinitions(
         cursor: { type: "String" }
-        count: { type: "PaginationAmount", defaultValue: 30 }
+        count: { type: "Int", defaultValue: 30 }
       )
       @refetchable(queryName: "MessageListRefetchableQuery") {
         messages(after: $cursor, first: $count)

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<60d43ea5c8287f047535bdd24c0265d9>>
+ * @generated SignedSource<<e83f76307131134d411520611e2c3044>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -76,7 +76,7 @@ return {
     {
       "alias": "messages",
       "args": null,
-      "concreteType": "MessageRecordConnection",
+      "concreteType": "MessagesConnection",
       "kind": "LinkedField",
       "name": "__ScreenerList_messages_connection",
       "plural": false,
@@ -84,7 +84,7 @@ return {
         {
           "alias": null,
           "args": null,
-          "concreteType": "MessageRecordEdge",
+          "concreteType": "MessagesEdge",
           "kind": "LinkedField",
           "name": "edges",
           "plural": true,
@@ -200,6 +200,6 @@ return {
 };
 })();
 
-(node as any).hash = "9a2ed8ca4f9a20b9a1230ca12b4109b6";
+(node as any).hash = "aef0e5035a50b092aca816760a061d2f";
 
 export default node;

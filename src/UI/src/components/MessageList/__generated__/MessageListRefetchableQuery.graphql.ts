@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8b388251708436632cb921022dcb850c>>
+ * @generated SignedSource<<8805ed105b33ed09b9f44159f960b1c0>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -83,7 +83,7 @@ return {
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "MessageRecordConnection",
+        "concreteType": "MessagesConnection",
         "kind": "LinkedField",
         "name": "messages",
         "plural": false,
@@ -91,7 +91,7 @@ return {
           {
             "alias": null,
             "args": null,
-            "concreteType": "MessageRecordEdge",
+            "concreteType": "MessagesEdge",
             "kind": "LinkedField",
             "name": "edges",
             "plural": true,
@@ -213,16 +213,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "9e0e32a1b8f69b7d996d8e2dc67adb92",
+    "cacheID": "9d7c884c30e9360c9f4b92ef3e53328a",
     "id": null,
     "metadata": {},
     "name": "MessageListRefetchableQuery",
     "operationKind": "query",
-    "text": "query MessageListRefetchableQuery(\n  $count: PaginationAmount = 30\n  $cursor: String\n) {\n  ...MessageListFragment_query_1G22uz\n}\n\nfragment MessageListFragment_query_1G22uz on Query {\n  messages(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        title\n        to\n        receivedAt\n        type\n        provider\n        primaryReceipient\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query MessageListRefetchableQuery(\n  $count: Int = 30\n  $cursor: String\n) {\n  ...MessageListFragment_query_1G22uz\n}\n\nfragment MessageListFragment_query_1G22uz on Query {\n  messages(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        title\n        to\n        receivedAt\n        type\n        provider\n        primaryReceipient\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "9a2ed8ca4f9a20b9a1230ca12b4109b6";
+(node as any).hash = "aef0e5035a50b092aca816760a061d2f";
 
 export default node;

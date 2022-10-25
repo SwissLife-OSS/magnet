@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<71044e0f3bd3ba77eb8337e88c5b887a>>
+ * @generated SignedSource<<e7bee950bfecef2877d74e10ae6ecb61>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -52,7 +52,7 @@ return {
       {
         "alias": null,
         "args": (v0/*: any*/),
-        "concreteType": "MessageRecordConnection",
+        "concreteType": "MessagesConnection",
         "kind": "LinkedField",
         "name": "messages",
         "plural": false,
@@ -60,7 +60,7 @@ return {
           {
             "alias": null,
             "args": null,
-            "concreteType": "MessageRecordEdge",
+            "concreteType": "MessagesEdge",
             "kind": "LinkedField",
             "name": "edges",
             "plural": true,

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<83e8d3cb52d9a89cdef956adfc037942>>
+ * @generated SignedSource<<c6be9579a8b8307b354e9f52520b58b7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -154,16 +154,16 @@ return {
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "6d12f9dcf3d729d712abc62a857d1b3f",
+    "cacheID": "0554a19f73a4dcb62fe1f0d2cffa8a9c",
     "id": null,
     "metadata": {},
     "name": "MessageDetailQuery",
     "operationKind": "query",
-    "text": "query MessageDetailQuery(\n  $id: Uuid!\n) {\n  message(id: $id) {\n    id\n    title\n    type\n    receivedAt\n    provider\n    from\n    to\n    body\n    receivedLog {\n      clientName\n      receivedAt\n    }\n  }\n}\n"
+    "text": "query MessageDetailQuery(\n  $id: UUID!\n) {\n  message(id: $id) {\n    id\n    title\n    type\n    receivedAt\n    provider\n    from\n    to\n    body\n    receivedLog {\n      clientName\n      receivedAt\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "90d3e36bdf3352d0109f8672d62a59b5";
+(node as any).hash = "e94d83ed5f86f2383c7eea3e9cb394c3";
 
 export default node;
