@@ -1,119 +1,163 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.ServiceBus;
-using Newtonsoft.Json;
+using Azure;
+using Azure.Messaging.ServiceBus;
+using Azure.Messaging.ServiceBus.Administration;
+using Microsoft.Extensions.Logging;
 
 namespace Magnet.Messaging.AzureServiceBus;
 
-public class MessageBus : IMessageBus
+public sealed class MessageBus : IMessageBus
 {
     private readonly AzureServiceBusOptions _options;
-    private ITopicClient _topicClient;
-    private List<ISubscriptionClient> _subscriptions = new List<ISubscriptionClient>();
+    private readonly ILogger<MessageBus> _logger;
+    private readonly ServiceBusClient _client;
+    private readonly ServiceBusAdministrationClient _adminClient;
 
-    public MessageBus(AzureServiceBusOptions options)
+    public MessageBus(AzureServiceBusOptions options, ILogger<MessageBus> logger)
     {
         _options = options;
-        _topicClient = new TopicClient(options.ConnectionString, options.Topic);
+        _logger = logger;
+        _client = new ServiceBusClient(options.ConnectionString);
+        _adminClient = new ServiceBusAdministrationClient(
+            options.ConnectionString,
+            new ServiceBusAdministrationClientOptions
+            {
+                Diagnostics = {IsDistributedTracingEnabled = true}
+            });
     }
 
     public async Task<string> PublishAsync(MagnetMessage message)
     {
-        Message msg = CreateMessage(message);
-        await _topicClient.SendAsync(msg);
-        return msg.MessageId;
+        ServiceBusSender sender = _client.CreateSender(_options.Topic);
+        ServiceBusMessage sbMessage = CreateMessage(message);
+
+        await sender.SendMessageAsync(sbMessage);
+
+        return sbMessage.MessageId;
     }
 
-    private static Message CreateMessage(MagnetMessage message)
+    private static ServiceBusMessage CreateMessage(MagnetMessage message)
     {
-        var jsonMessage = JsonConvert.SerializeObject(message);
-        var body = Encoding.UTF8.GetBytes(jsonMessage);
-
-        var sbMessage = new Message
+        var jsonMessage = JsonSerializer.Serialize(message);
+        var sbMessage = new ServiceBusMessage(jsonMessage)
         {
             MessageId = message.Id.ToString("N"),
-            Body = body,
-            Label = message.Type
+            Subject = message.Type
         };
+
         return sbMessage;
     }
 
-
-    public async Task<MagnetMessage> GetNextAsync(string name, CancellationToken cancellationToken)
+    public async Task<MagnetMessage> GetNextAsync(
+        string name,
+        CancellationToken cancellationToken)
     {
-        var client = new SubscriptionClient(_options.ConnectionString, _options.Topic, name);
-        var completion = new TaskCompletionSource<MagnetMessage>();
-        cancellationToken.Register(() => completion.SetCanceled());
+        ServiceBusReceiver receiver = _client.CreateReceiver(
+            name,
+            new ServiceBusReceiverOptions
+            {
+                PrefetchCount = 1,
+                ReceiveMode = ServiceBusReceiveMode.PeekLock
+            });
 
+        ServiceBusReceivedMessage message = default;
         try
         {
-            client.RegisterMessageHandler(async (message, token) =>
-            {
-                string json = Encoding.UTF8.GetString(message.Body);
-                MagnetMessage magnetMsg = JsonConvert.DeserializeObject<MagnetMessage>(json);
-                await client.CompleteAsync(message.SystemProperties.LockToken);
-                await client.CloseAsync();
-                completion.SetResult(magnetMsg);
-            },
-            new MessageHandlerOptions(ExceptionReceivedHandler)
-            { MaxConcurrentCalls = 1, AutoComplete = false });
+            message = await receiver
+                .ReceiveMessageAsync(cancellationToken: cancellationToken);
+
+            MagnetMessage magnetMsg = JsonSerializer
+                .Deserialize<MagnetMessage>(message.Body.ToString());
+
+            await receiver.CompleteMessageAsync(message, cancellationToken);
+
+            return magnetMsg;
         }
         catch (Exception ex)
         {
-            completion.SetException(ex);
+            _logger.LogError(ex, "Cannot get next message");
+            if (message is not null)
+            {
+                await receiver.AbandonMessageAsync(message, cancellationToken: cancellationToken);
+            }
+            throw;
         }
-        return await completion.Task;
-    }
-
-
-    public void RegisterMessageHandler(
-        string name,
-        Func<MagnetMessage, CancellationToken, Task> handler)
-    {
-        var client = new SubscriptionClient(_options.ConnectionString, _options.Topic, name);
-        client.RegisterMessageHandler(async (message, token) =>
+        finally
         {
-            string json = Encoding.UTF8.GetString(message.Body);
-            MagnetMessage magnetMsg = JsonConvert.DeserializeObject<MagnetMessage>(json);
-            await handler(magnetMsg, token);
-
-            await client.CompleteAsync(message.SystemProperties.LockToken);
-        },
-        new MessageHandlerOptions(ExceptionReceivedHandler)
-        { MaxConcurrentCalls = 1, AutoComplete = false });
+            await receiver.CloseAsync(cancellationToken);
+            await receiver.DisposeAsync();
+        }
     }
 
-    private Task ExceptionReceivedHandler(
-            ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+    public async Task RegisterMessageHandler(
+        string name,
+        Func<MagnetMessage, CancellationToken, Task> handler,
+        CancellationToken cancellationToken)
     {
-        //Add tracing
-        return Task.CompletedTask;
+        ServiceBusProcessor processor = _client.CreateProcessor(
+            _options.Topic,
+            new ServiceBusProcessorOptions
+            {
+                Identifier = name,
+                PrefetchCount = 1,
+                ReceiveMode = ServiceBusReceiveMode.PeekLock,
+                MaxConcurrentCalls = 1,
+                AutoCompleteMessages = false,
+                MaxAutoLockRenewalDuration = TimeSpan.FromHours(1),
+            });
+
+        processor.ProcessMessageAsync += async args =>
+        {
+            MagnetMessage magnetMsg = JsonSerializer
+                .Deserialize<MagnetMessage>(args.Message.Body.ToString());
+
+            await handler(magnetMsg, args.CancellationToken);
+
+            await args.CompleteMessageAsync(args.Message, args.CancellationToken);
+        };
+
+        processor.ProcessErrorAsync += args =>
+        {
+            _logger.LogError(args.Exception, "Cannot receive message on the registered handler");
+
+            return Task.CompletedTask;
+        };
+
+        await processor.StartProcessingAsync(cancellationToken);
     }
 
-    public void Dispose()
+    public async Task<string> SubscribeAsync(string name, CancellationToken cancellationToken)
     {
-        Dispose(true);
-        GC.SuppressFinalize(this);
+        var options = new CreateSubscriptionOptions(_options.Topic, name)
+        {
+            AutoDeleteOnIdle = TimeSpan.FromMinutes(10),
+            RequiresSession = false
+        };
+
+        try
+        {
+            Response<SubscriptionProperties> subscription = await _adminClient
+                .CreateSubscriptionAsync(options, cancellationToken);
+
+            return subscription.Value.SubscriptionName;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Cannot create subscription");
+            throw;
+        }
     }
 
-    protected virtual void Dispose(bool disposing)
+    public async Task UnSubscribeAsync(string name, CancellationToken cancellationToken)
     {
-        _subscriptions.ForEach(s => s
-            .CloseAsync()
-            .GetAwaiter()
-            .GetResult());
+        await _adminClient.DeleteSubscriptionAsync(_options.Topic, name, cancellationToken);
     }
 
-    public Task<string> SubscribeAsync(string name)
+    public async ValueTask DisposeAsync()
     {
-        throw new NotImplementedException();
-    }
-
-    public Task UnSubscribeAsync(string name)
-    {
-        throw new NotImplementedException();
+        await _client.DisposeAsync();
     }
 }
