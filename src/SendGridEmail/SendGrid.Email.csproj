@@ -21,9 +21,7 @@
 
   <ItemGroup>
       <FrameworkReference Include="Microsoft.AspNetCore.App" />
-      <PackageReference Include="StrongGrid" Version="0.94.0">
-        <PrivateAssets>all</PrivateAssets>
-      </PackageReference>
+      <PackageReference Include="StrongGrid" Version="0.94.0" />
   </ItemGroup>
 
   <ItemGroup>
