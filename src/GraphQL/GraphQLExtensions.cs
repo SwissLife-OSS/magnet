@@ -12,6 +12,7 @@ public static class GraphQLExtensions
             .AddQueryType()
             .AddTypeExtension<MessageQueries>()
             .AddType<MessageType>()
+            .AddFiltering()
             .AddAuthorization();
 
         return services;
