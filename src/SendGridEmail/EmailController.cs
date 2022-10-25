@@ -24,7 +24,7 @@ public class EmailController : Controller
     public async Task<IActionResult> Email()
     {
         var parser = new WebhookParser();
-        InboundEmail inboundEmail = parser.ParseInboundEmailWebhook(Request.Body);
+        InboundEmail inboundEmail = await parser.ParseInboundEmailWebhookAsync(Request.Body);
         await _messageSink.ProcessMessageAsync(CreateMessage(inboundEmail));
         return Ok();
     }
