@@ -97,11 +97,13 @@ public sealed class MessageBus : IMessageBus
         Func<MagnetMessage, CancellationToken, Task> handler,
         CancellationToken cancellationToken)
     {
+        await SubscribeAsync(name, cancellationToken);
+
         ServiceBusProcessor processor = _client.CreateProcessor(
             _options.Topic,
+            name,
             new ServiceBusProcessorOptions
             {
-                Identifier = name,
                 PrefetchCount = 1,
                 ReceiveMode = ServiceBusReceiveMode.PeekLock,
                 MaxConcurrentCalls = 1,
@@ -139,10 +141,18 @@ public sealed class MessageBus : IMessageBus
 
         try
         {
-            Response<SubscriptionProperties> subscription = await _adminClient
-                .CreateSubscriptionAsync(options, cancellationToken);
+            Response<bool> exists = await _adminClient
+                .SubscriptionExistsAsync(_options.Topic, name, cancellationToken);
 
-            return subscription.Value.SubscriptionName;
+            if (!exists)
+            {
+                Response<SubscriptionProperties> subscription = await _adminClient
+                    .CreateSubscriptionAsync(options, cancellationToken);
+
+                return subscription.Value.SubscriptionName;
+            }
+
+            return name;
         }
         catch (Exception ex)
         {
