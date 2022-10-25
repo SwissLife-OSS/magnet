@@ -17,5 +17,4 @@ public class MessageDbContext
 
     public IMongoCollection<MessageRecord> Messages
         => Database.GetCollection<MessageRecord>("messages");
-
 }
