@@ -32,7 +32,6 @@ public class MessageStore : IMessageStore
         try
         {
             MessageRecord record = _mapper.Map<MessageRecord>(message);
-            record.ReceivedLog = new List<MessageReceivedLog>();
             await _dbContext.Messages.InsertOneAsync(record, options: null, cancellationToken);
         }
         catch (Exception ex)

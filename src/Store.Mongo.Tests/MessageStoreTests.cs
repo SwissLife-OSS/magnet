@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using MongoDB.Extensions.Context;
@@ -50,6 +51,52 @@ public class MessageStoreTests : IClassFixture<MongoResource>
             .MatchSnapshot();
     }
 
+    [Fact]
+    public async Task GetAllMessages_RetrieveAll()
+    {
+        // Arrange
+        IMapper mapper = _provider.GetRequiredService<IMapper>();
+        await _database.GetCollection<MessageRecord>("messages")
+                .InsertOneAsync(mapper.Map<MessageRecord>(CreateMessage()));
+        IMessageStore store = _provider.GetRequiredService<IMessageStore>();
+
+        // Act
+        List<MessageRecord> messages = await store.GetAllAsync(default);
+
+        // Assert
+        messages.MatchSnapshot();
+    }
+
+    [Fact]
+    public async Task AddReadReceipt_IsInStore()
+    {
+        // Arrange
+        IMapper mapper = _provider.GetRequiredService<IMapper>();
+        await _database.GetCollection<MessageRecord>("messages")
+            .InsertOneAsync(mapper.Map<MessageRecord>(CreateMessage()));
+        IMessageStore store = _provider.GetRequiredService<IMessageStore>();
+
+        // Act
+        await store.AddReadReceiptAsync(CreateMessageReceivedReceipt(), default);
+
+        // Assert
+        (await _database.GetCollection<MessageRecord>("messages")
+                .Find(FilterDefinition<MessageRecord>.Empty)
+                .ToListAsync())
+            .MatchSnapshot();
+    }
+
+    private static MessageReceivedReceipt CreateMessageReceivedReceipt()
+    {
+        return new MessageReceivedReceipt
+        {
+            IsMatch = true,
+            ClientName = "test",
+            MessageId = Guid.Parse("828DBC4F-A14E-4468-B98A-65323627F843"),
+            ReceivedAt = new DateTime(2022, 10, 10, 1 ,0 ,0 , DateTimeKind.Utc)
+        };
+    }
+
     private static MagnetMessage CreateMessage()
     {
         return new MagnetMessage
@@ -64,7 +111,7 @@ public class MessageStoreTests : IClassFixture<MongoResource>
             },
             Provider = "SendGrid",
             Type = "Email",
-            ReceivedAt = new DateTime(2022, 10, 10, 0 ,0 ,0 , DateTimeKind.Utc)
+            ReceivedAt = new DateTime(2022, 10, 10, 0 ,0 ,0 , DateTimeKind.Utc),
         };
     }
 }
