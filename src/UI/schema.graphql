@@ -93,18 +93,18 @@ input ComparableDateTimeOperationFilterInput {
 }
 
 input ComparableGuidOperationFilterInput {
-  eq: UUID
-  neq: UUID
-  in: [UUID!]
-  nin: [UUID!]
-  gt: UUID
-  ngt: UUID
-  gte: UUID
-  ngte: UUID
-  lt: UUID
-  nlt: UUID
-  lte: UUID
-  nlte: UUID
+  eq: Uuid
+  neq: Uuid
+  in: [Uuid!]
+  nin: [Uuid!]
+  gt: Uuid
+  ngt: Uuid
+  gte: Uuid
+  ngte: Uuid
+  lt: Uuid
+  nlt: Uuid
+  lte: Uuid
+  nlte: Uuid
 }
 
 """The `DateTime` scalar represents an ISO-8601 compliant date time type."""
@@ -235,7 +235,7 @@ type Query {
     before: String
     where: MessageRecordFilterInput
   ): MessagesConnection
-  message(id: UUID!): MessageRecord
+  message(id: Uuid!): MessageRecord
 }
 
 input StringOperationFilterInput {
@@ -253,5 +253,5 @@ input StringOperationFilterInput {
   nendsWith: String
 }
 
-scalar UUID
+scalar Uuid
 

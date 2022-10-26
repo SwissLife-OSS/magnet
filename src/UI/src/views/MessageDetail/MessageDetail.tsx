@@ -65,7 +65,7 @@ const MessageDetail: React.FC = () => {
 
   const { message } = useLazyLoadQuery<MessageDetailQuery>(
     graphql`
-      query MessageDetailQuery($id: UUID!) {
+      query MessageDetailQuery($id: Uuid!) {
         message(id: $id) {
           id
           title
