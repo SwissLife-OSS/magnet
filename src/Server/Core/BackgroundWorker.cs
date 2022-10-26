@@ -19,14 +19,12 @@ public class BackgroundWorker : IHostedService
         _logger = logger;
     }
 
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         try
         {
             _logger.LogInformation("Starting");
-            _changeTracker.Start();
-
-            return Task.CompletedTask;
+            await _changeTracker.Start(cancellationToken);
         }
         catch (Exception ex)
         {
@@ -35,10 +33,8 @@ public class BackgroundWorker : IHostedService
         }
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
+    public async Task StopAsync(CancellationToken cancellationToken)
     {
-        _changeTracker.Stop();
-
-        return Task.CompletedTask;
+        await _changeTracker.Stop();
     }
 }

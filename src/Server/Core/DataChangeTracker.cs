@@ -1,3 +1,5 @@
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace Magnet;
@@ -19,18 +21,18 @@ public class DataChangeTracker
 
     }
 
-    public void Start()
+    public async Task Start(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Start DataChange tracker...");
-        _messageBus.RegisterMessageHandler("store", async (msg, token) =>
+        await _messageBus.RegisterMessageHandler("store", async (msg, token) =>
         {
             _logger.LogInformation("New Message");
             await _store.AddAsync(msg, token);
-        });
+        }, cancellationToken);
     }
 
-    public void Stop()
+    public async Task Stop()
     {
-        _messageBus.Dispose();
+        await _messageBus.DisposeAsync();
     }
 }

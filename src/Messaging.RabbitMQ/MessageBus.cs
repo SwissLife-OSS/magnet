@@ -12,7 +12,7 @@ using RabbitMQ.Client.Events;
 
 namespace Magnet.Messaging.RabbitMQ;
 
-public class MessageBus : IMessageBus
+public sealed class MessageBus : IMessageBus
 {
     private readonly ConnectionFactory _connectionFactory;
     private readonly RabbitMQOptions _options;
@@ -60,16 +60,16 @@ public class MessageBus : IMessageBus
         return await completion.Task;
     }
 
-    public Task<string> SubscribeAsync(string name)
+    public Task<string> SubscribeAsync(string name, CancellationToken cancellationToken)
     {
         using IModel channel = GetChannel();
-        var queueName = $"{name}-{Guid.NewGuid().ToString("N").Substring(6)}";
+        var queueName = SubscriptionName.Create(name);
         PrepareQueue(channel, queueName);
 
         return Task.FromResult(queueName);
     }
 
-    public Task UnSubscribeAsync(string name)
+    public Task UnSubscribeAsync(string name, CancellationToken cancellationToken)
     {
         using IModel channel = GetChannel();
         channel.QueueDelete(name, ifUnused: false, ifEmpty: false);
@@ -137,9 +137,10 @@ public class MessageBus : IMessageBus
               routingKey: "");
     }
 
-    public void RegisterMessageHandler(
+    public Task RegisterMessageHandler(
         string name,
-        Func<MagnetMessage, CancellationToken, Task> handler)
+        Func<MagnetMessage, CancellationToken, Task> handler,
+        CancellationToken cancellationToken)
     {
         _logger.LogInformation("RegisterMessageHandler: {name}", name);
 
@@ -158,6 +159,7 @@ public class MessageBus : IMessageBus
             }
         };
         string consumerTag = channel.BasicConsume(name, true, consumer);
+        return Task.CompletedTask;
     }
 
     private IModel GetChannel()
@@ -180,13 +182,7 @@ public class MessageBus : IMessageBus
         return result.Result;
     }
 
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
+    public ValueTask DisposeAsync()
     {
         try
         {
@@ -204,5 +200,7 @@ public class MessageBus : IMessageBus
                 _connection.Dispose();
             }
         }
+
+        return ValueTask.CompletedTask;
     }
 }

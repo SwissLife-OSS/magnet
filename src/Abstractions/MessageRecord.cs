@@ -5,7 +5,7 @@ namespace Magnet;
 
 public class MessageRecord : MagnetMessage
 {
-    public List<MessageReceivedLog> ReceivedLog { get; set; }
+    public List<MessageReceivedLog> ReceivedLog { get; set; } = new();
 }
 
 public class MessageReceivedLog
