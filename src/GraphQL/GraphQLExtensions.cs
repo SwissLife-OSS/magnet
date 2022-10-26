@@ -1,4 +1,5 @@
 using HotChocolate;
+using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Magnet.GraphQL;
@@ -12,6 +13,7 @@ public static class GraphQLExtensions
             .AddQueryType()
             .AddTypeExtension<MessageQueries>()
             .AddType<MessageType>()
+            .ConfigureSchema(x => x.AddType(new UuidType("Uuid", defaultFormat: 'N')))
             .AddAuthorization();
 
         return services;
