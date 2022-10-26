@@ -63,7 +63,7 @@ public sealed class MessageBus : IMessageBus
     public Task<string> SubscribeAsync(string name, CancellationToken cancellationToken)
     {
         using IModel channel = GetChannel();
-        var queueName = $"{name}-{Guid.NewGuid().ToString("N").Substring(6)}";
+        var queueName = SubscriptionName.Create(name);
         PrepareQueue(channel, queueName);
 
         return Task.FromResult(queueName);

@@ -97,8 +97,6 @@ public sealed class MessageBus : IMessageBus
         Func<MagnetMessage, CancellationToken, Task> handler,
         CancellationToken cancellationToken)
     {
-        await SubscribeAsync(name, true, cancellationToken);
-
         ServiceBusProcessor processor = _client.CreateProcessor(
             _options.Topic,
             name,
@@ -131,38 +129,24 @@ public sealed class MessageBus : IMessageBus
         await processor.StartProcessingAsync(cancellationToken);
     }
 
-    public Task<string> SubscribeAsync(
+    public async Task<string> SubscribeAsync(
         string name,
-        CancellationToken cancellationToken)
-    {
-        return SubscribeAsync(name, false, cancellationToken);
-    }
-
-    private async Task<string> SubscribeAsync(
-        string name,
-        bool durable,
         CancellationToken cancellationToken)
     {
         try
         {
-            bool exists = await _adminClient
-                .SubscriptionExistsAsync(_options.Topic, name, cancellationToken);
-
-            if (!exists)
+            var options = new CreateSubscriptionOptions(
+                _options.Topic,
+                SubscriptionName.Create(name))
             {
-                var options = new CreateSubscriptionOptions(_options.Topic, name)
-                {
-                    AutoDeleteOnIdle = durable ? TimeSpan.MaxValue : TimeSpan.FromMinutes(10),
-                    RequiresSession = false
-                };
+                AutoDeleteOnIdle = TimeSpan.FromHours(1),
+                RequiresSession = false
+            };
 
-                SubscriptionProperties properties = await _adminClient
-                    .CreateSubscriptionAsync(options, cancellationToken);
+            SubscriptionProperties properties = await _adminClient
+                .CreateSubscriptionAsync(options, cancellationToken);
 
-                return properties.SubscriptionName;
-            }
-
-            return name;
+            return properties.SubscriptionName;
         }
         catch (Exception ex)
         {
