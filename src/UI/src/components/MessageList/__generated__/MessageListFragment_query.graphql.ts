@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e83f76307131134d411520611e2c3044>>
+ * @generated SignedSource<<ffd75b90f93429a7beb59895f529679c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -46,6 +46,11 @@ return {
       "defaultValue": null,
       "kind": "LocalArgument",
       "name": "cursor"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "where"
     }
   ],
   "kind": "Fragment",
@@ -75,7 +80,13 @@ return {
   "selections": [
     {
       "alias": "messages",
-      "args": null,
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "where",
+          "variableName": "where"
+        }
+      ],
       "concreteType": "MessagesConnection",
       "kind": "LinkedField",
       "name": "__ScreenerList_messages_connection",
@@ -200,6 +211,6 @@ return {
 };
 })();
 
-(node as any).hash = "aef0e5035a50b092aca816760a061d2f";
+(node as any).hash = "5ef0ed0334f32168d07a1026aa43d0fc";
 
 export default node;

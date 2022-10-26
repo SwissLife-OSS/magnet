@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,6 +7,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import FormControl from "@mui/material/FormControl";
 import { makeStyles } from "@mui/styles";
 import { Button } from "@mui/material";
 import { graphql } from "babel-plugin-relay/macro";
@@ -34,10 +40,119 @@ const useStyles = makeStyles({
     textAlign: "center",
     marginTop: "40px",
   },
+  filterTitle: {
+    fontSize: "18px",
+  },
+  filterSubTitle: {
+    fontSize: "15px",
+    fontWeight: "400",
+  },
 });
 
 const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
   const classes = useStyles();
+
+  //Filter State
+  const [messageFilter, setMessageFilter] = useState<null | Object>();
+
+  //Filter Pop-Up
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    createFilter();
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  //Filter Choice
+  const [filterState, setFilterState] = useState({
+    sms: true,
+    email: true,
+    inbox: true,
+    workitem: true,
+  });
+
+  const { sms, email, inbox, workitem } = filterState;
+
+  //Filter Action
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterState({
+      ...filterState,
+      [event.target.name]: event.target.checked,
+    });
+  };
+
+  //Create Filter
+  const createFilter = () => {
+    let selectedFilters = [];
+
+    for (const [type, value] of Object.entries(filterState)) {
+      let typeName = "";
+
+      if (type === "workitem") {
+        typeName = "WorkItem";
+      } else {
+        typeName = type.charAt(0).toUpperCase() + type.slice(1);
+      }
+
+      if (value === true) {
+        selectedFilters.push(typeName);
+      }
+    }
+
+    const selectedFiltersLength = selectedFilters.length;
+
+    if (selectedFiltersLength === 0) {
+      setMessageFilter({
+        or: [],
+      });
+    } else if (selectedFiltersLength === 1) {
+      setMessageFilter({ or: [{ type: { eq: selectedFilters[0] } }] });
+    } else if (selectedFiltersLength === 2) {
+      setMessageFilter({
+        or: [
+          { type: { eq: selectedFilters[0] } },
+          { type: { eq: selectedFilters[1] } },
+        ],
+      });
+    } else if (selectedFiltersLength === 3) {
+      setMessageFilter({
+        or: [
+          { type: { eq: selectedFilters[0] } },
+          { type: { eq: selectedFilters[1] } },
+          { type: { eq: selectedFilters[2] } },
+        ],
+      });
+    } else if (selectedFiltersLength === 4) {
+      setMessageFilter({
+        or: [
+          { type: { eq: selectedFilters[0] } },
+          { type: { eq: selectedFilters[1] } },
+          { type: { eq: selectedFilters[2] } },
+          { type: { eq: selectedFilters[3] } },   
+        ],
+      });
+    }
+  };
+
+  //Render Count
+  const firstRender = useRef(false);
+
+  useEffect(() => {
+    if (firstRender.current) {
+      refetch({ where: messageFilter }, { fetchPolicy: "network-only" });
+    } else {
+      firstRender.current = true;
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messageFilter]);
 
   let { data, hasNext, loadNext, refetch } = usePaginationFragment(
     graphql`
@@ -45,9 +160,10 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
       @argumentDefinitions(
         cursor: { type: "String" }
         count: { type: "Int", defaultValue: 30 }
+        where: { type: "MessageRecordFilterInput" }
       )
       @refetchable(queryName: "MessageListRefetchableQuery") {
-        messages(after: $cursor, first: $count)
+        messages(after: $cursor, first: $count, where: $where)
           @connection(key: "ScreenerList_messages") {
           edges {
             node {
@@ -87,16 +203,24 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
     );
   }
 
+  const showInformation = () => {
+    if (data?.messages?.edges?.length === 0 || data?.messages == null) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <>
       <div className={classes.titlesPosition}>
-        {data?.messages?.edges?.length === 0 && (
-          <h2 className={classes.title}>New data is displayed here</h2>
-        )}
-        {data?.messages?.edges?.length === 0 && (
-          <h4 className={classes.subTitle}>
-            Click on a row to see more Information
-          </h4>
+        {showInformation() && (
+          <>
+            <h2 className={classes.title}>New data is displayed here</h2>
+            <h4 className={classes.subTitle}>
+              Click on a row to see more Information
+            </h4>
+          </>
         )}
       </div>
       <TableContainer className={classes.tableMargin}>
@@ -152,14 +276,84 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
         </Button>
         <br></br>
         <br></br>
-        <Button
-          variant="contained"
-          onClick={() => {
-            refetch({}, { fetchPolicy: "network-only" });
+        <Button aria-describedby={id} variant="contained" onClick={handleClick}>
+          Filters
+        </Button>
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "center",
           }}
         >
-          Reload
-        </Button>
+          <Typography sx={{ p: 2 }} variant="h6">
+            <span className={classes.filterTitle}>Filters</span>
+            <br></br>
+            <span className={classes.filterSubTitle}>Type</span>
+            <Box sx={{ display: "flex" }}>
+              <FormControl sx={{ m: 1 }} variant="standard">
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={sms}
+                        onChange={handleChange}
+                        name="sms"
+                      />
+                    }
+                    label="Sms"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={email}
+                        onChange={handleChange}
+                        name="email"
+                      />
+                    }
+                    label="Email"
+                  />
+                </FormGroup>
+              </FormControl>
+              <FormControl
+                required
+                component="fieldset"
+                sx={{ m: 1, marginLeft: "30px" }}
+                variant="standard"
+              >
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={inbox}
+                        onChange={handleChange}
+                        name="inbox"
+                      />
+                    }
+                    label="Inbox"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={workitem}
+                        onChange={handleChange}
+                        name="workitem"
+                      />
+                    }
+                    label="WorkItem"
+                  />
+                </FormGroup>
+              </FormControl>
+            </Box>
+          </Typography>
+        </Popover>
       </div>
     </>
   );

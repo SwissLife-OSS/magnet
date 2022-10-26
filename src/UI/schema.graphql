@@ -72,18 +72,82 @@ enum ApplyPolicy {
   AFTER_RESOLVER
 }
 
+input BooleanOperationFilterInput {
+  eq: Boolean
+  neq: Boolean
+}
+
+input ComparableDateTimeOperationFilterInput {
+  eq: DateTime
+  neq: DateTime
+  in: [DateTime!]
+  nin: [DateTime!]
+  gt: DateTime
+  ngt: DateTime
+  gte: DateTime
+  ngte: DateTime
+  lt: DateTime
+  nlt: DateTime
+  lte: DateTime
+  nlte: DateTime
+}
+
+input ComparableGuidOperationFilterInput {
+  eq: UUID
+  neq: UUID
+  in: [UUID!]
+  nin: [UUID!]
+  gt: UUID
+  ngt: UUID
+  gte: UUID
+  ngte: UUID
+  lt: UUID
+  nlt: UUID
+  lte: UUID
+  nlte: UUID
+}
+
 """The `DateTime` scalar represents an ISO-8601 compliant date time type."""
 scalar DateTime
+
+input IReadOnlyDictionaryOfStringAndStringFilterInput {
+  and: [IReadOnlyDictionaryOfStringAndStringFilterInput!]
+  or: [IReadOnlyDictionaryOfStringAndStringFilterInput!]
+  keys: ListStringOperationFilterInput
+  values: ListStringOperationFilterInput
+}
 
 type KeyValuePairOfStringAndString {
   key: String!
   value: String!
 }
 
+input ListFilterInputTypeOfMessageReceivedLogFilterInput {
+  all: MessageReceivedLogFilterInput
+  none: MessageReceivedLogFilterInput
+  some: MessageReceivedLogFilterInput
+  any: Boolean
+}
+
+input ListStringOperationFilterInput {
+  all: StringOperationFilterInput
+  none: StringOperationFilterInput
+  some: StringOperationFilterInput
+  any: Boolean
+}
+
 type MessageReceivedLog {
   receivedAt: DateTime!
   clientName: String
   isMatch: Boolean!
+}
+
+input MessageReceivedLogFilterInput {
+  and: [MessageReceivedLogFilterInput!]
+  or: [MessageReceivedLogFilterInput!]
+  receivedAt: ComparableDateTimeOperationFilterInput
+  clientName: StringOperationFilterInput
+  isMatch: BooleanOperationFilterInput
 }
 
 type MessageRecord {
@@ -98,6 +162,20 @@ type MessageRecord {
   provider: String!
   properties: [KeyValuePairOfStringAndString!]
   title: String!
+}
+
+input MessageRecordFilterInput {
+  and: [MessageRecordFilterInput!]
+  or: [MessageRecordFilterInput!]
+  id: ComparableGuidOperationFilterInput
+  receivedAt: ComparableDateTimeOperationFilterInput
+  type: StringOperationFilterInput
+  from: StringOperationFilterInput
+  body: StringOperationFilterInput
+  to: ListStringOperationFilterInput
+  receivedLog: ListFilterInputTypeOfMessageReceivedLogFilterInput
+  properties: IReadOnlyDictionaryOfStringAndStringFilterInput
+  provider: StringOperationFilterInput
 }
 
 """A connection to a list of items."""
@@ -155,8 +233,24 @@ type Query {
     Returns the elements in the list that come before the specified cursor.
     """
     before: String
+    where: MessageRecordFilterInput
   ): MessagesConnection
   message(id: UUID!): MessageRecord
+}
+
+input StringOperationFilterInput {
+  and: [StringOperationFilterInput!]
+  or: [StringOperationFilterInput!]
+  eq: String
+  neq: String
+  contains: String
+  ncontains: String
+  in: [String]
+  nin: [String]
+  startsWith: String
+  nstartsWith: String
+  endsWith: String
+  nendsWith: String
 }
 
 scalar UUID

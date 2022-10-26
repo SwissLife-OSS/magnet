@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e7bee950bfecef2877d74e10ae6ecb61>>
+ * @generated SignedSource<<9bc33d581ef059d6126a4c2d6502e103>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -173,7 +173,9 @@ return {
       {
         "alias": null,
         "args": (v0/*: any*/),
-        "filters": null,
+        "filters": [
+          "where"
+        ],
         "handle": "connection",
         "key": "ScreenerList_messages",
         "kind": "LinkedHandle",

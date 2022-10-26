@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8805ed105b33ed09b9f44159f960b1c0>>
+ * @generated SignedSource<<9065d0e6ec5c247cd60b46f713594fc5>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,9 +10,94 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
+export type MessageRecordFilterInput = {
+  and?: ReadonlyArray<MessageRecordFilterInput> | null;
+  body?: StringOperationFilterInput | null;
+  from?: StringOperationFilterInput | null;
+  id?: ComparableGuidOperationFilterInput | null;
+  or?: ReadonlyArray<MessageRecordFilterInput> | null;
+  properties?: IReadOnlyDictionaryOfStringAndStringFilterInput | null;
+  provider?: StringOperationFilterInput | null;
+  receivedAt?: ComparableDateTimeOperationFilterInput | null;
+  receivedLog?: ListFilterInputTypeOfMessageReceivedLogFilterInput | null;
+  to?: ListStringOperationFilterInput | null;
+  type?: StringOperationFilterInput | null;
+};
+export type ComparableGuidOperationFilterInput = {
+  eq?: string | null;
+  gt?: string | null;
+  gte?: string | null;
+  in?: ReadonlyArray<string> | null;
+  lt?: string | null;
+  lte?: string | null;
+  neq?: string | null;
+  ngt?: string | null;
+  ngte?: string | null;
+  nin?: ReadonlyArray<string> | null;
+  nlt?: string | null;
+  nlte?: string | null;
+};
+export type ComparableDateTimeOperationFilterInput = {
+  eq?: string | null;
+  gt?: string | null;
+  gte?: string | null;
+  in?: ReadonlyArray<string> | null;
+  lt?: string | null;
+  lte?: string | null;
+  neq?: string | null;
+  ngt?: string | null;
+  ngte?: string | null;
+  nin?: ReadonlyArray<string> | null;
+  nlt?: string | null;
+  nlte?: string | null;
+};
+export type StringOperationFilterInput = {
+  and?: ReadonlyArray<StringOperationFilterInput> | null;
+  contains?: string | null;
+  endsWith?: string | null;
+  eq?: string | null;
+  in?: ReadonlyArray<string | null> | null;
+  ncontains?: string | null;
+  nendsWith?: string | null;
+  neq?: string | null;
+  nin?: ReadonlyArray<string | null> | null;
+  nstartsWith?: string | null;
+  or?: ReadonlyArray<StringOperationFilterInput> | null;
+  startsWith?: string | null;
+};
+export type ListStringOperationFilterInput = {
+  all?: StringOperationFilterInput | null;
+  any?: boolean | null;
+  none?: StringOperationFilterInput | null;
+  some?: StringOperationFilterInput | null;
+};
+export type ListFilterInputTypeOfMessageReceivedLogFilterInput = {
+  all?: MessageReceivedLogFilterInput | null;
+  any?: boolean | null;
+  none?: MessageReceivedLogFilterInput | null;
+  some?: MessageReceivedLogFilterInput | null;
+};
+export type MessageReceivedLogFilterInput = {
+  and?: ReadonlyArray<MessageReceivedLogFilterInput> | null;
+  clientName?: StringOperationFilterInput | null;
+  isMatch?: BooleanOperationFilterInput | null;
+  or?: ReadonlyArray<MessageReceivedLogFilterInput> | null;
+  receivedAt?: ComparableDateTimeOperationFilterInput | null;
+};
+export type BooleanOperationFilterInput = {
+  eq?: boolean | null;
+  neq?: boolean | null;
+};
+export type IReadOnlyDictionaryOfStringAndStringFilterInput = {
+  and?: ReadonlyArray<IReadOnlyDictionaryOfStringAndStringFilterInput> | null;
+  keys?: ListStringOperationFilterInput | null;
+  or?: ReadonlyArray<IReadOnlyDictionaryOfStringAndStringFilterInput> | null;
+  values?: ListStringOperationFilterInput | null;
+};
 export type MessageListRefetchableQuery$variables = {
   count?: number | null;
   cursor?: string | null;
+  where?: MessageRecordFilterInput | null;
 };
 export type MessageListRefetchableQuery$data = {
   readonly " $fragmentSpreads": FragmentRefs<"MessageListFragment_query">;
@@ -33,9 +118,19 @@ var v0 = [
     "defaultValue": null,
     "kind": "LocalArgument",
     "name": "cursor"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "where"
   }
 ],
-v1 = [
+v1 = {
+  "kind": "Variable",
+  "name": "where",
+  "variableName": "where"
+},
+v2 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -45,7 +140,8 @@ v1 = [
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
-  }
+  },
+  (v1/*: any*/)
 ];
 return {
   "fragment": {
@@ -65,7 +161,8 @@ return {
             "kind": "Variable",
             "name": "cursor",
             "variableName": "cursor"
-          }
+          },
+          (v1/*: any*/)
         ],
         "kind": "FragmentSpread",
         "name": "MessageListFragment_query"
@@ -82,7 +179,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "MessagesConnection",
         "kind": "LinkedField",
         "name": "messages",
@@ -203,8 +300,10 @@ return {
       },
       {
         "alias": null,
-        "args": (v1/*: any*/),
-        "filters": null,
+        "args": (v2/*: any*/),
+        "filters": [
+          "where"
+        ],
         "handle": "connection",
         "key": "ScreenerList_messages",
         "kind": "LinkedHandle",
@@ -213,16 +312,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "9d7c884c30e9360c9f4b92ef3e53328a",
+    "cacheID": "1fe62d74c48d96a8b2dbaef59b8c2d94",
     "id": null,
     "metadata": {},
     "name": "MessageListRefetchableQuery",
     "operationKind": "query",
-    "text": "query MessageListRefetchableQuery(\n  $count: Int = 30\n  $cursor: String\n) {\n  ...MessageListFragment_query_1G22uz\n}\n\nfragment MessageListFragment_query_1G22uz on Query {\n  messages(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        title\n        to\n        receivedAt\n        type\n        provider\n        primaryReceipient\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query MessageListRefetchableQuery(\n  $count: Int = 30\n  $cursor: String\n  $where: MessageRecordFilterInput\n) {\n  ...MessageListFragment_query_mjR8k\n}\n\nfragment MessageListFragment_query_mjR8k on Query {\n  messages(after: $cursor, first: $count, where: $where) {\n    edges {\n      node {\n        id\n        title\n        to\n        receivedAt\n        type\n        provider\n        primaryReceipient\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "aef0e5035a50b092aca816760a061d2f";
+(node as any).hash = "5ef0ed0334f32168d07a1026aa43d0fc";
 
 export default node;
