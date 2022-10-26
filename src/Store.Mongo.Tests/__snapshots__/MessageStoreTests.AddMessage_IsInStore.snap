@@ -1,0 +1,17 @@
+﻿[
+  {
+    "ReceivedLog": [],
+    "Id": "828dbc4f-a14e-4468-b98a-65323627f843",
+    "Type": "Email",
+    "ReceivedAt": "2022-10-10T00:00:00Z",
+    "From": "foo@bar.com",
+    "To": [
+      "bar@foo.com"
+    ],
+    "Body": "563214",
+    "Properties": {
+      "MesageId": "84CE8A10-C767-4D0F-A95D-27AB6CFB25DD"
+    },
+    "Provider": "SendGrid"
+  }
+]

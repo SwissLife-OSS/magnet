@@ -4,10 +4,10 @@ namespace Magnet.Store.Mongo;
 
 public class MessageDbContext
 {
-    private readonly MongoClient _mongoClient;
+    private readonly IMongoClient _mongoClient;
     private readonly DatabaseOptions _options;
 
-    public MessageDbContext(MongoClient mongoClient, DatabaseOptions options)
+    public MessageDbContext(IMongoClient mongoClient, DatabaseOptions options)
     {
         _mongoClient = mongoClient;
         _options = options;
