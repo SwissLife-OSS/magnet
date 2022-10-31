@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureDevOps.WebHooks", "Azu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.AzureDevOps", "Client.AzureDevOps\Client.AzureDevOps.csproj", "{2940833F-CFD0-4174-B8C4-94D7FABA687F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authoring.UI", "Server\Authoring.UI\Authoring.UI.csproj", "{6CB23DB9-2297-4B21-99FF-35F02ADD5036}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -119,6 +121,10 @@ Global
 		{2940833F-CFD0-4174-B8C4-94D7FABA687F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2940833F-CFD0-4174-B8C4-94D7FABA687F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2940833F-CFD0-4174-B8C4-94D7FABA687F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CB23DB9-2297-4B21-99FF-35F02ADD5036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CB23DB9-2297-4B21-99FF-35F02ADD5036}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CB23DB9-2297-4B21-99FF-35F02ADD5036}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CB23DB9-2297-4B21-99FF-35F02ADD5036}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -142,6 +148,7 @@ Global
 		{3B73DEDF-74AF-42CE-A65E-068820FEA55B} = {A124B845-9851-4CC8-BEC0-8F78438EE202}
 		{2F06A4E1-BFFC-4956-AA10-3AD22837AA92} = {F60ACF2B-0DC1-4FDA-877E-82C1C217C431}
 		{2940833F-CFD0-4174-B8C4-94D7FABA687F} = {A124B845-9851-4CC8-BEC0-8F78438EE202}
+		{6CB23DB9-2297-4B21-99FF-35F02ADD5036} = {BD8383A7-9D59-4C9A-8500-F413E3833A69}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {55A77196-CAD4-4D29-9E89-8A6E961AB1B3}
