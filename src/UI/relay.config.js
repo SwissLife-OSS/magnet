@@ -12,10 +12,9 @@ module.exports = {
     Byte: "number",
     ByteArray: "string",
     PaginationAmount: "number",
-    Upload: "File | null",
+    Upload: "File",
   },
   eagerEsModules: false,
   noFutureProofEnums: true,
   language: "typescript",
-  // artifactDirectory: "./src/__generated__",
 };

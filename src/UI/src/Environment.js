@@ -15,9 +15,11 @@ const fetchGraphQL = async (query, variables) => {
   return await response.json();
 };
 const fetchFn = (params, variables) => fetchGraphQL(params.text, variables);
+
 export const createEnvironment = () =>
   new Environment({
     network: Network.create(fetchFn),
     store: new Store(new RecordSource()),
   });
+
 export const useEnvironment = () => useMemo(createEnvironment, []);

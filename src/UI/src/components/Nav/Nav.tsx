@@ -1,25 +1,27 @@
 import React, { useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
+import {
+  AppBar,
+  Box,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Toolbar,
+  Typography,
+  Button,
+} from "@mui/material";
 
 const drawerWidth = 240;
 const navItems = [{ name: "Home", link: "/" }];
 
 interface Props {
-  window?: () => Window;
+  viewer?: () => Window;
 }
 
 const useStyles = makeStyles({
@@ -38,7 +40,7 @@ const useStyles = makeStyles({
 });
 
 const Nav: React.FC = (props: Props) => {
-  const { window } = props;
+  const { viewer } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const classes = useStyles();
 
@@ -73,7 +75,7 @@ const Nav: React.FC = (props: Props) => {
   );
 
   const container =
-    window !== undefined ? () => window().document.body : undefined;
+    viewer !== undefined ? () => viewer().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>

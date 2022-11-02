@@ -1,30 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
-import Popover from "@mui/material/Popover";
-import Typography from "@mui/material/Typography";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import FormControl from "@mui/material/FormControl";
+import MessageListTable from "../MessageListTable";
 import { makeStyles } from "@mui/styles";
-import { Button } from "@mui/material";
 import { graphql } from "babel-plugin-relay/macro";
 import { usePaginationFragment } from "react-relay";
+import {
+  Button,
+  Box,
+  Popover,
+  Typography,
+  FormGroup,
+  FormControlLabel,
+  FormControl,
+  Checkbox,
+} from "@mui/material";
 
 const useStyles = makeStyles({
-  tableMargin: {
-    marginTop: "40px",
-  },
-  rowCursorType: {
-    cursor: "pointer",
-  },
   titlesPosition: {
     textAlign: "center",
     marginTop: "35px",
@@ -54,6 +44,29 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
 
   //Filter State
   const [messageFilter, setMessageFilter] = useState<null | Object>();
+
+  //Create Filter
+  const createFilter = () => {
+    const selectedFilters = Object.entries(filterState)
+      .filter(([type, value]) => value)
+      .map(([type]) =>
+        type === "workitem"
+          ? "WorkItem"
+          : type.charAt(0).toUpperCase() + type.slice(1)
+      );
+
+    const selectedFiltersLength = selectedFilters.length;
+
+    const filter = selectedFiltersLength
+      ? Array(selectedFiltersLength)
+          .fill(undefined)
+          .map((item, index) => ({ type: { eq: selectedFilters[index] } }))
+      : [];
+
+    setMessageFilter({
+      or: filter,
+    });
+  };
 
   //Filter Pop-Up
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -88,73 +101,20 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
     });
   };
 
-  //Create Filter
-  const createFilter = () => {
-    let selectedFilters = [];
-
-    for (const [type, value] of Object.entries(filterState)) {
-      let typeName = "";
-
-      if (type === "workitem") {
-        typeName = "WorkItem";
-      } else {
-        typeName = type.charAt(0).toUpperCase() + type.slice(1);
-      }
-
-      if (value === true) {
-        selectedFilters.push(typeName);
-      }
-    }
-
-    const selectedFiltersLength = selectedFilters.length;
-
-    if (selectedFiltersLength === 0) {
-      setMessageFilter({
-        or: [],
-      });
-    } else if (selectedFiltersLength === 1) {
-      setMessageFilter({ or: [{ type: { eq: selectedFilters[0] } }] });
-    } else if (selectedFiltersLength === 2) {
-      setMessageFilter({
-        or: [
-          { type: { eq: selectedFilters[0] } },
-          { type: { eq: selectedFilters[1] } },
-        ],
-      });
-    } else if (selectedFiltersLength === 3) {
-      setMessageFilter({
-        or: [
-          { type: { eq: selectedFilters[0] } },
-          { type: { eq: selectedFilters[1] } },
-          { type: { eq: selectedFilters[2] } },
-        ],
-      });
-    } else if (selectedFiltersLength === 4) {
-      setMessageFilter({
-        or: [
-          { type: { eq: selectedFilters[0] } },
-          { type: { eq: selectedFilters[1] } },
-          { type: { eq: selectedFilters[2] } },
-          { type: { eq: selectedFilters[3] } },   
-        ],
-      });
-    }
-  };
-
   //Render Count
-  const firstRender = useRef(false);
+  const firstRenderSkiped = useRef(false);
 
   useEffect(() => {
-    if (firstRender.current) {
+    if (firstRenderSkiped.current) {
       refetch({ where: messageFilter }, { fetchPolicy: "network-only" });
     } else {
-      firstRender.current = true;
+      firstRenderSkiped.current = true;
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messageFilter]);
 
-  let { data, hasNext, loadNext, refetch } = usePaginationFragment(
+  const { data, hasNext, loadNext, refetch } = usePaginationFragment(
     graphql`
       fragment MessageListFragment_query on Query
       @argumentDefinitions(
@@ -182,39 +142,22 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
     fragmentRef
   );
 
-  const getDateTime = (date: any) => {
-    let newDate = new Date(date);
-    return newDate.toLocaleString();
-  };
-
-  const getShortTitle = (title: any) => {
-    if (title != null && title.length > 50) {
-      return title.split(50) + "...";
-    } else {
-      return title;
-    }
-  };
-
   if (data == null) {
     return (
       <Box sx={{ display: "flex" }}>
-        <CircularProgress />
+        <Typography sx={{ fontWeight: "400", marginTop: "50px" }} variant="h5">
+          Data is loading...
+        </Typography>
       </Box>
     );
   }
 
-  const showInformation = () => {
-    if (data?.messages?.edges?.length === 0 || data?.messages == null) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  const showInformation = data?.messages?.edges?.length;
 
   return (
     <>
       <div className={classes.titlesPosition}>
-        {showInformation() && (
+        {!showInformation && (
           <>
             <h2 className={classes.title}>New data is displayed here</h2>
             <h4 className={classes.subTitle}>
@@ -223,47 +166,7 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
           </>
         )}
       </div>
-      <TableContainer className={classes.tableMargin}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell>To</TableCell>
-              <TableCell>When</TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell>Provider</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data?.messages?.edges?.map((element: any) => (
-              <TableRow
-                key={element?.node?.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                onClick={() => {
-                  window.location.href = `/message/${element?.node?.id}`;
-                }}
-                className={classes.rowCursorType}
-              >
-                <TableCell component="th" scope="row">
-                  {getShortTitle(element?.node?.title)}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {element?.node?.primaryReceipient}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {getDateTime(element?.node?.receivedAt)}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {element?.node?.type}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {element?.node?.provider}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <MessageListTable data={data} />
       <div className={classes.buttonPosition}>
         <Button
           variant="contained"
@@ -274,8 +177,8 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
         >
           Load More
         </Button>
-        <br></br>
-        <br></br>
+        <br />
+        <br />
         <Button aria-describedby={id} variant="contained" onClick={handleClick}>
           Filters
         </Button>
@@ -295,7 +198,7 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
         >
           <Typography sx={{ p: 2 }} variant="h6">
             <span className={classes.filterTitle}>Filters</span>
-            <br></br>
+            <br />
             <span className={classes.filterSubTitle}>Type</span>
             <Box sx={{ display: "flex" }}>
               <FormControl sx={{ m: 1 }} variant="standard">

@@ -1,9 +1,8 @@
 import React from "react";
 import { Nav } from "../../components";
 import { makeStyles } from "@mui/styles";
-import { Button } from "@mui/material";
-import { Grid } from "@mui/material";
 import { Link } from "react-router-dom";
+import { Grid, Button } from "@mui/material";
 
 const useStyles = makeStyles({
   errorTitle: {

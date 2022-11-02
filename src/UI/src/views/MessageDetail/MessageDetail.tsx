@@ -1,32 +1,34 @@
 import React from "react";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import SettingsIcon from "@mui/icons-material/Settings";
+import SendIcon from "@mui/icons-material/Send";
 import { useParams } from "react-router-dom";
 import { Nav } from "../../components";
 import { graphql } from "babel-plugin-relay/macro";
 import { useLazyLoadQuery } from "react-relay";
 import { MessageDetailQuery } from "./__generated__/MessageDetailQuery.graphql";
-import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import SettingsIcon from "@mui/icons-material/Settings";
-import SendIcon from "@mui/icons-material/Send";
-import Tooltip from "@mui/material/Tooltip";
+import {
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  Stack,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Tooltip,
+} from "@mui/material";
 
 const useStyles = makeStyles({
   dataSection: {
@@ -49,13 +51,14 @@ const useStyles = makeStyles({
   },
 });
 
+const pattern =
+  /^[0-9a-fA-F]{8}[0-9a-fA-F]{4}[0-9a-fA-F]{4}[0-9a-fA-F]{4}[0-9a-fA-F]{12}$/gi;
+
 const MessageDetail: React.FC = () => {
   const classes = useStyles();
   let { id } = useParams() ?? "";
 
   //UUID check
-  let pattern =
-    /^[0-9a-fA-F]{8}[0-9a-fA-F]{4}[0-9a-fA-F]{4}[0-9a-fA-F]{4}[0-9a-fA-F]{12}$/gi;
   const result = id?.match(pattern) ? true : false;
 
   if (id === undefined || !result) {
@@ -245,7 +248,7 @@ const MessageDetail: React.FC = () => {
             </Table>
           </TableContainer>
         </Grid>
-        {/* <Grid item xs={0} lg={2}></Grid> */}
+        <Grid item xs={0} lg={2}></Grid>
       </Grid>
     </>
   );

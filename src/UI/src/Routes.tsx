@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   Home as HomeView,
   NotFound as NotFoundView,
