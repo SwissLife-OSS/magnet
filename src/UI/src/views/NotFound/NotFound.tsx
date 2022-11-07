@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Nav } from "../../components";
-import { Grid, Button } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { Nav } from "../../components";
 
 const useStyles = makeStyles({
   imagePosition: {

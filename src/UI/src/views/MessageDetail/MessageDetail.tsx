@@ -1,34 +1,36 @@
-import React from "react";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import SettingsIcon from "@mui/icons-material/Settings";
-import SendIcon from "@mui/icons-material/Send";
-import { useParams } from "react-router-dom";
-import { Nav } from "../../components";
 import { graphql } from "babel-plugin-relay/macro";
+import React from "react";
 import { useLazyLoadQuery } from "react-relay";
-import { MessageDetailQuery } from "./__generated__/MessageDetailQuery.graphql";
-import { makeStyles } from "@mui/styles";
+import { useParams } from "react-router-dom";
 import {
+  AccessTime,
+  ChatBubbleOutline,
+  Send,
+  Settings,
+} from "@mui/icons-material/";
+import {
+  Box,
+  Card,
+  CardContent,
   Grid,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Stack,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Card,
-  CardContent,
-  Typography,
-  Box,
-  Stack,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Tooltip,
+  Typography,
 } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { Nav } from "../../components";
+import { MessageDetailQuery } from "./__generated__/MessageDetailQuery.graphql";
 
 const useStyles = makeStyles({
   dataSection: {
@@ -51,22 +53,11 @@ const useStyles = makeStyles({
   },
 });
 
-const pattern =
-  /^[0-9a-fA-F]{8}[0-9a-fA-F]{4}[0-9a-fA-F]{4}[0-9a-fA-F]{4}[0-9a-fA-F]{12}$/gi;
-
 const MessageDetail: React.FC = () => {
   const classes = useStyles();
-  let { id } = useParams() ?? "";
+  const { id } = useParams();
 
-  //UUID check
-  const result = id?.match(pattern) ? true : false;
-
-  if (id === undefined || !result) {
-    id = "";
-    window.location.href = "/message";
-  }
-
-  const { message } = useLazyLoadQuery<MessageDetailQuery>(
+  const data = useLazyLoadQuery<MessageDetailQuery>(
     graphql`
       query MessageDetailQuery($id: Uuid!) {
         message(id: $id) {
@@ -85,30 +76,51 @@ const MessageDetail: React.FC = () => {
         }
       }
     `,
-    { id: id },
+    { id: id ?? "" },
     { fetchPolicy: "store-or-network" }
   );
 
-  if (message == null) {
-    window.location.href = "/message";
-  }
+  // fetchQuery(
+  //   environment,
+  //   graphql`
+  //     query MessageDetailQuery($id: Uuid!) {
+  //       message(id: $id) {
+  //         id
+  //         title
+  //         type
+  //         receivedAt
+  //         provider
+  //         from
+  //         to
+  //         body
+  //         receivedLog {
+  //           clientName
+  //           receivedAt
+  //         }
+  //       }
+  //     }
+  //   `,
+  //   { id: id ?? "" },
+  //   { fetchPolicy: "store-or-network" }
+  // ).subscribe({
+  //   next: (response) => {
+  //     console.log("response");
+  //     console.log(response);
+  //   },
+  //   error: (error: any) => {
+  //     console.log("error");
+  //     console.log(error);
+  //   },
+  // });
 
-  const getDateTime = (date: any) => {
-    if (date == null) {
-      return "";
-    }
-    let newDate = new Date(date);
+  const getDateTime = (date: any) => new Date(date).toLocaleString() ?? "";
 
-    return newDate.toLocaleString();
-  };
-
-  const getBody = (message: any) => {
-    if (message.type === "Email") {
-      return <span dangerouslySetInnerHTML={{ __html: message?.body }} />;
-    } else {
-      return message.body;
-    }
-  };
+  const getBody = (message: any) =>
+    message.type === "Email" ? (
+      <span dangerouslySetInnerHTML={{ __html: message?.body }} />
+    ) : (
+      message.body
+    );
 
   return (
     <>
@@ -119,7 +131,7 @@ const MessageDetail: React.FC = () => {
           <Card className={classes.cardMargin} sx={{ minWidth: 275 }}>
             <CardContent>
               <Typography variant="h5" component="div">
-                {message?.title}
+                {data?.message?.title}
               </Typography>
             </CardContent>
             <Box sx={{ width: "95%", bgcolor: "background.paper" }}>
@@ -134,9 +146,9 @@ const MessageDetail: React.FC = () => {
                       disableRipple
                     >
                       <ListItemIcon>
-                        <ChatBubbleOutlineIcon />
+                        <ChatBubbleOutline />
                       </ListItemIcon>
-                      <ListItemText>{message?.type}</ListItemText>
+                      <ListItemText>{data?.message?.type}</ListItemText>
                     </ListItemButton>
                   </Tooltip>
                 </ListItem>
@@ -150,10 +162,10 @@ const MessageDetail: React.FC = () => {
                       disableRipple
                     >
                       <ListItemIcon>
-                        <AccessTimeIcon />
+                        <AccessTime />
                       </ListItemIcon>
                       <ListItemText>
-                        {getDateTime(message?.receivedAt)}
+                        {getDateTime(data?.message?.receivedAt)}
                       </ListItemText>
                     </ListItemButton>
                   </Tooltip>
@@ -168,9 +180,9 @@ const MessageDetail: React.FC = () => {
                       disableRipple
                     >
                       <ListItemIcon>
-                        <SettingsIcon />
+                        <Settings />
                       </ListItemIcon>
-                      <ListItemText>{message?.provider}</ListItemText>
+                      <ListItemText>{data?.message?.provider}</ListItemText>
                     </ListItemButton>
                   </Tooltip>
                 </ListItem>
@@ -184,9 +196,9 @@ const MessageDetail: React.FC = () => {
                       disableRipple
                     >
                       <ListItemIcon>
-                        <SendIcon />
+                        <Send />
                       </ListItemIcon>
-                      <ListItemText>{message?.from}</ListItemText>
+                      <ListItemText>{data?.message?.from}</ListItemText>
                     </ListItemButton>
                   </Tooltip>
                 </ListItem>
@@ -194,7 +206,7 @@ const MessageDetail: React.FC = () => {
             </Box>
             <CardContent>
               <h1 className={classes.bodyTitle}>Body</h1>
-              {getBody(message)}
+              {getBody(data?.message)}
             </CardContent>
           </Card>
         </Grid>
@@ -210,7 +222,7 @@ const MessageDetail: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {message?.to?.map((to) => (
+                {data?.message?.to?.map((to) => (
                   <TableRow
                     key={to}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -235,7 +247,7 @@ const MessageDetail: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {message?.receivedLog?.map((element) => (
+                {data?.message?.receivedLog?.map((element) => (
                   <TableRow
                     key={element?.clientName}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

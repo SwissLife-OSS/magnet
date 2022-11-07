@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
-import MessageListTable from "../MessageListTable";
-import { makeStyles } from "@mui/styles";
 import { graphql } from "babel-plugin-relay/macro";
+import React, { useEffect, useRef, useState } from "react";
 import { usePaginationFragment } from "react-relay";
 import {
-  Button,
   Box,
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
   Popover,
   Typography,
-  FormGroup,
-  FormControlLabel,
-  FormControl,
-  Checkbox,
 } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import MessageListTable from "../MessageListTable";
 
 const useStyles = makeStyles({
   titlesPosition: {
@@ -114,43 +114,33 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messageFilter]);
 
-  const { data, hasNext, loadNext, refetch } = usePaginationFragment(
-    graphql`
-      fragment MessageListFragment_query on Query
-      @argumentDefinitions(
-        cursor: { type: "String" }
-        count: { type: "Int", defaultValue: 30 }
-        where: { type: "MessageRecordFilterInput" }
-      )
-      @refetchable(queryName: "MessageListRefetchableQuery") {
-        messages(after: $cursor, first: $count, where: $where)
-          @connection(key: "ScreenerList_messages") {
-          edges {
-            node {
-              id
-              title
-              to
-              receivedAt
-              type
-              provider
-              primaryReceipient
+  const { data, hasNext, loadNext, refetch, isLoadingNext } =
+    usePaginationFragment(
+      graphql`
+        fragment MessageListFragment_query on Query
+        @argumentDefinitions(
+          cursor: { type: "String" }
+          count: { type: "Int", defaultValue: 30 }
+          where: { type: "MessageRecordFilterInput" }
+        )
+        @refetchable(queryName: "MessageListRefetchableQuery") {
+          messages(after: $cursor, first: $count, where: $where)
+            @connection(key: "ScreenerList_messages") {
+            edges {
+              node {
+                id
+                title
+                receivedAt
+                type
+                provider
+                primaryReceipient
+              }
             }
           }
         }
-      }
-    `,
-    fragmentRef
-  );
-
-  if (data == null) {
-    return (
-      <Box sx={{ display: "flex" }}>
-        <Typography sx={{ fontWeight: "400", marginTop: "50px" }} variant="h5">
-          Data is loading...
-        </Typography>
-      </Box>
+      `,
+      fragmentRef
     );
-  }
 
   const showInformation = data?.messages?.edges?.length;
 

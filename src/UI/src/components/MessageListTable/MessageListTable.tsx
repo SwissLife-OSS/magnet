@@ -1,6 +1,5 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Table,
   TableBody,
@@ -9,6 +8,8 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { messagePath } from "../../paths";
 
 const useStyles = makeStyles({
   tableMargin: {
@@ -22,19 +23,12 @@ const useStyles = makeStyles({
 
 const MessageListTable: React.FC<{ data: any }> = ({ data }) => {
   const classes = useStyles();
+  const navigate = useNavigate();
 
-  const getDateTime = (date: any) => {
-    let newDate = new Date(date);
-    return newDate.toLocaleString();
-  };
+  const getDateTime = (date: any) => new Date(date).toLocaleString() ?? "";
 
-  const getShortTitle = (title: any) => {
-    if (title != null && title.length > 50) {
-      return title.split(50) + "...";
-    } else {
-      return title;
-    }
-  };
+  const getShortTitle = (title: string) =>
+    title.length > 50 ? title.substring(0, 50) + "..." : title;
 
   return (
     <>
@@ -55,8 +49,9 @@ const MessageListTable: React.FC<{ data: any }> = ({ data }) => {
                 key={element?.node?.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 className={classes.rowStyle}
-                component={Link}
-                to={`/message/${element?.node?.id}`}
+                onClick={() => {
+                  navigate(messagePath(element?.node?.id));
+                }}
               >
                 <TableCell component="th" scope="row">
                   {getShortTitle(element?.node?.title)}

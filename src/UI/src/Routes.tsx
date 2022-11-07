@@ -1,24 +1,28 @@
 import React, { Suspense } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   Home as HomeView,
-  NotFound as NotFoundView,
   MessageDetail as MessageDetailView,
   MessageDetailError as MessageDetailErrorView,
+  NotFound as NotFoundView,
 } from "./views";
+import { ThemeProvider } from "@mui/styles";
+import theme from "./theme";
 
 const Routing: React.FC = () => {
   return (
     <Suspense fallback={<CircularProgress />}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<HomeView />} />
-          <Route path="/message/:id" element={<MessageDetailView />} />
-          <Route path="/message" element={<MessageDetailErrorView />} />
-          <Route path="*" element={<NotFoundView />} />
-        </Routes>
-      </Router>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <Routes>
+            <Route path="/" element={<HomeView />} />
+            <Route path="/message/:id" element={<MessageDetailView />} />
+            <Route path="/message" element={<MessageDetailErrorView />} />
+            <Route path="*" element={<NotFoundView />} />
+          </Routes>
+        </Router>
+      </ThemeProvider>
     </Suspense>
   );
 };

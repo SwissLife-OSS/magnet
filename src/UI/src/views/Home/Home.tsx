@@ -1,9 +1,9 @@
-import React from "react";
-import { Nav, MessageList } from "../../components";
-import { Grid } from "@mui/material";
-import { useLazyLoadQuery } from "react-relay";
-import { HomeQuery } from "./__generated__/HomeQuery.graphql";
 import { graphql } from "babel-plugin-relay/macro";
+import React from "react";
+import { useLazyLoadQuery } from "react-relay";
+import { Grid } from "@mui/material";
+import { MessageList, Nav } from "../../components";
+import { HomeQuery } from "./__generated__/HomeQuery.graphql";
 
 const Home: React.FC = () => {
   const data = useLazyLoadQuery<HomeQuery>(
