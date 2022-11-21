@@ -1,8 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { Nav } from "../../components";
+import { homePath } from "../../paths";
 
 const useStyles = makeStyles({
   errorTitle: {
@@ -14,9 +14,6 @@ const useStyles = makeStyles({
     fontSize: "15px",
     fontWeight: 500,
   },
-  returnLink: {
-    textDecoration: "none",
-  },
   returnButton: {
     marginTop: "5px !important",
   },
@@ -27,10 +24,10 @@ const useStyles = makeStyles({
 
 const MessageDetailError: React.FC = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
 
   return (
     <>
-      <Nav />
       <Grid container>
         <Grid item xs={0} lg={2}></Grid>
         <Grid className={classes.errorSection} item xs={12} lg={8}>
@@ -40,11 +37,13 @@ const MessageDetailError: React.FC = () => {
           <h2 className={classes.errorDescription}>
             Make sure you have a correct ID in your request.
           </h2>
-          <Link className={classes.returnLink} to={"/"}>
-            <Button className={classes.returnButton} variant="contained">
-              Go to Home
-            </Button>
-          </Link>
+          <Button
+            className={classes.returnButton}
+            variant="contained"
+            onClick={() => navigate(homePath)}
+          >
+            Go to Home
+          </Button>
         </Grid>
         <Grid item xs={0} lg={2}></Grid>
       </Grid>

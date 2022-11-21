@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a6a112bbffc6b7d5e9076d867aecff55>>
+ * @generated SignedSource<<a32f174adaa3da8b78b03c6526503b02>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -112,7 +112,7 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "primaryReceipient",
+                    "name": "to",
                     "storageKey": null
                   },
                   {
@@ -177,12 +177,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "a876c6846aa8b13be463e98b694c6479",
+    "cacheID": "53a2ff79264c94c93bbcc1ba9e068606",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery {\n  ...MessageListFragment_query\n}\n\nfragment MessageListFragment_query on Query {\n  messages(first: 30) {\n    edges {\n      node {\n        id\n        title\n        receivedAt\n        type\n        provider\n        primaryReceipient\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeQuery {\n  ...MessageListFragment_query\n}\n\nfragment MessageListFragment_query on Query {\n  messages(first: 30) {\n    edges {\n      node {\n        id\n        title\n        receivedAt\n        type\n        provider\n        to\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();

@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -12,16 +13,39 @@ import { makeStyles } from "@mui/styles";
 import { messagePath } from "../../paths";
 
 const useStyles = makeStyles({
-  tableMargin: {
-    marginTop: "40px",
-  },
   rowStyle: {
     cursor: "pointer",
     textDecoration: "none",
   },
+  loadMoreButtonPosition: {
+    textAlign: "center",
+    marginTop: "40px",
+    marginBottom: "40px",
+  },
 });
 
-const MessageListTable: React.FC<{ data: any }> = ({ data }) => {
+interface MessageList {
+  readonly messages: {
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly id: string;
+        readonly title: string;
+        readonly to: ReadonlyArray<string | null> | null;
+        readonly receivedAt: string;
+        readonly type: string;
+        readonly provider: string;
+      } | null;
+    }> | null;
+  } | null;
+  hasNext: boolean;
+  loadNext(count: number): void;
+}
+
+const MessageListTable: React.FC<MessageList> = ({
+  messages,
+  hasNext,
+  loadNext,
+}) => {
   const classes = useStyles();
   const navigate = useNavigate();
 
@@ -32,8 +56,8 @@ const MessageListTable: React.FC<{ data: any }> = ({ data }) => {
 
   return (
     <>
-      <TableContainer className={classes.tableMargin}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableContainer sx={{ maxHeight: (window.innerHeight / 3) * 1.7 }}>
+        <Table stickyHeader sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
               <TableCell>Title</TableCell>
@@ -44,7 +68,7 @@ const MessageListTable: React.FC<{ data: any }> = ({ data }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.messages?.edges?.map((element: any) => (
+            {messages?.edges?.map((element: any) => (
               <TableRow
                 key={element?.node?.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -57,7 +81,7 @@ const MessageListTable: React.FC<{ data: any }> = ({ data }) => {
                   {getShortTitle(element?.node?.title)}
                 </TableCell>
                 <TableCell component="th" scope="row">
-                  {element?.node?.primaryReceipient}
+                  {element?.node?.to[0]}
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {getDateTime(element?.node?.receivedAt)}
@@ -73,6 +97,17 @@ const MessageListTable: React.FC<{ data: any }> = ({ data }) => {
           </TableBody>
         </Table>
       </TableContainer>
+      <div className={classes.loadMoreButtonPosition}>
+        <Button
+          variant="contained"
+          disabled={!hasNext}
+          onClick={() => {
+            loadNext(30);
+          }}
+        >
+          Load More
+        </Button>
+      </div>
     </>
   );
 };

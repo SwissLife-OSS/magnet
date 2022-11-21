@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d56a51aac2c7d8bf5dbe6f535d9da5c7>>
+ * @generated SignedSource<<5b70a56a624974c7e9f60d6fea3a9f7a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -240,7 +240,7 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "primaryReceipient",
+                    "name": "to",
                     "storageKey": null
                   },
                   {
@@ -305,16 +305,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "82190efbb7ca3964093ddc2772d30e08",
+    "cacheID": "f36c5b999b2d2cb8d26dba83ccaa7e71",
     "id": null,
     "metadata": {},
     "name": "MessageListRefetchableQuery",
     "operationKind": "query",
-    "text": "query MessageListRefetchableQuery(\n  $count: Int = 30\n  $cursor: String\n  $where: MessageRecordFilterInput\n) {\n  ...MessageListFragment_query_mjR8k\n}\n\nfragment MessageListFragment_query_mjR8k on Query {\n  messages(after: $cursor, first: $count, where: $where) {\n    edges {\n      node {\n        id\n        title\n        receivedAt\n        type\n        provider\n        primaryReceipient\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query MessageListRefetchableQuery(\n  $count: Int = 30\n  $cursor: String\n  $where: MessageRecordFilterInput\n) {\n  ...MessageListFragment_query_mjR8k\n}\n\nfragment MessageListFragment_query_mjR8k on Query {\n  messages(after: $cursor, first: $count, where: $where) {\n    edges {\n      node {\n        id\n        title\n        receivedAt\n        type\n        provider\n        to\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "9640112626416308f6ba5ce9f84e0762";
+(node as any).hash = "c58292c5f9e8a0b5cf1c34bfdfa3de5e";
 
 export default node;
