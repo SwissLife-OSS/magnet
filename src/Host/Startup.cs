@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Authoring.UI;
 using Magnet.GraphQL;
 using Magnet.Store.Mongo;
 using Microsoft.AspNetCore.Authentication;
@@ -86,5 +87,7 @@ public class Startup
             endpoints.MapControllers();
             endpoints.MapGraphQL();
         });
+
+        app.UseMagnetUi();
     }
 }

@@ -4,7 +4,7 @@ namespace Authoring.UI;
 
 public static class EmbeddedUiMiddlewareExtensions
 {
-    public static IApplicationBuilder UseConfixUi(this IApplicationBuilder builder)
+    public static IApplicationBuilder UseMagnetUi(this IApplicationBuilder builder)
     {
         return builder.UseMiddleware<EmbeddedUiMiddleware>();
     }
