@@ -18,13 +18,12 @@ public class EmailController : Controller
         _messageSink = messageSink;
     }
 
-
     [Route("")]
     [HttpPost]
     public async Task<IActionResult> Email()
     {
         var parser = new WebhookParser();
-        InboundEmail inboundEmail = parser.ParseInboundEmailWebhook(Request.Body);
+        InboundEmail inboundEmail = await parser.ParseInboundEmailWebhookAsync(Request.Body);
         await _messageSink.ProcessMessageAsync(CreateMessage(inboundEmail));
         return Ok();
     }
@@ -34,9 +33,8 @@ public class EmailController : Controller
         var properties = new Dictionary<string, string>();
         properties.Add("Html", inboundEmail.Html);
         properties.Add("Subject", inboundEmail.Subject);
-        properties.Add("SendGrid-Message-ID",
-               inboundEmail.Headers
-                            .FirstOrDefault(x => x.Key == "Message-ID").Value);
+        properties.Add("SendGrid-Message-ID", inboundEmail.Headers
+            .FirstOrDefault(x => x.Key == "Message-ID").Value);
 
         return new MagnetMessage
         {

@@ -4,15 +4,16 @@ using System.Threading.Tasks;
 
 namespace Magnet;
 
-public interface IMessageBus : IDisposable
+public interface IMessageBus : IAsyncDisposable
 {
     Task<string> PublishAsync(MagnetMessage message);
 
-    void RegisterMessageHandler(
+    Task RegisterMessageHandler(
         string name,
-        Func<MagnetMessage, CancellationToken, Task> handler);
+        Func<MagnetMessage, CancellationToken, Task> handler,
+        CancellationToken cancellationToken);
 
     Task<MagnetMessage> GetNextAsync(string name, CancellationToken cancellationToken);
-    Task<string> SubscribeAsync(string name);
-    Task UnSubscribeAsync(string name);
+    Task<string> SubscribeAsync(string name, CancellationToken cancellationToken);
+    Task UnSubscribeAsync(string name, CancellationToken cancellationToken);
 }

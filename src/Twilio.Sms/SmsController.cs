@@ -18,7 +18,7 @@ public class SmsController : Controller
 
     [Route("")]
     [HttpPost]
-    public async Task<IActionResult> Sms(TwilioSmsRequest smsRequest)
+    public async Task<IActionResult> Sms([FromForm]TwilioSmsRequest smsRequest)
     {
         await _messageSink.ProcessMessageAsync(CreateMessage(smsRequest));
         return Ok();
