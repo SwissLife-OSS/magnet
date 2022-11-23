@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
 
-namespace Authoring.UI;
+namespace Hosting.UI;
 
 internal sealed class EmbeddedUiMiddleware
 {

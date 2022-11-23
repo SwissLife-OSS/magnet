@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureDevOps.WebHooks", "Azu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.AzureDevOps", "Client.AzureDevOps\Client.AzureDevOps.csproj", "{2940833F-CFD0-4174-B8C4-94D7FABA687F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authoring.UI", "Server\Authoring.UI\Authoring.UI.csproj", "{6CB23DB9-2297-4B21-99FF-35F02ADD5036}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hosting.UI", "Server\Hosting.UI\Hosting.UI.csproj", "{6CB23DB9-2297-4B21-99FF-35F02ADD5036}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

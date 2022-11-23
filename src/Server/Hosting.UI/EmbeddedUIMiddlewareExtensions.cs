@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 
-namespace Authoring.UI;
+namespace Hosting.UI;
 
 public static class EmbeddedUiMiddlewareExtensions
 {
