@@ -1,1 +1,1 @@
-export { default } from "./ReceiverList"
+export * from "./ReceiverList"

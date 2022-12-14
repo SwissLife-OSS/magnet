@@ -1,1 +1,1 @@
-export { default } from "./MessageDetail"
+export * from "./MessageDetail"

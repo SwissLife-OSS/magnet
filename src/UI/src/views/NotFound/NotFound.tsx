@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-const NotFound: React.FC = () => {
+export const NotFound: React.FC = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
@@ -55,5 +55,3 @@ const NotFound: React.FC = () => {
     </Grid>
   );
 };
-
-export default NotFound;

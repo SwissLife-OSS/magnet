@@ -1,1 +1,1 @@
-export { default } from "./MessageDetailError"
+export * from "./MessageDetailError"

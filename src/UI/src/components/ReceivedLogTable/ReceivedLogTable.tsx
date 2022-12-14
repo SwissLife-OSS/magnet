@@ -18,16 +18,24 @@ const useStyles = makeStyles({
   tableMargin: {
     marginBottom: "50px",
   },
+  tableWidth: {
+    minWidth: 650,
+  },
+  tableRow: {
+    "&:last-child td, &:last-child th": { border: 0 },
+  },
 });
 
-interface ReceivedLog {
+interface ReceivedLogTableProps {
   receivedLog: ReadonlyArray<{
     clientName: string | null;
     receivedAt: string;
   } | null> | null;
 }
 
-const ReceivedLogTable: React.FC<ReceivedLog> = ({ receivedLog }) => {
+export const ReceivedLogTable: React.FC<ReceivedLogTableProps> = ({
+  receivedLog,
+}) => {
   const classes = useStyles();
 
   const getDateTime = (date: any) => new Date(date).toLocaleString() ?? "";
@@ -36,7 +44,7 @@ const ReceivedLogTable: React.FC<ReceivedLog> = ({ receivedLog }) => {
     <>
       <h1 className={classes.dataTitle}>Received Log</h1>
       <TableContainer className={classes.tableMargin}>
-        <Table sx={{ minWidth: 650 }}>
+        <Table className={classes.tableWidth}>
           <TableHead>
             <TableRow>
               <TableCell>Client name</TableCell>
@@ -45,10 +53,7 @@ const ReceivedLogTable: React.FC<ReceivedLog> = ({ receivedLog }) => {
           </TableHead>
           <TableBody>
             {receivedLog?.map((element) => (
-              <TableRow
-                key={element?.clientName}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
+              <TableRow className={classes.tableRow} key={element?.clientName}>
                 <TableCell>{element?.clientName}</TableCell>
                 <TableCell>{getDateTime(element?.receivedAt)}</TableCell>
               </TableRow>
@@ -59,5 +64,3 @@ const ReceivedLogTable: React.FC<ReceivedLog> = ({ receivedLog }) => {
     </>
   );
 };
-
-export default ReceivedLogTable;

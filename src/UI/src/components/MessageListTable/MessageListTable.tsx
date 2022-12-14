@@ -22,9 +22,18 @@ const useStyles = makeStyles({
     marginTop: "40px",
     marginBottom: "40px",
   },
+  tableContainer: {
+    maxHeight: (window.innerHeight / 3) * 1.7,
+  },
+  tableWidth: {
+    minWidth: 650,
+  },
+  tableRow: {
+    "&:last-child td, &:last-child th": { border: 0 },
+  },
 });
 
-interface MessageList {
+interface MessageListTableProps {
   readonly messages: {
     readonly edges: ReadonlyArray<{
       readonly node: {
@@ -41,7 +50,7 @@ interface MessageList {
   loadNext(count: number): void;
 }
 
-const MessageListTable: React.FC<MessageList> = ({
+export const MessageListTable: React.FC<MessageListTableProps> = ({
   messages,
   hasNext,
   loadNext,
@@ -56,8 +65,8 @@ const MessageListTable: React.FC<MessageList> = ({
 
   return (
     <>
-      <TableContainer sx={{ maxHeight: (window.innerHeight / 3) * 1.7 }}>
-        <Table stickyHeader sx={{ minWidth: 650 }}>
+      <TableContainer className={classes.tableContainer}>
+        <Table stickyHeader className={classes.tableWidth}>
           <TableHead>
             <TableRow>
               <TableCell>Title</TableCell>
@@ -71,8 +80,7 @@ const MessageListTable: React.FC<MessageList> = ({
             {messages?.edges?.map((element: any) => (
               <TableRow
                 key={element?.node?.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                className={classes.rowStyle}
+                className={(classes.rowStyle, classes.tableRow)}
                 onClick={() => {
                   navigate(messagePath(element?.node?.id));
                 }}
@@ -111,5 +119,3 @@ const MessageListTable: React.FC<MessageList> = ({
     </>
   );
 };
-
-export default MessageListTable;

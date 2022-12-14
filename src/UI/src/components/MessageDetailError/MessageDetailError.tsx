@@ -14,41 +14,28 @@ const useStyles = makeStyles({
     fontSize: "15px",
     fontWeight: 500,
   },
-  returnButton: {
-    marginTop: "5px !important",
-  },
   errorSection: {
     textAlign: "center",
   },
 });
 
-const MessageDetailError: React.FC = () => {
+export const MessageDetailError: React.FC = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
   return (
-    <>
-      <Grid container>
-        <Grid item xs={0} lg={2}></Grid>
-        <Grid className={classes.errorSection} item xs={12} lg={8}>
-          <h1 className={classes.errorTitle}>
-            Your Message could not be found
-          </h1>
-          <h2 className={classes.errorDescription}>
-            Make sure you have a correct ID in your request.
-          </h2>
-          <Button
-            className={classes.returnButton}
-            variant="contained"
-            onClick={() => navigate(homePath)}
-          >
-            Go to Home
-          </Button>
-        </Grid>
-        <Grid item xs={0} lg={2}></Grid>
+    <Grid container>
+      <Grid item xs={0} lg={2}></Grid>
+      <Grid className={classes.errorSection} item xs={12} lg={8}>
+        <h1 className={classes.errorTitle}>Your Message could not be found</h1>
+        <h2 className={classes.errorDescription}>
+          Make sure you have a correct ID in your request.
+        </h2>
+        <Button variant="contained" onClick={() => navigate(homePath)}>
+          Go to Home
+        </Button>
       </Grid>
-    </>
+      <Grid item xs={0} lg={2}></Grid>
+    </Grid>
   );
 };
-
-export default MessageDetailError;

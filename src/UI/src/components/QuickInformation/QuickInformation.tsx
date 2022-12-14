@@ -23,14 +23,23 @@ import { makeStyles } from "@mui/styles";
 const useStyles = makeStyles({
   cardMargin: {
     marginTop: "30px",
+    minWidth: 275,
   },
   bodyTitle: {
     fontSize: "20px",
     fontWeight: "400",
   },
+  listBox: {
+    width: "95%",
+  },
 });
 
-interface QuickInformations {
+const listItemStyle = {
+  "&:hover": { backgroundColor: "transparent" },
+  cursor: "default",
+};
+
+interface QuickInformationProps {
   readonly message: {
     readonly title: string;
     readonly type: string;
@@ -41,7 +50,9 @@ interface QuickInformations {
   };
 }
 
-const QuickInformation: React.FC<QuickInformations> = ({ message }) => {
+export const QuickInformation: React.FC<QuickInformationProps> = ({
+  message,
+}) => {
   const classes = useStyles();
 
   const getDateTime = (date: any) => new Date(date).toLocaleString() ?? "";
@@ -54,23 +65,17 @@ const QuickInformation: React.FC<QuickInformations> = ({ message }) => {
     );
 
   return (
-    <Card className={classes.cardMargin} sx={{ minWidth: 275 }}>
+    <Card className={classes.cardMargin}>
       <CardContent>
         <Typography variant="h5" component="div">
           {message?.title}
         </Typography>
       </CardContent>
-      <Box sx={{ width: "95%", bgcolor: "background.paper" }}>
+      <Box className={classes.listBox}>
         <List component={Stack} direction="row">
           <ListItem disablePadding>
             <Tooltip title="Type" arrow>
-              <ListItemButton
-                sx={{
-                  "&:hover": { backgroundColor: "transparent" },
-                  cursor: "default",
-                }}
-                disableRipple
-              >
+              <ListItemButton sx={listItemStyle} disableRipple>
                 <ListItemIcon>
                   <ChatBubbleOutline />
                 </ListItemIcon>
@@ -80,13 +85,7 @@ const QuickInformation: React.FC<QuickInformations> = ({ message }) => {
           </ListItem>
           <ListItem disablePadding>
             <Tooltip title="Received At" arrow>
-              <ListItemButton
-                sx={{
-                  "&:hover": { backgroundColor: "transparent" },
-                  cursor: "default",
-                }}
-                disableRipple
-              >
+              <ListItemButton sx={listItemStyle} disableRipple>
                 <ListItemIcon>
                   <AccessTime />
                 </ListItemIcon>
@@ -96,13 +95,7 @@ const QuickInformation: React.FC<QuickInformations> = ({ message }) => {
           </ListItem>
           <ListItem disablePadding>
             <Tooltip title="Provider" arrow>
-              <ListItemButton
-                sx={{
-                  "&:hover": { backgroundColor: "transparent" },
-                  cursor: "default",
-                }}
-                disableRipple
-              >
+              <ListItemButton sx={listItemStyle} disableRipple>
                 <ListItemIcon>
                   <Settings />
                 </ListItemIcon>
@@ -112,13 +105,7 @@ const QuickInformation: React.FC<QuickInformations> = ({ message }) => {
           </ListItem>
           <ListItem disablePadding>
             <Tooltip title="From" arrow>
-              <ListItemButton
-                sx={{
-                  "&:hover": { backgroundColor: "transparent" },
-                  cursor: "default",
-                }}
-                disableRipple
-              >
+              <ListItemButton sx={listItemStyle} disableRipple>
                 <ListItemIcon>
                   <Send />
                 </ListItemIcon>
@@ -135,5 +122,3 @@ const QuickInformation: React.FC<QuickInformations> = ({ message }) => {
     </Card>
   );
 };
-
-export default QuickInformation;

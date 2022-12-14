@@ -1,5 +1,5 @@
-export { default as Home } from "./Home"
-export { default as NotFound } from "./NotFound"
-export { default as MessageDetail } from "./MessageDetail"
-export { default as AppError } from "./AppError"
+export * from "./Home"
+export * from "./NotFound"
+export * from "./MessageDetail"
+export * from "./AppError"
 

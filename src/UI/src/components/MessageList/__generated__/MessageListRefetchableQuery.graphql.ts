@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5b70a56a624974c7e9f60d6fea3a9f7a>>
+ * @generated SignedSource<<1a4afa999c30b888af442e99839ad61b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -100,7 +100,7 @@ export type MessageListRefetchableQuery$variables = {
   where?: MessageRecordFilterInput | null;
 };
 export type MessageListRefetchableQuery$data = {
-  readonly " $fragmentSpreads": FragmentRefs<"MessageListFragment_query">;
+  readonly " $fragmentSpreads": FragmentRefs<"MessageList_data">;
 };
 export type MessageListRefetchableQuery = {
   response: MessageListRefetchableQuery$data;
@@ -165,7 +165,7 @@ return {
           (v1/*: any*/)
         ],
         "kind": "FragmentSpread",
-        "name": "MessageListFragment_query"
+        "name": "MessageList_data"
       }
     ],
     "type": "Query",
@@ -305,16 +305,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f36c5b999b2d2cb8d26dba83ccaa7e71",
+    "cacheID": "5922746489419b422061aeb6bad6f6ae",
     "id": null,
     "metadata": {},
     "name": "MessageListRefetchableQuery",
     "operationKind": "query",
-    "text": "query MessageListRefetchableQuery(\n  $count: Int = 30\n  $cursor: String\n  $where: MessageRecordFilterInput\n) {\n  ...MessageListFragment_query_mjR8k\n}\n\nfragment MessageListFragment_query_mjR8k on Query {\n  messages(after: $cursor, first: $count, where: $where) {\n    edges {\n      node {\n        id\n        title\n        receivedAt\n        type\n        provider\n        to\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query MessageListRefetchableQuery(\n  $count: Int = 30\n  $cursor: String\n  $where: MessageRecordFilterInput\n) {\n  ...MessageList_data_mjR8k\n}\n\nfragment MessageList_data_mjR8k on Query {\n  messages(after: $cursor, first: $count, where: $where) {\n    edges {\n      node {\n        id\n        title\n        receivedAt\n        type\n        provider\n        to\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "c58292c5f9e8a0b5cf1c34bfdfa3de5e";
+(node as any).hash = "701ee56ddadbb96f47fcebfa78b09e31";
 
 export default node;

@@ -8,7 +8,7 @@ import {
   NotFound as NotFoundView,
 } from "./views";
 
-const Routing: React.FC = () => {
+export const Routing: React.FC = () => {
   return (
     <Router>
       <ErrorBoundary>
@@ -22,5 +22,3 @@ const Routing: React.FC = () => {
     </Router>
   );
 };
-
-export default Routing;

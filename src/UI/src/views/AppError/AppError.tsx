@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   },
 });
 
-const AppError: React.FC = () => {
+export const AppError: React.FC = () => {
   const classes = useStyles();
 
   return (
@@ -41,5 +41,3 @@ const AppError: React.FC = () => {
     </Grid>
   );
 };
-
-export default AppError;

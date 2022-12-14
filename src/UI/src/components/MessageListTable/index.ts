@@ -1,1 +1,1 @@
-export { default } from "./MessageListTable"
+export * from "./MessageListTable"

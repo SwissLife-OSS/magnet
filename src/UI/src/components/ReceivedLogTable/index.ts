@@ -1,1 +1,1 @@
-export { default } from "./ReceivedLogTable"
+export * from "./ReceivedLogTable"

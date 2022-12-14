@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a32f174adaa3da8b78b03c6526503b02>>
+ * @generated SignedSource<<5b2f3afe0a833caf903b4f4434c3d26a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,7 +12,7 @@ import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type HomeQuery$variables = {};
 export type HomeQuery$data = {
-  readonly " $fragmentSpreads": FragmentRefs<"MessageListFragment_query">;
+  readonly " $fragmentSpreads": FragmentRefs<"MessageList_data">;
 };
 export type HomeQuery = {
   response: HomeQuery$data;
@@ -37,7 +37,7 @@ return {
       {
         "args": null,
         "kind": "FragmentSpread",
-        "name": "MessageListFragment_query"
+        "name": "MessageList_data"
       }
     ],
     "type": "Query",
@@ -177,16 +177,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "53a2ff79264c94c93bbcc1ba9e068606",
+    "cacheID": "846371a0e53fdede6b0283f83ece7d47",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery {\n  ...MessageListFragment_query\n}\n\nfragment MessageListFragment_query on Query {\n  messages(first: 30) {\n    edges {\n      node {\n        id\n        title\n        receivedAt\n        type\n        provider\n        to\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeQuery {\n  ...MessageList_data\n}\n\nfragment MessageList_data on Query {\n  messages(first: 30) {\n    edges {\n      node {\n        id\n        title\n        receivedAt\n        type\n        provider\n        to\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "3276b52e0808248d7891ce49cc7999dd";
+(node as any).hash = "6c89c6812ce907cc528542be79380e59";
 
 export default node;

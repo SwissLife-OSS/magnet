@@ -1,1 +1,1 @@
-export { default } from "./MessageFilter"
+export * from "./MessageFilter"

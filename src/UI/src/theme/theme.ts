@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material/styles"
 
-const theme = createTheme({
+export const theme = createTheme({
     typography: {
         fontFamily: [
             'Roboto',
@@ -20,5 +20,3 @@ const theme = createTheme({
     },
     
 });
-
-export default theme

@@ -15,20 +15,26 @@ const useStyles = makeStyles({
     marginTop: "35px",
     fontWeight: "400",
   },
+  tableWidth: {
+    minWidth: 650,
+  },
+  tableRow: {
+    "&:last-child td, &:last-child th": { border: 0 },
+  },
 });
 
-interface Receivers {
+interface ReceiverListProps {
   receivers: ReadonlyArray<string | null> | null;
 }
 
-const ReceiverList: React.FC<Receivers> = ({ receivers }) => {
+export const ReceiverList: React.FC<ReceiverListProps> = ({ receivers }) => {
   const classes = useStyles();
 
   return (
     <>
       <h1 className={classes.dataTitle}>To</h1>
       <TableContainer>
-        <Table sx={{ minWidth: 650 }}>
+        <Table className={classes.tableWidth}>
           <TableHead>
             <TableRow>
               <TableCell>Receivers</TableCell>
@@ -36,10 +42,7 @@ const ReceiverList: React.FC<Receivers> = ({ receivers }) => {
           </TableHead>
           <TableBody>
             {receivers?.map((receiver) => (
-              <TableRow
-                key={receiver}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
+              <TableRow key={receiver} className={classes.tableRow}>
                 <TableCell>{receiver}</TableCell>
               </TableRow>
             ))}
@@ -49,5 +52,3 @@ const ReceiverList: React.FC<Receivers> = ({ receivers }) => {
     </>
   );
 };
-
-export default ReceiverList;

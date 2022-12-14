@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   },
 });
 
-const MessageDetail: React.FC = () => {
+export const MessageDetail: React.FC = () => {
   const classes = useStyles();
   const { id } = useParams();
 
@@ -71,5 +71,3 @@ const MessageDetail: React.FC = () => {
     </>
   );
 };
-
-export default MessageDetail;

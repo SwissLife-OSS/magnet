@@ -1,1 +1,1 @@
-export { default } from "./QuickInformation"
+export * from "./QuickInformation"

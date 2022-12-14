@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d760dbfd91bda1aafc881472d8a4d099>>
+ * @generated SignedSource<<2a18a97b476c7b8387c65e04bc0ea606>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,7 +10,7 @@
 
 import { ReaderFragment, RefetchableFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type MessageListFragment_query$data = {
+export type MessageList_data$data = {
   readonly messages: {
     readonly edges: ReadonlyArray<{
       readonly node: {
@@ -23,11 +23,11 @@ export type MessageListFragment_query$data = {
       } | null;
     }> | null;
   } | null;
-  readonly " $fragmentType": "MessageListFragment_query";
+  readonly " $fragmentType": "MessageList_data";
 };
-export type MessageListFragment_query$key = {
-  readonly " $data"?: MessageListFragment_query$data;
-  readonly " $fragmentSpreads": FragmentRefs<"MessageListFragment_query">;
+export type MessageList_data$key = {
+  readonly " $data"?: MessageList_data$data;
+  readonly " $fragmentSpreads": FragmentRefs<"MessageList_data">;
 };
 
 const node: ReaderFragment = (function(){
@@ -75,7 +75,7 @@ return {
       "operation": require('./MessageListRefetchableQuery.graphql')
     }
   },
-  "name": "MessageListFragment_query",
+  "name": "MessageList_data",
   "selections": [
     {
       "alias": "messages",
@@ -203,6 +203,6 @@ return {
 };
 })();
 
-(node as any).hash = "c58292c5f9e8a0b5cf1c34bfdfa3de5e";
+(node as any).hash = "701ee56ddadbb96f47fcebfa78b09e31";
 
 export default node;

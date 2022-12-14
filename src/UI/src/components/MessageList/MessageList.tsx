@@ -2,8 +2,9 @@ import { graphql } from "babel-plugin-relay/macro";
 import React, { useState } from "react";
 import { usePaginationFragment } from "react-relay";
 import { makeStyles } from "@mui/styles";
-
-import { MessageFilter, MessageListTable } from "../";
+import { MessageFilter } from "../MessageFilter";
+import { MessageListTable } from "../MessageListTable";
+import { MessageList_data$key } from "./__generated__/MessageList_data.graphql";
 
 const useStyles = makeStyles({
   informationPosition: {
@@ -24,16 +25,27 @@ const useStyles = makeStyles({
   },
 });
 
-const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
+export interface MessageListFilterState {
+  sms: boolean;
+  email: boolean;
+  inbox: boolean;
+  workItem: boolean;
+}
+
+export type MessageListDataProp = MessageList_data$key;
+
+interface MessageListProps {
+  queryRef: MessageListDataProp;
+}
+
+export const MessageList: React.FC<MessageListProps> = ({ queryRef }) => {
   const classes = useStyles();
-  const [filterState] = useState({
+  const [filterState, setFilterState] = useState<MessageListFilterState>({
     sms: true,
     email: true,
     inbox: true,
     workItem: true,
   });
-
-  type ObjectKey = keyof typeof filterState;
 
   const createFilter = () => {
     const selectedFilters = Object.entries(filterState)
@@ -42,24 +54,23 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
 
     const selectedFiltersLength = selectedFilters.length;
 
-    const filter = selectedFiltersLength
-      ? Array(selectedFiltersLength)
-          .fill(undefined)
-          .map((item, index) => ({ type: { eq: selectedFilters[index] } }))
-      : [];
+    const filter = Array(selectedFiltersLength)
+      .fill(undefined)
+      .map((item, index) => ({ type: { eq: selectedFilters[index] } }));
 
-    refetch({ where: { or: filter } }, { fetchPolicy: "network-only" });
+    selectedFiltersLength !== 4
+      ? refetch({ where: { or: filter } }, { fetchPolicy: "network-only" })
+      : refetch({ where: null }, { fetchPolicy: "network-only" });
   };
 
-  const handleClick = (name: string) => {
-    const filterName = name as ObjectKey;
-    filterState[filterName] = !filterState[filterName];
+  const onFilterChange = (filters: MessageListFilterState) => {
+    setFilterState(filters);
     createFilter();
   };
 
   const { data, hasNext, loadNext, refetch } = usePaginationFragment(
     graphql`
-      fragment MessageListFragment_query on Query
+      fragment MessageList_data on Query
       @argumentDefinitions(
         cursor: { type: "String" }
         count: { type: "Int", defaultValue: 30 }
@@ -81,7 +92,7 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
         }
       }
     `,
-    fragmentRef
+    queryRef
   );
 
   const showInformation = data?.messages?.edges?.length;
@@ -89,7 +100,10 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
   return (
     <>
       <h2 className={classes.filterTitle}> Filters</h2>
-      <MessageFilter filterState={filterState} handleClick={handleClick} />
+      <MessageFilter
+        filterState={filterState}
+        onFilterChange={onFilterChange}
+      />
       {!showInformation && (
         <div className={classes.informationPosition}>
           <h2 className={classes.informationTitle}>
@@ -100,7 +114,7 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
           </h4>
         </div>
       )}
-      {showInformation > 0 && (
+      {(showInformation ?? 0) > 0 && (
         <MessageListTable
           messages={data?.messages}
           hasNext={hasNext}
@@ -110,5 +124,3 @@ const MessageList: React.FC<{ fragmentRef: any }> = ({ fragmentRef }) => {
     </>
   );
 };
-
-export default MessageList;
