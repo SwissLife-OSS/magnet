@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
+using HotChocolate.Data;
 using HotChocolate.Types;
 
 namespace Magnet.GraphQL;
@@ -14,6 +15,8 @@ namespace Magnet.GraphQL;
 public  class MessageQueries
 {
     [Authorize(Policy = "Magnet.Read")]
+    [UsePaging]
+    [UseFiltering]
     public async Task<List<MessageRecord>> GetMessages(
         [Service] IMessageStore store,
         CancellationToken cancellationToken)

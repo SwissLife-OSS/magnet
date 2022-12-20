@@ -13,6 +13,7 @@ public static class GraphQLExtensions
             .AddQueryType()
             .AddTypeExtension<MessageQueries>()
             .AddType<MessageType>()
+            .AddFiltering()
             .ConfigureSchema(x => x.AddType(new UuidType("Uuid", defaultFormat: 'N')))
             .AddAuthorization();
 

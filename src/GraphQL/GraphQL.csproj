@@ -22,6 +22,7 @@
   <ItemGroup>
     <PackageReference Include="HotChocolate.AspNetCore" Version="12.4.1" />
     <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="12.4.1" />
+    <PackageReference Include="HotChocolate.Data" Version="12.4.1" />
   </ItemGroup>
 
   <ItemGroup>
