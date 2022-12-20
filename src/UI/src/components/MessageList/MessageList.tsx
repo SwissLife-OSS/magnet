@@ -47,25 +47,20 @@ export const MessageList: React.FC<MessageListProps> = ({ queryRef }) => {
     workItem: true,
   });
 
-  const createFilter = () => {
-    const selectedFilters = Object.entries(filterState)
+  const handleFilterChange = (filters: MessageListFilterState) => {
+    setFilterState(filters);
+
+    const selectedFilters = Object.entries(filters)
       .filter(([type, value]) => value)
-      .map(([type]) => type.charAt(0).toUpperCase() + type.slice(1));
+      .map(([type]) => type.charAt(0).toUpperCase() + type.slice(1))
+      .map((item) => ({ type: { eq: item } }));
 
     const selectedFiltersLength = selectedFilters.length;
 
-    const filter = Array(selectedFiltersLength)
-      .fill(undefined)
-      .map((item, index) => ({ type: { eq: selectedFilters[index] } }));
-
-    selectedFiltersLength !== 4
-      ? refetch({ where: { or: filter } }, { fetchPolicy: "network-only" })
-      : refetch({ where: null }, { fetchPolicy: "network-only" });
-  };
-
-  const onFilterChange = (filters: MessageListFilterState) => {
-    setFilterState(filters);
-    createFilter();
+    refetch(
+      { where: selectedFiltersLength === 4 ? null : { or: selectedFilters } },
+      { fetchPolicy: "network-only" }
+    );
   };
 
   const { data, hasNext, loadNext, refetch } = usePaginationFragment(
@@ -101,8 +96,8 @@ export const MessageList: React.FC<MessageListProps> = ({ queryRef }) => {
     <>
       <h2 className={classes.filterTitle}> Filters</h2>
       <MessageFilter
-        filterState={filterState}
-        onFilterChange={onFilterChange}
+        filters={filterState}
+        onFilterChange={handleFilterChange}
       />
       {!showInformation && (
         <div className={classes.informationPosition}>

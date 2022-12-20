@@ -11,12 +11,12 @@ const useStyles = makeStyles({
 });
 
 interface MessageFilterProps {
-  filterState: MessageListFilterState;
+  filters: MessageListFilterState;
   onFilterChange(filters: MessageListFilterState): void;
 }
 
 export const MessageFilter: React.FC<MessageFilterProps> = ({
-  filterState: { sms, email, inbox, workItem },
+  filters: { sms, email, inbox, workItem },
   onFilterChange,
 }) => {
   const classes = useStyles();
@@ -28,33 +28,52 @@ export const MessageFilter: React.FC<MessageFilterProps> = ({
         color="primary"
         variant={sms ? "filled" : "outlined"}
         onClick={() =>
-          onFilterChange(
-            (): MessageListFilterState => ({
-              sms: true,
-              email: true,
-              inbox: true,
-              workItem: true,
-            })
-          )
+          onFilterChange({
+            sms: !sms,
+            email: email,
+            inbox: inbox,
+            workItem: workItem,
+          })
         }
       />
       <Chip
         label="Email"
         color="primary"
         variant={email ? "filled" : "outlined"}
-        onClick={() => onFilterChange("email")}
+        onClick={() =>
+          onFilterChange({
+            sms: sms,
+            email: !email,
+            inbox: inbox,
+            workItem: workItem,
+          })
+        }
       />
       <Chip
         label="Inbox"
         color="primary"
         variant={inbox ? "filled" : "outlined"}
-        onClick={() => onFilterChange("inbox")}
+        onClick={() =>
+          onFilterChange({
+            sms: sms,
+            email: email,
+            inbox: !inbox,
+            workItem: workItem,
+          })
+        }
       />
       <Chip
         label="WorkItem"
         color="primary"
         variant={workItem ? "filled" : "outlined"}
-        onClick={() => onFilterChange("workItem")}
+        onClick={() =>
+          onFilterChange({
+            sms: sms,
+            email: email,
+            inbox: inbox,
+            workItem: !workItem,
+          })
+        }
       />
     </Stack>
   );
