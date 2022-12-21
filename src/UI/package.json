@@ -36,7 +36,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "relay": "yarn run relay-compiler",
-    "get-schema": "get-graphql-schema http://localhost:56513/graphql/ > ./schema.graphql"
+    "get-schema": "get-graphql-schema http://localhost:65444/graphql/ > ./schema.graphql"
   },
   "eslintConfig": {
     "extends": [
