@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Hosting.UI;
 using Magnet.GraphQL;
+using Magnet.Hosting.UI;
 using Magnet.Store.Mongo;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;

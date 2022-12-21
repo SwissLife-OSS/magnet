@@ -1,10 +1,10 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
 
-namespace Hosting.UI;
+namespace Magnet.Hosting.UI;
 
 internal sealed class EmbeddedUiMiddleware
 {
@@ -58,7 +58,7 @@ internal sealed class EmbeddedUiMiddleware
                 last.Offset)
             .ToUniversalTime();
 
-        long etagHash = lastModified.ToFileTime() ^ fileInfo.Length;
+        var etagHash = lastModified.ToFileTime() ^ fileInfo.Length;
         var etag = new EntityTagHeaderValue($"\"{Convert.ToString(etagHash, 16)}\"");
 
         var headers = context.Response.GetTypedHeaders();
