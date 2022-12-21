@@ -58,7 +58,7 @@ internal sealed class EmbeddedUiMiddleware
                 last.Offset)
             .ToUniversalTime();
 
-        var etagHash = lastModified.ToFileTime() ^ fileInfo.Length;
+        long etagHash = lastModified.ToFileTime() ^ fileInfo.Length;
         var etag = new EntityTagHeaderValue($"\"{Convert.ToString(etagHash, 16)}\"");
 
         var headers = context.Response.GetTypedHeaders();
