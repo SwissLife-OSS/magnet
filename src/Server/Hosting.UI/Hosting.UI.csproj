@@ -5,7 +5,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
-        <RootNamespace>Hosting.UI</RootNamespace>
+        <RootNamespace>Magnet.Hosting.UI</RootNamespace>
+        <IsPackable>true</IsPackable>
+        <AssemblyName>Magnet.Server.Hosting.UI</AssemblyName>
+        <PackageId>Magnet.Server.Hosting.UI</PackageId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,6 +18,8 @@
 
     <ItemGroup>
       <EmbeddedResource Include="UI/**" />
+      <Content Include="./UI/index.html" Pack="true" PackagePath="content/UI" />
+      <Content Include="./UI/index.html" Pack="true" PackagePath="contentFiles/any/net6.0/UI" />
     </ItemGroup>
 
 </Project>
