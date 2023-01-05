@@ -1,25 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
+        <AssemblyName>Magnet.Server.Hosting.UI</AssemblyName>
+        <RootNamespace>Magnet.Hosting.UI</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
-        <RootNamespace>Magnet.Hosting.UI</RootNamespace>
-        <IsPackable>true</IsPackable>
-        <AssemblyName>Magnet.Server.Hosting.UI</AssemblyName>
         <PackageId>Magnet.Server.Hosting.UI</PackageId>
+        <IsPackable>true</IsPackable>
+        <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+        <Deterministic>true</Deterministic>
+        <ContinuousIntegrationBuild>false</ContinuousIntegrationBuild>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
-      <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" />
+      <PackageReference Include="Microsoft.AspNetCore.App"  Version="2.2.8" />
+      <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.2" />
     </ItemGroup>
 
     <ItemGroup>
       <EmbeddedResource Include="UI/**" />
-      <Content Include="./UI/index.html" Pack="true" PackagePath="content/UI" />
-      <Content Include="./UI/index.html" Pack="true" PackagePath="contentFiles/any/net6.0/UI" />
     </ItemGroup>
 
 </Project>
