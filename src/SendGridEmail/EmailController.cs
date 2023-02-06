@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StrongGrid;
 using StrongGrid.Models.Webhooks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Magnet.Providers.SendGrid;
 
 [Route("sendgridemail")]
+[AllowAnonymous]
 public class EmailController : Controller
 {
     private readonly IMessageSink _messageSink;

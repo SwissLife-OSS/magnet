@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Magnet.Providers.Twilio;
 
 [Route("twiliosms")]
+[AllowAnonymous]
 public class SmsController : Controller
 {
     private readonly IMessageSink _messageSink;
@@ -18,7 +20,7 @@ public class SmsController : Controller
 
     [Route("")]
     [HttpPost]
-    public async Task<IActionResult> Sms([FromForm]TwilioSmsRequest smsRequest)
+    public async Task<IActionResult> Sms([FromForm] TwilioSmsRequest smsRequest)
     {
         await _messageSink.ProcessMessageAsync(CreateMessage(smsRequest));
         return Ok();
