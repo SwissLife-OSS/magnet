@@ -1,4 +1,5 @@
 import React from "react";
+import { JSONTree } from "react-json-tree";
 import {
   AccessTime,
   ChatBubbleOutline,
@@ -32,6 +33,14 @@ const useStyles = makeStyles({
   listBox: {
     width: "95%",
   },
+  emailBody: {
+    width: "800px",
+    height: "80vh",
+    border: "none",
+  },
+  iframePosition: {
+    textAlign: "center",
+  },
 });
 
 const listItemStyle = {
@@ -39,8 +48,30 @@ const listItemStyle = {
   cursor: "default",
 };
 
+const jsonTreeTheme = {
+  scheme: "monokai",
+  author: "wimer hazenberg (http://www.monokai.nl)",
+  base00: "#ffffff",
+  base01: "#383830",
+  base02: "#49483e",
+  base03: "#75715e",
+  base04: "#a59f85",
+  base05: "#f8f8f2",
+  base06: "#f5f4f1",
+  base07: "#f9f8f5",
+  base08: "#f92672",
+  base09: "#fd971f",
+  base0A: "#f4bf75",
+  base0B: "#a6e22e",
+  base0C: "#a1efe4",
+  base0D: "#66d9ef",
+  base0E: "#ae81ff",
+  base0F: "#cc6633",
+};
+
 interface QuickInformationProps {
   readonly message: {
+    readonly id: string;
     readonly title: string;
     readonly type: string;
     readonly receivedAt: string;
@@ -56,13 +87,6 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({
   const classes = useStyles();
 
   const getDateTime = (date: any) => new Date(date).toLocaleString() ?? "";
-
-  const getBody = (message: any) =>
-    message.type === "Email" ? (
-      <span dangerouslySetInnerHTML={{ __html: message?.body }} />
-    ) : (
-      message.body
-    );
 
   return (
     <Card className={classes.cardMargin}>
@@ -117,7 +141,22 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({
       </Box>
       <CardContent>
         <h1 className={classes.bodyTitle}>Body</h1>
-        {getBody(message)}
+        {message?.type === "Email" ? (
+          <div className={classes.iframePosition}>
+            <iframe
+              src={"/view/content/" + message?.id}
+              title="Email Body"
+              className={classes.emailBody}
+            />
+          </div>
+        ) : message?.type === "Inbox" ? (
+          <JSONTree
+            theme={jsonTreeTheme}
+            data={JSON.parse(message?.body ?? "")}
+          />
+        ) : (
+          message?.body
+        )}
       </CardContent>
     </Card>
   );
