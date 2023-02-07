@@ -1,10 +1,10 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
 
-namespace Hosting.UI;
+namespace Magnet.Hosting.UI;
 
 internal sealed class EmbeddedUiMiddleware
 {

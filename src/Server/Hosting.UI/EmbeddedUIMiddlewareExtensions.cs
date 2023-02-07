@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 
-namespace Hosting.UI;
+namespace Magnet.Hosting.UI;
 
 public static class EmbeddedUiMiddlewareExtensions
 {

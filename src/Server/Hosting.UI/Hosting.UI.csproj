@@ -1,16 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
+        <AssemblyName>Magnet.Server.Hosting.UI</AssemblyName>
+        <RootNamespace>Magnet.Hosting.UI</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <PackageId>Magnet.Server.Hosting.UI</PackageId>
+        <IsPackable>true</IsPackable>
         <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
-        <RootNamespace>Hosting.UI</RootNamespace>
+        <Deterministic>true</Deterministic>
+        <ContinuousIntegrationBuild>false</ContinuousIntegrationBuild>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
-      <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" />
+      <PackageReference Include="Microsoft.AspNetCore.App"  Version="2.2.8" />
+      <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.2" />
     </ItemGroup>
 
     <ItemGroup>

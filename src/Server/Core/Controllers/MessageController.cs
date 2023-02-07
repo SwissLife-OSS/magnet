@@ -1,9 +1,11 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Magnet.Providers.Twilio.Sms;
 
 [Route("message")]
+[AllowAnonymous]
 public class MessageController : Controller
 {
     private readonly IMessageSink _messageSink;
