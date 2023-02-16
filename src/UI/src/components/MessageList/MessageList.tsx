@@ -91,8 +91,6 @@ export const MessageList: React.FC<MessageListProps> = ({ queryRef }) => {
     queryRef
   );
 
-  console.log(data);
-
   const showInformation = data?.messages?.edges?.length ?? -1;
 
   return (
