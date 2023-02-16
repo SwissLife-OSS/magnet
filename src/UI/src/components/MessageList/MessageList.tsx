@@ -4,6 +4,7 @@ import { usePaginationFragment } from "react-relay";
 import { makeStyles } from "@mui/styles";
 import { MessageFilter } from "../MessageFilter";
 import { MessageListTable } from "../MessageListTable";
+import { NotAuthorizedError } from "../NotAuthorizedError";
 import { MessageList_data$key } from "./__generated__/MessageList_data.graphql";
 
 const useStyles = makeStyles({
@@ -90,15 +91,12 @@ export const MessageList: React.FC<MessageListProps> = ({ queryRef }) => {
     queryRef
   );
 
-  const showInformation = data?.messages?.edges?.length;
+  console.log(data);
+
+  const showInformation = data?.messages?.edges?.length ?? -1;
 
   return (
     <>
-      <h2 className={classes.filterTitle}> Filters</h2>
-      <MessageFilter
-        filters={filterState}
-        onFilterChange={handleFilterChange}
-      />
       {!showInformation && (
         <div className={classes.informationPosition}>
           <h2 className={classes.informationTitle}>
@@ -109,12 +107,22 @@ export const MessageList: React.FC<MessageListProps> = ({ queryRef }) => {
           </h4>
         </div>
       )}
-      {(showInformation ?? 0) > 0 && (
-        <MessageListTable
-          messages={data?.messages}
-          hasNext={hasNext}
-          loadNext={loadNext}
-        />
+      {!isNaN(showInformation) && showInformation > 0 ? (
+        <>
+          <h2 className={classes.filterTitle}> Filters</h2>
+          <MessageFilter
+            filters={filterState}
+            onFilterChange={handleFilterChange}
+          />
+          <MessageListTable
+            messages={data?.messages}
+            hasNext={hasNext}
+            loadNext={loadNext}
+          />
+        </>
+      ) : (
+        !isNaN(showInformation) &&
+        showInformation !== 0 && <NotAuthorizedError />
       )}
     </>
   );
