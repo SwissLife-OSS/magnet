@@ -7,7 +7,7 @@ const useStyles = makeStyles({
     textAlign: "center",
   },
   image: {
-    width: "50%",
+    width: "40%",
     marginTop: "10%",
   },
   message: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const NotAuthorizedError: React.FC = () => {
+export const NotAuthorized: React.FC = () => {
   const classes = useStyles();
 
   return (
