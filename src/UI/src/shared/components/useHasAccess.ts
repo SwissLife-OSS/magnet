@@ -1,7 +1,7 @@
 import { getClaims } from "./getClaims";
 import { useEffect, useState } from "react";
 
-export const useRoles = () => {
+export const useHasAccess = () => {
   const [hasRole, setHasRole] = useState<boolean>(false);
 
   useEffect(() => {

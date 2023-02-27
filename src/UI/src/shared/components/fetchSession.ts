@@ -1,4 +1,4 @@
-import {AuthenticationError} from './authenticationError';
+import { AuthenticationError } from './authenticationError';
 import { sleep } from './sleep';
 
 /**

@@ -7,7 +7,7 @@ const useStyles = makeStyles({
     textAlign: "center",
   },
   image: {
-    width: "40%",
+    width: "30%",
     marginTop: "10%",
   },
   message: {

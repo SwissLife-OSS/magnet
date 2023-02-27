@@ -1,4 +1,4 @@
-import {fetchSession} from './fetchSession';
+import { fetchSession } from './fetchSession';
 
 export interface Claim {
   type: string;
