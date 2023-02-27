@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 export const useHasAccess = () => {
   const [hasRole, setHasRole] = useState<boolean>();
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error>();
 
   useEffect(() => {
     getClaims().then((response) => {
@@ -14,7 +15,14 @@ export const useHasAccess = () => {
       }
       setIsLoading(false);
     })
+    .catch((error) => {
+      setError(error);
+    })
   }, []);
+
+  if(error){
+    throw error;
+  }
 
   return { hasRole, isLoading };
 };
