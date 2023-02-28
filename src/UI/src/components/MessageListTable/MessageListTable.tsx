@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     marginBottom: "40px",
   },
   tableContainer: {
-    maxHeight: (window.innerHeight / 3) * 1.7,
+    maxHeight: (window.innerHeight / 3) * 2.5,
   },
   tableWidth: {
     minWidth: 650,
