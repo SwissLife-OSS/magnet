@@ -60,14 +60,14 @@ public sealed class MessageBus : IMessageBus
             new ServiceBusReceiverOptions
             {
                 PrefetchCount = 1,
-                ReceiveMode = ServiceBusReceiveMode.PeekLock
+                ReceiveMode = ServiceBusReceiveMode.PeekLock,
             });
 
         ServiceBusReceivedMessage message = default;
         try
         {
             message = await receiver
-                .ReceiveMessageAsync(cancellationToken: cancellationToken);
+                .ReceiveMessageAsync(_options.ReceiveTimeout, cancellationToken);
 
             MagnetMessage magnetMsg = JsonSerializer
                 .Deserialize<MagnetMessage>(message.Body.ToString());

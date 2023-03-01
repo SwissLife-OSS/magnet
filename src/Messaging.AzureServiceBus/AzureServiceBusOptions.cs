@@ -1,3 +1,5 @@
+using System;
+
 namespace Magnet.Messaging.AzureServiceBus;
 
 public class AzureServiceBusOptions
@@ -6,4 +8,5 @@ public class AzureServiceBusOptions
 
     public string Topic { get; set; }
 
+    public TimeSpan ReceiveTimeout { get; set; } = TimeSpan.FromMinutes(5);
 }
