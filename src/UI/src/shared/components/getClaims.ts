@@ -5,15 +5,11 @@ export interface Claim {
   value: string;
 }
 
-export type BffSession = {
-  subject: string,
-  name: string,
-  claims: Claim[]
-}
+export type Claims = Claim[];
 
 export const getClaims = async () => {
   try {
-    return await fetchSession<BffSession>("/bff/user");
+    return await fetchSession<Claims>("/bff/user");
   } catch (error) {
     const message = 'Unable to get user session.';
 

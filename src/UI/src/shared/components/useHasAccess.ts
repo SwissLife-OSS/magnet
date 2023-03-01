@@ -8,7 +8,7 @@ export const useHasAccess = () => {
 
   useEffect(() => {
     getClaims().then((response) => {
-      const required = response.claims.find((c) => c.value === 'Magnet.Read')
+      const required = response.find((c) => c.value === 'Magnet.Read')
      
       if(required){
         setHasRole(true);
