@@ -27,11 +27,15 @@ public class MagnetClientBuilder
         return this;
     }
 
-    public MagnetClientBuilder UseHttp(string baseUrl)
+    public MagnetClientBuilder UseHttp(string baseUrl, TimeSpan? timeout = default)
     {
         _services.AddSingleton<IMessageStreamClient, HttpMessageStreamClient>();
         _services.AddHttpClient("Magnet")
-            .ConfigureHttpClient(c => c.BaseAddress = new Uri(baseUrl));
+            .ConfigureHttpClient(c =>
+            {
+                c.BaseAddress = new Uri(baseUrl);
+                c.Timeout = timeout ?? TimeSpan.FromMinutes(5);
+            });
         return this;
     }
 

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Magnet.Client;
 
-public class MessageReceiver : IDisposable
+public sealed class MessageReceiver : IAsyncDisposable
 {
     private readonly MagnetClient _magnetClient;
     private readonly string _queueName;
@@ -106,16 +106,12 @@ public class MessageReceiver : IDisposable
         return true;
     }
 
-    protected virtual void Dispose(bool disposing)
+    public async ValueTask DisposeAsync()
     {
-        _magnetClient.MessageStreamClient.UnSubscribe(_queueName)
-            .GetAwaiter()
-            .GetResult();
-    }
+        using var cts = new CancellationTokenSource();
+        cts.CancelAfter(TimeSpan.FromMinutes(1));
+        CancellationToken cancellationToken = cts.Token;
 
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
+        await _magnetClient.MessageStreamClient.UnSubscribe(_queueName, cancellationToken);
     }
 }

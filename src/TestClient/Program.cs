@@ -13,7 +13,7 @@ class Program
         IServiceProvider services = BuildServiceProvider();
         MagnetClient mg = services.GetService<MagnetClient>();
 
-        using (MessageReceiver receiver = await mg.StartAsync())
+        await using(MessageReceiver receiver = await mg.StartAsync(default))
         {
             while (true)
             {
