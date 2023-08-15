@@ -11,5 +11,5 @@ public class WaitFilter
 
 public class WaitOptions
 {
-    public int Timeout { get; set; } = 60;
+    public TimeSpan Timeout { get; set; } = TimeSpan.FromMinutes(5);
 }

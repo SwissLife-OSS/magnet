@@ -30,7 +30,7 @@ public sealed class MessageReceiver : IAsyncDisposable
         WaitOptions options = null)
     {
         options = options ?? new WaitOptions();
-        var timeoutToken = new CancellationTokenSource(TimeSpan.FromSeconds(options.Timeout));
+        var timeoutToken = new CancellationTokenSource(options.Timeout);
         waitFilter = waitFilter ?? new WaitFilter();
         var typeName = _magnetClient.MessageMapper.ResolveTypeName<TMessage>();
         waitFilter.Predicates.Add((m) => m.Type == typeName);
