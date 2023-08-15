@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Magnet.GraphQL;
 using Magnet.Hosting.UI;
+using Magnet.Messaging.AzureServiceBus;
 using Magnet.Store.Mongo;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -34,11 +35,13 @@ public class Startup
 
         services.AddControllers();
         services.AddMagnet()
-                    .AddSendGridEmail()
-                    .AddTwilioSms()
-                    .AddAzureDevOps()
-                    .AddRabbitMQ(Configuration)
-                    .AddMongoStore(Configuration);
+            .AddSendGridEmail()
+            .AddTwilioSms()
+            .AddAzureDevOps()
+            // switch between Azure Service Bus and RabbitMQ as needed
+            // .AddRabbitMQ(Configuration) 
+            .AddAzureServiceBus(Configuration)
+            .AddMongoStore(Configuration);
 
         services.AddAuthentication("fake")
             .AddCookie("fake");
