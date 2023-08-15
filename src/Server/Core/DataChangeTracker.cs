@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using Magnet.Messaging.AzureServiceBus;
 using Microsoft.Extensions.Logging;
 
 namespace Magnet;
@@ -18,7 +19,6 @@ public class DataChangeTracker
         _messageBus = messageBus;
         _store = store;
         _logger = logger;
-
     }
 
     public async Task Start(CancellationToken cancellationToken)
@@ -26,7 +26,7 @@ public class DataChangeTracker
         _logger.LogInformation("Start DataChange tracker...");
         await _messageBus.RegisterMessageHandler("store", async (msg, token) =>
         {
-            _logger.LogInformation("New Message");
+            _logger.NewMessage(msg.Id);
             await _store.AddAsync(msg, token);
         }, cancellationToken);
     }
