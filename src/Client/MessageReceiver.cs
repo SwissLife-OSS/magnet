@@ -26,8 +26,8 @@ public sealed class MessageReceiver : IAsyncDisposable
     }
 
     public async Task<TMessage> WaitFor<TMessage>(
-            WaitFilter waitFilter = null,
-            WaitOptions options = null)
+        WaitFilter waitFilter = null,
+        WaitOptions options = null)
     {
         options = options ?? new WaitOptions();
         var timeoutToken = new CancellationTokenSource(TimeSpan.FromSeconds(options.Timeout));
@@ -110,8 +110,7 @@ public sealed class MessageReceiver : IAsyncDisposable
     {
         using var cts = new CancellationTokenSource();
         cts.CancelAfter(TimeSpan.FromMinutes(1));
-        CancellationToken cancellationToken = cts.Token;
 
-        await _magnetClient.MessageStreamClient.UnSubscribe(_queueName, cancellationToken);
+        await _magnetClient.MessageStreamClient.UnSubscribe(_queueName, cts.Token);
     }
 }
