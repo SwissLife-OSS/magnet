@@ -54,6 +54,8 @@ public sealed class MessageBus : IMessageBus
         string name,
         CancellationToken cancellationToken)
     {
+        _logger.BeginReadNextMessage(name);
+
         ServiceBusReceiver receiver = _client.CreateReceiver(
             _options.Topic,
             name,
@@ -78,7 +80,7 @@ public sealed class MessageBus : IMessageBus
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Cannot get next message");
+            _logger.FailedReadMessage(ex, name);
             if (message is not null)
             {
                 await receiver.AbandonMessageAsync(message, cancellationToken: cancellationToken);
@@ -121,7 +123,7 @@ public sealed class MessageBus : IMessageBus
 
         processor.ProcessErrorAsync += args =>
         {
-            _logger.LogError(args.Exception, "Cannot receive message on the registered handler");
+            _logger.FailedReceivingMessage(args.Exception, name);
 
             return Task.CompletedTask;
         };
@@ -150,7 +152,7 @@ public sealed class MessageBus : IMessageBus
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Cannot create subscription");
+            _logger.FailedCreatingSubscription(ex, name);
             throw;
         }
     }
