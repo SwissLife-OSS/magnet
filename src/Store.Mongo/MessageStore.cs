@@ -28,7 +28,7 @@ public class MessageStore : IMessageStore
 
     public async Task AddAsync(MagnetMessage message, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Add message to store {messageId}", message.Id);
+        _logger.AddMessage(message.Id);
         try
         {
             MessageRecord record = _mapper.Map<MessageRecord>(message);
@@ -36,7 +36,7 @@ public class MessageStore : IMessageStore
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error in Add");
+            _logger.FailAddMessage(ex);
             throw;
         }
     }
@@ -45,7 +45,7 @@ public class MessageStore : IMessageStore
         MessageReceivedReceipt receipt,
         CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Add ReadReceipt to store {messageId}", receipt.MessageId);
+        _logger.AddReadReceipt(receipt.MessageId, receipt.ClientName);
 
         var log = new MessageReceivedLog
         {
@@ -68,9 +68,9 @@ public class MessageStore : IMessageStore
     public async Task<List<MessageRecord>> GetAllAsync(CancellationToken cancellationToken)
     {
         return await _dbContext.Messages.AsQueryable()
-                    .OrderByDescending(x => x.ReceivedAt)
-                    .Take(100)
-                    .ToListAsync(cancellationToken);
+            .OrderByDescending(x => x.ReceivedAt)
+            .Take(100)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<MessageRecord> GetById(
@@ -78,22 +78,17 @@ public class MessageStore : IMessageStore
         CancellationToken cancellationToken)
     {
         return await _dbContext.Messages.AsQueryable()
-                    .Where(x => x.Id == id)
-                    .FirstOrDefaultAsync(cancellationToken);
+            .Where(x => x.Id == id)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<List<MessageRecord>> GetAllAsync(
         IQueryable<MessageRecord> query,
         CancellationToken cancellationToken)
     {
-
-
-
         return await _dbContext.Messages.AsQueryable()
-                    .OrderByDescending(x => x.ReceivedAt)
-                    .Take(100)
-                    .ToListAsync(cancellationToken);
+            .OrderByDescending(x => x.ReceivedAt)
+            .Take(100)
+            .ToListAsync(cancellationToken);
     }
-
-
 }
