@@ -1,6 +1,5 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Magnet.Messaging.AzureServiceBus;
 using Microsoft.Extensions.Logging;
 
 namespace Magnet;

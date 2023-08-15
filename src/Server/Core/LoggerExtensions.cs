@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Extensions.Logging;
 
-namespace Magnet.Messaging.AzureServiceBus;
+namespace Magnet;
 
 public static partial class LoggerExtensions
 {
