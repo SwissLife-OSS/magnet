@@ -41,8 +41,7 @@ public class HttpMessageStreamClient : IMessageStreamClient
             cancellationToken);
 
         var json = await result.Content.ReadAsStringAsync(cancellationToken);
-        MagnetMessage message = JsonConvert.DeserializeObject<MagnetMessage>(json);
-        return message;
+        return JsonConvert.DeserializeObject<MagnetMessage>(json);
     }
 
     public async Task<string> Subscribe(
@@ -67,13 +66,13 @@ public class HttpMessageStreamClient : IMessageStreamClient
             cancellationToken);
     }
 
-    public Task<HttpResponseMessage> SendRequestAsync(
+    private Task<HttpResponseMessage> SendRequestAsync(
         HttpMethod method,
         string url,
         CancellationToken cancellationToken) =>
         SendRequestAsync(method, url, null, cancellationToken);
 
-    public async Task<HttpResponseMessage> SendRequestAsync(
+    private async Task<HttpResponseMessage> SendRequestAsync(
         HttpMethod method,
         string url,
         HttpContent content,
