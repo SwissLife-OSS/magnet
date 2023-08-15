@@ -16,4 +16,7 @@ public static partial class LoggerExtensions
 
     [LoggerMessage(EventId = 4, Level = LogLevel.Error, Message = "Failed receiving message for {handlerName}")]
     public static partial void FailedReceivingMessage(this ILogger logger, Exception ex, string handlerName);
+
+    [LoggerMessage(EventId = 5, Level = LogLevel.Information, Message = "End read next message {messageId} for {clientName}")]
+    public static partial void EndReadNextMessage(this ILogger logger, Guid messageId, string clientName);
 }

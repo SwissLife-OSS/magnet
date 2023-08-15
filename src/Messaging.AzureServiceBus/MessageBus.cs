@@ -56,7 +56,7 @@ public sealed class MessageBus : IMessageBus
     {
         _logger.BeginReadNextMessage(name);
 
-        ServiceBusReceiver receiver = _client.CreateReceiver(
+        await using ServiceBusReceiver receiver = _client.CreateReceiver(
             _options.Topic,
             name,
             new ServiceBusReceiverOptions
@@ -74,6 +74,8 @@ public sealed class MessageBus : IMessageBus
             MagnetMessage magnetMsg = JsonSerializer
                 .Deserialize<MagnetMessage>(message.Body.ToString());
 
+            _logger.EndReadNextMessage(magnetMsg.Id, name);
+
             await receiver.CompleteMessageAsync(message, cancellationToken);
 
             return magnetMsg;
@@ -86,11 +88,6 @@ public sealed class MessageBus : IMessageBus
                 await receiver.AbandonMessageAsync(message, cancellationToken: cancellationToken);
             }
             throw;
-        }
-        finally
-        {
-            await receiver.CloseAsync(cancellationToken);
-            await receiver.DisposeAsync();
         }
     }
 
