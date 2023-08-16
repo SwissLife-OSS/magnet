@@ -21,10 +21,7 @@ class Program
                 //    17006,
                 //    new WaitOptions { Timeout = 120 });
 
-                WorkItemEventMessage wi = await receiver.WaitForWorkItemCreatedEvent(
-                    "Magnet",
-                    new WaitOptions { Timeout = 120 });
-
+                WorkItemEventMessage wi = await receiver.WaitForWorkItemCreatedEvent("Magnet");
 
                 Console.WriteLine(wi.Message);
             }

@@ -24,7 +24,7 @@ public sealed class MessageBus : IMessageBus
             options.ConnectionString,
             new ServiceBusAdministrationClientOptions
             {
-                Diagnostics = {IsDistributedTracingEnabled = true}
+                Diagnostics = { IsDistributedTracingEnabled = true }
             });
     }
 
