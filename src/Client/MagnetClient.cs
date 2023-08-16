@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Magnet.Client.Mappers;
 
@@ -19,9 +20,11 @@ public class MagnetClient
         Options = options;
     }
 
-    public async Task<MessageReceiver> StartAsync()
+    public async Task<MessageReceiver> StartAsync(CancellationToken cancellationToken)
     {
-        var queueName = await MessageStreamClient.Subscribe(Options.ClientName);
+        var queueName = await MessageStreamClient
+            .Subscribe(Options.ClientName, cancellationToken);
+
         return new MessageReceiver(this, queueName);
     }
 }

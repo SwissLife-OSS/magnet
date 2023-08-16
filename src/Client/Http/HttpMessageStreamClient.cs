@@ -19,25 +19,17 @@ public class HttpMessageStreamClient : IMessageStreamClient
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task AddReceivedReceiptAsync(
+    public Task AddReceivedReceiptAsync(
         MessageReceivedReceipt readReceipt,
         CancellationToken cancellationToken)
     {
-        HttpClient client = _httpClientFactory.CreateClient("Magnet");
-
-        var request = new HttpRequestMessage(
-            HttpMethod.Post,
-            $"{client.BaseAddress}stream/receipt");
-
-        request.Content = new StringContent(
+        var content = new StringContent(
             JsonConvert.SerializeObject(readReceipt),
             Encoding.UTF8,
             "application/json");
 
-        HttpResponseMessage result = await client.SendAsync(request, default);
-        result.EnsureSuccessStatusCode();
+        return SendRequestAsync(HttpMethod.Post, "stream/receipt", content, cancellationToken);
     }
-
 
     public async Task<MagnetMessage> GetNextAsync(
         string clientName,
@@ -48,46 +40,54 @@ public class HttpMessageStreamClient : IMessageStreamClient
             $"stream/{clientName}",
             cancellationToken);
 
-        result.EnsureSuccessStatusCode();
-        string json = await result.Content.ReadAsStringAsync();
-        MagnetMessage message = JsonConvert.DeserializeObject<MagnetMessage>(json);
-        return message;
+        var json = await result.Content.ReadAsStringAsync(cancellationToken);
+        return JsonConvert.DeserializeObject<MagnetMessage>(json);
     }
 
-    public async Task<string> Subscribe(string clientName)
+    public async Task<string> Subscribe(
+        string clientName,
+        CancellationToken cancellationToken)
     {
         HttpResponseMessage result = await SendRequestAsync(
             HttpMethod.Post,
             $"stream/subscribe/{clientName}",
-            default);
+            cancellationToken);
 
-        result.EnsureSuccessStatusCode();
-        string name = await result.Content.ReadAsStringAsync();
-        return name;
+        return await result.Content.ReadAsStringAsync(cancellationToken);
     }
 
-    public async Task UnSubscribe(string clientName)
+    public Task UnSubscribe(
+        string clientName,
+        CancellationToken cancellationToken)
     {
-        HttpResponseMessage result = await SendRequestAsync(
-                HttpMethod.Post,
-                $"stream/unsubscribe/{clientName}",
-                default);
-
-        result.EnsureSuccessStatusCode();
+        return SendRequestAsync(
+            HttpMethod.Post,
+            $"stream/unsubscribe/{clientName}",
+            cancellationToken);
     }
 
-    public async Task<HttpResponseMessage> SendRequestAsync(
+    private Task<HttpResponseMessage> SendRequestAsync(
         HttpMethod method,
         string url,
+        CancellationToken cancellationToken) =>
+        SendRequestAsync(method, url, null, cancellationToken);
+
+    private async Task<HttpResponseMessage> SendRequestAsync(
+        HttpMethod method,
+        string url,
+        HttpContent content,
         CancellationToken cancellationToken)
     {
         HttpClient client = _httpClientFactory.CreateClient("Magnet");
 
-        var request = new HttpRequestMessage(
-            method,
-            $"{client.BaseAddress}{url}");
+        var request = new HttpRequestMessage(method, $"{client.BaseAddress}{url}")
+        {
+            Content = content
+        };
 
         HttpResponseMessage result = await client.SendAsync(request, cancellationToken);
+        result.EnsureSuccessStatusCode();
+
         return result;
     }
 }

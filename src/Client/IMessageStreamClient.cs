@@ -12,6 +12,12 @@ public interface IMessageStreamClient
     Task<MagnetMessage> GetNextAsync(
         string clientName,
         CancellationToken cancellationToken);
-    Task<string> Subscribe(string clientName);
-    Task UnSubscribe(string clientName);
+
+    Task<string> Subscribe(
+        string clientName,
+        CancellationToken cancellationToken);
+
+    Task UnSubscribe(
+        string clientName,
+        CancellationToken cancellationToken);
 }
