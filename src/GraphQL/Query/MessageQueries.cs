@@ -1,18 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using HotChocolate;
-using HotChocolate.AspNetCore.Authorization;
+using HotChocolate.Authorization;
 using HotChocolate.Data;
 using HotChocolate.Types;
 
 namespace Magnet.GraphQL;
 
 [ExtendObjectType(OperationTypeNames.Query)]
-public  class MessageQueries
+public class MessageQueries
 {
     [Authorize(Policy = "Magnet.Read")]
     [UsePaging]

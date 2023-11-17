@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Magnet.Providers.AzureDevOps</AssemblyName>
     <RootNamespace>Magnet.Providers.AzureDevOps</RootNamespace>
     <PackageId>Magnet.Providers.AzureDevOps</PackageId>
@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json"  />
   </ItemGroup>
 
   <ItemGroup>
