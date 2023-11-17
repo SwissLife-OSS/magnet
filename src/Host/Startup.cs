@@ -39,7 +39,7 @@ public class Startup
             .AddTwilioSms()
             .AddAzureDevOps()
             // switch between Azure Service Bus and RabbitMQ as needed
-            // .AddRabbitMQ(Configuration) 
+            // .AddRabbitMQ(Configuration)
             .AddAzureServiceBus(Configuration)
             .AddMongoStore(Configuration);
 
@@ -88,7 +88,7 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
-            endpoints.MapGraphQL();
+            endpoints.MapGraphQLHttp();
         });
 
         app.UseMagnetUi();
