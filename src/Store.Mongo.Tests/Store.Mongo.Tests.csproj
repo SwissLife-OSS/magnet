@@ -1,29 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <AssemblyName>Magnet.Store.Mongo.Tests</AssemblyName>
     <RootNamespace>Magnet.Store.Mongo.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="5.9.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
-    <PackageReference Include="coverlet.collector" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
-    <PackageReference Include="Squadron.Mongo" Version="0.17.0" />
-    <PackageReference Include="Snapshooter.Xunit" Version="0.7.1" />
+    <PackageReference Include="FluentAssertions"  />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection"  />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"  />
+    <PackageReference Include="Microsoft.NET.Test.Sdk"  />
+    <PackageReference Include="xunit"  />
+    <PackageReference Include="xunit.runner.visualstudio"  />
+    <PackageReference Include="coverlet.collector"  />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json"  />
+    <PackageReference Include="Squadron.Mongo"  />
+    <PackageReference Include="Snapshooter.Xunit"  />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Server\Core\Server.Core.csproj" />
     <ProjectReference Include="..\Store.Mongo\Store.Mongo.csproj" />
   </ItemGroup>
-  
+
 </Project>
-  

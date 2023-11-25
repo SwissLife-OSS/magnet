@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Magnet.Server.GraphQL</AssemblyName>
     <RootNamespace>Magnet.GraphQL</RootNamespace>
     <PackageTags>magnet swisslife email sms sendgrid twilio</PackageTags>
@@ -20,9 +20,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate.AspNetCore" Version="12.4.1" />
-    <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="12.4.1" />
-    <PackageReference Include="HotChocolate.Data" Version="12.4.1" />
+    <PackageReference Include="HotChocolate.AspNetCore"  />
+    <PackageReference Include="HotChocolate.AspNetCore.Authorization"  />
+    <PackageReference Include="HotChocolate.Data"  />
+    <PackageReference Include="Newtonsoft.Json"  />
   </ItemGroup>
 
   <ItemGroup>

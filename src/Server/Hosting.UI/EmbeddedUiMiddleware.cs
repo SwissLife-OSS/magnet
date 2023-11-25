@@ -25,20 +25,24 @@ internal sealed class EmbeddedUiMiddleware
         var hasContentType =
             _contentTypeProvider.TryGetContentType(context.Request.Path, out var contentType);
 
-        var fileInfo = _fileProvider.GetFileInfo(context.Request.Path.Value);
-
-        if (!fileInfo.Exists && !hasContentType)
+        if (context.Request.Path.Value is not null)
         {
-            contentType = MediaTypeNames.Text.Html;
-            fileInfo = _fileProvider.GetFileInfo("/index.html");
-        }
+            var fileInfo =
+                _fileProvider.GetFileInfo(context.Request.Path.Value);
 
-        if (fileInfo.Exists && contentType is not null)
-        {
-            SetHeaders(context, fileInfo);
-            context.Response.ContentType = contentType;
+            if (!fileInfo.Exists && !hasContentType)
+            {
+                contentType = MediaTypeNames.Text.Html;
+                fileInfo = _fileProvider.GetFileInfo("/index.html");
+            }
 
-            return context.Response.SendFileAsync(fileInfo);
+            if (fileInfo.Exists && contentType is not null)
+            {
+                SetHeaders(context, fileInfo);
+                context.Response.ContentType = contentType;
+
+                return context.Response.SendFileAsync(fileInfo);
+            }
         }
 
         return _next(context);
