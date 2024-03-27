@@ -31,6 +31,26 @@
     "typescript": "^4.8.2",
     "web-vitals": "^2.1.4"
   },
+  "relay": {
+    "schema": "./schema.graphql",
+    "src": "src",
+    "customScalars": {
+      "Date": "string",
+      "DateTime": "string",
+      "Uuid": "string",
+      "UUID": "string",
+      "Decimal": "number",
+      "Long": "number",
+      "Int": "number",
+      "Byte": "number",
+      "ByteArray": "string",
+      "PaginationAmount": "number",
+      "Upload": "File"
+    },
+    "eagerEsModules": false,
+    "noFutureProofEnums": true,
+    "language": "typescript"
+  },
   "scripts": {
     "start": "yarn relay && react-scripts start",
     "build": "react-scripts build",
