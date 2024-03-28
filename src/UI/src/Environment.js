@@ -1,14 +1,15 @@
 import { useMemo } from "react";
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
 
-const fetchGraphQL = async (query, variables) => {
+const fetchGraphQL = async (operation, variables) => {
   const response = await fetch("/graphql", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      query,
+      id: operation.id,
+      query: operation.text,
       variables,
     }),
   });

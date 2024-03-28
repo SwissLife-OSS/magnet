@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d4d645b6e83f61a3a57ab0f1bbee53e7>>
+ * @generated SignedSource<<2bfb85aa546f09a78053f25bbe2a66be>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,17 +10,24 @@
 
 import { ReaderFragment, RefetchableFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type MessageList_data$data = {
+export type MessageListTable_query$data = {
   readonly messages: {
     readonly edges: ReadonlyArray<{
-      readonly " $fragmentSpreads": FragmentRefs<"MessageListTable_messagesEdge">;
+      readonly node: {
+        readonly id: string;
+        readonly provider: string;
+        readonly receivedAt: any;
+        readonly title: string;
+        readonly to: ReadonlyArray<string | null | undefined> | null | undefined;
+        readonly type: string;
+      } | null | undefined;
     }> | null | undefined;
   } | null | undefined;
-  readonly " $fragmentType": "MessageList_data";
+  readonly " $fragmentType": "MessageListTable_query";
 };
-export type MessageList_data$key = {
-  readonly " $data"?: MessageList_data$data;
-  readonly " $fragmentSpreads": FragmentRefs<"MessageList_data">;
+export type MessageListTable_query$key = {
+  readonly " $data"?: MessageListTable_query$data;
+  readonly " $fragmentSpreads": FragmentRefs<"MessageListTable_query">;
 };
 
 const node: ReaderFragment = (function(){
@@ -65,10 +72,10 @@ return {
         "path": (v0/*: any*/)
       },
       "fragmentPathInResult": [],
-      "operation": require('./MessageListRefetchableQuery.graphql')
+      "operation": require('./MessageListTableQuery.graphql')
     }
   },
-  "name": "MessageList_data",
+  "name": "MessageListTable_query",
   "selections": [
     {
       "alias": "messages",
@@ -93,18 +100,6 @@ return {
           "plural": true,
           "selections": [
             {
-              "args": null,
-              "kind": "FragmentSpread",
-              "name": "MessageListTable_messagesEdge"
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "cursor",
-              "storageKey": null
-            },
-            {
               "alias": null,
               "args": null,
               "concreteType": "MessageRecord",
@@ -116,10 +111,59 @@ return {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
+                  "name": "id",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "title",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "receivedAt",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "type",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "provider",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "to",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
                 }
               ],
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
               "storageKey": null
             }
           ],
@@ -159,6 +203,6 @@ return {
 };
 })();
 
-(node as any).hash = "853d6fe3c24dddeccc1cbbc1f6d70987";
+(node as any).hash = "ea11484bd7b8892dfebbd7c40d5e6e03";
 
 export default node;

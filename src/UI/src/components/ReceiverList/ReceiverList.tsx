@@ -8,6 +8,8 @@ import {
   TableRow,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { graphql, useFragment } from "react-relay";
+import { ReceiverList_messageRecord$key } from "./__generated__/ReceiverList_messageRecord.graphql";
 
 const useStyles = makeStyles({
   dataTitle: {
@@ -24,10 +26,19 @@ const useStyles = makeStyles({
 });
 
 interface ReceiverListProps {
-  receivers: ReadonlyArray<string | null> | null;
+  $ref: ReceiverList_messageRecord$key;
 }
 
-export const ReceiverList: React.FC<ReceiverListProps> = ({ receivers }) => {
+export const ReceiverList: React.FC<ReceiverListProps> = ({ $ref }) => {
+  const { to } = useFragment(
+    graphql`
+      fragment ReceiverList_messageRecord on MessageRecord {
+        to
+      }
+    `,
+    $ref
+  );
+
   const classes = useStyles();
 
   return (
@@ -41,7 +52,7 @@ export const ReceiverList: React.FC<ReceiverListProps> = ({ receivers }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {receivers?.map((receiver) => (
+            {to?.map((receiver) => (
               <TableRow key={receiver} className={classes.tableRow}>
                 <TableCell>{receiver}</TableCell>
               </TableRow>

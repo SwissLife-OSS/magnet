@@ -12,6 +12,7 @@ export const Home: React.FC = () => {
         ...MessageList_data
       }
     `,
+    {},
     { fetchPolicy: "store-or-network" }
   );
 

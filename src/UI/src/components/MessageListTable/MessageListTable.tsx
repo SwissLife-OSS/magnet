@@ -11,6 +11,9 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { messagePath } from "../../paths";
+import { graphql, useFragment } from "react-relay";
+import { MessageListTable_messagesEdge$key } from "./__generated__/MessageListTable_messagesEdge.graphql";
+import { MessageListTable_messageRecord$key } from "./__generated__/MessageListTable_messageRecord.graphql";
 
 const useStyles = makeStyles({
   rowStyle: {
@@ -34,34 +37,30 @@ const useStyles = makeStyles({
 });
 
 interface MessageListTableProps {
-  readonly messages: {
-    readonly edges: ReadonlyArray<{
-      readonly node: {
-        readonly id: string;
-        readonly title: string;
-        readonly to: ReadonlyArray<string | null> | null;
-        readonly receivedAt: string;
-        readonly type: string;
-        readonly provider: string;
-      } | null;
-    }> | null;
-  } | null;
+  $ref?: MessageListTable_messagesEdge$key | null;
   hasNext: boolean;
   loadNext(count: number): void;
 }
 
 export const MessageListTable: React.FC<MessageListTableProps> = ({
-  messages,
+  $ref,
   hasNext,
   loadNext,
 }) => {
+  const edges = useFragment(
+    graphql`
+      fragment MessageListTable_messagesEdge on MessagesEdge
+      @relay(plural: true) {
+        node {
+          ...MessageListTable_messageRecord
+        }
+      }
+    `,
+    $ref
+  );
+
+  const messages = edges?.map((edge) => edge);
   const classes = useStyles();
-  const navigate = useNavigate();
-
-  const getDateTime = (date: any) => new Date(date).toLocaleString() ?? "";
-
-  const getShortTitle = (title: string) =>
-    title.length > 50 ? title.substring(0, 50) + "..." : title;
 
   return (
     <>
@@ -77,30 +76,8 @@ export const MessageListTable: React.FC<MessageListTableProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {messages?.edges?.map((element: any) => (
-              <TableRow
-                key={element?.node?.id}
-                className={(classes.rowStyle, classes.tableRow)}
-                onClick={() => {
-                  navigate(messagePath(element?.node?.id));
-                }}
-              >
-                <TableCell component="th" scope="row">
-                  {getShortTitle(element?.node?.title)}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {element?.node?.to[0]}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {getDateTime(element?.node?.receivedAt)}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {element?.node?.type}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {element?.node?.provider}
-                </TableCell>
-              </TableRow>
+            {messages?.map((element: any) => (
+              <Row key={element?.node?.id} $ref={element} />
             ))}
           </TableBody>
         </Table>
@@ -119,3 +96,54 @@ export const MessageListTable: React.FC<MessageListTableProps> = ({
     </>
   );
 };
+
+interface RowProps {
+  $ref: MessageListTable_messageRecord$key;
+}
+
+function Row({ $ref }: RowProps) {
+  const node = useFragment(
+    graphql`
+      fragment MessageListTable_messageRecord on MessageRecord {
+        id
+        title
+        receivedAt
+        type
+        provider
+        to
+      }
+    `,
+    $ref
+  );
+  const classes = useStyles();
+  const navigate = useNavigate();
+
+  const getDateTime = (date: any) => new Date(date).toLocaleString() ?? "";
+
+  const getShortTitle = (title: string) =>
+    title.length > 50 ? title.substring(0, 50) + "..." : title;
+
+  return (
+    <TableRow
+      key={node.id}
+      className={(classes.rowStyle, classes.tableRow)}
+      onClick={() => navigate(messagePath(node.id))}
+    >
+      <TableCell component="th" scope="row">
+        {getShortTitle(node.title)}
+      </TableCell>
+      <TableCell component="th" scope="row">
+        {node.to?.[0]}
+      </TableCell>
+      <TableCell component="th" scope="row">
+        {getDateTime(node.receivedAt)}
+      </TableCell>
+      <TableCell component="th" scope="row">
+        {node.type}
+      </TableCell>
+      <TableCell component="th" scope="row">
+        {node.provider}
+      </TableCell>
+    </TableRow>
+  );
+}

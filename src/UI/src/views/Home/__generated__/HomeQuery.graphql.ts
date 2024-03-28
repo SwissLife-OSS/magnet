@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5b2f3afe0a833caf903b4f4434c3d26a>>
+ * @generated SignedSource<<60de8e7a50967abbc789a2318b2130b4>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,7 +10,7 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type HomeQuery$variables = {};
+export type HomeQuery$variables = Record<PropertyKey, never>;
 export type HomeQuery$data = {
   readonly " $fragmentSpreads": FragmentRefs<"MessageList_data">;
 };
@@ -177,12 +177,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "846371a0e53fdede6b0283f83ece7d47",
+    "cacheID": "53f6c0575159ee0f16aca959644fc03a",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery {\n  ...MessageList_data\n}\n\nfragment MessageList_data on Query {\n  messages(first: 30) {\n    edges {\n      node {\n        id\n        title\n        receivedAt\n        type\n        provider\n        to\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeQuery {\n  ...MessageList_data\n}\n\nfragment MessageListTable_messageRecord on MessageRecord {\n  id\n  title\n  receivedAt\n  type\n  provider\n  to\n}\n\nfragment MessageListTable_messagesEdge on MessagesEdge {\n  node {\n    ...MessageListTable_messageRecord\n    id\n  }\n}\n\nfragment MessageList_data on Query {\n  messages(first: 30) {\n    edges {\n      ...MessageListTable_messagesEdge\n      cursor\n      node {\n        __typename\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
