@@ -12,7 +12,7 @@ export const getClaims = async () => {
     const claims = await fetchSession<Claims>("/bff/user");
     return claims.map((claim) => ({
       type: claim.type,
-      value: JSON.parse(claim.value),
+      value: tryParse(claim.value),
     }));
   } catch (error) {
     const message = "Unable to get user session.";
@@ -26,3 +26,11 @@ export const getClaims = async () => {
     }
   }
 };
+
+function tryParse(value: string) {
+  try {
+    return JSON.parse(value);
+  } catch {
+    return value;
+  }
+}
