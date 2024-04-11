@@ -11,7 +11,8 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { messagePath } from "../../paths";
-import { graphql, useFragment } from "react-relay";
+import { graphql } from "babel-plugin-relay/macro";
+import { useFragment } from "react-relay";
 import { MessageListTable_messagesEdge$key } from "./__generated__/MessageListTable_messagesEdge.graphql";
 import { MessageListTable_messageRecord$key } from "./__generated__/MessageListTable_messageRecord.graphql";
 
@@ -52,6 +53,7 @@ export const MessageListTable: React.FC<MessageListTableProps> = ({
       fragment MessageListTable_messagesEdge on MessagesEdge
       @relay(plural: true) {
         node {
+          id
           ...MessageListTable_messageRecord
         }
       }
@@ -76,9 +78,12 @@ export const MessageListTable: React.FC<MessageListTableProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {messages?.map((element: any) => (
-              <Row key={element?.node?.id} $ref={element} />
-            ))}
+            {messages
+              ?.map((x) => x.node!)
+              .filter((y) => !!y)
+              .map((node) => (
+                <Row key={node.id} $ref={node} />
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

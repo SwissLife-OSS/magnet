@@ -1,5 +1,5 @@
-import { graphql } from "babel-plugin-relay/macro";
 import React, { Suspense } from "react";
+import { graphql } from "babel-plugin-relay/macro";
 import { useLazyLoadQuery } from "react-relay";
 import { CircularProgress, Grid } from "@mui/material";
 import { MessageList } from "../../components";

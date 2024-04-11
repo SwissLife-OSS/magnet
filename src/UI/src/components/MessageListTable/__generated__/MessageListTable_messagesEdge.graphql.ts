@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<eb33823e17ffc6bc2a239a13aa9fee86>>
+ * @generated SignedSource<<94e9e6af75ec8f4851bc44ef8462f1cc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,6 +12,7 @@ import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type MessageListTable_messagesEdge$data = ReadonlyArray<{
   readonly node: {
+    readonly id: string;
     readonly " $fragmentSpreads": FragmentRefs<"MessageListTable_messageRecord">;
   } | null | undefined;
   readonly " $fragmentType": "MessageListTable_messagesEdge";
@@ -38,6 +39,13 @@ const node: ReaderFragment = {
       "plural": false,
       "selections": [
         {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "id",
+          "storageKey": null
+        },
+        {
           "args": null,
           "kind": "FragmentSpread",
           "name": "MessageListTable_messageRecord"
@@ -50,6 +58,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "6be3073d6467856c37c66797f45e4667";
+(node as any).hash = "fecc2bc6adcb0d597dcb6f8dee8b8860";
 
 export default node;

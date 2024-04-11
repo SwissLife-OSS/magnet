@@ -8,7 +8,8 @@ import {
   TableRow,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { graphql, useFragment } from "react-relay";
+import { graphql } from "babel-plugin-relay/macro";
+import { useFragment } from "react-relay";
 import { ReceivedLogTable_messageRecord$key } from "./__generated__/ReceivedLogTable_messageRecord.graphql";
 
 const useStyles = makeStyles({

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d5bb9adcc4d88fab932239317f967978>>
+ * @generated SignedSource<<3f27d00644145c2b7a43b46fad32290e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -305,12 +305,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d33cc9d72bd08cdacf55b96de9ead12b",
+    "cacheID": "6d22a0051feb07a281b828d8592a7514",
     "id": null,
     "metadata": {},
     "name": "MessageListRefetchableQuery",
     "operationKind": "query",
-    "text": "query MessageListRefetchableQuery(\n  $count: Int = 30\n  $cursor: String\n  $where: MessageRecordFilterInput\n) {\n  ...MessageList_data_mjR8k\n}\n\nfragment MessageListTable_messageRecord on MessageRecord {\n  id\n  title\n  receivedAt\n  type\n  provider\n  to\n}\n\nfragment MessageListTable_messagesEdge on MessagesEdge {\n  node {\n    ...MessageListTable_messageRecord\n    id\n  }\n}\n\nfragment MessageList_data_mjR8k on Query {\n  messages(after: $cursor, first: $count, where: $where) {\n    edges {\n      ...MessageListTable_messagesEdge\n      cursor\n      node {\n        __typename\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query MessageListRefetchableQuery(\n  $count: Int = 30\n  $cursor: String\n  $where: MessageRecordFilterInput\n) {\n  ...MessageList_data_mjR8k\n}\n\nfragment MessageListTable_messageRecord on MessageRecord {\n  id\n  title\n  receivedAt\n  type\n  provider\n  to\n}\n\nfragment MessageListTable_messagesEdge on MessagesEdge {\n  node {\n    id\n    ...MessageListTable_messageRecord\n  }\n}\n\nfragment MessageList_data_mjR8k on Query {\n  messages(after: $cursor, first: $count, where: $where) {\n    edges {\n      ...MessageListTable_messagesEdge\n      cursor\n      node {\n        __typename\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();

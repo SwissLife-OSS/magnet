@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<60de8e7a50967abbc789a2318b2130b4>>
+ * @generated SignedSource<<824f7fce8962a6c0ae16bad26c2fff54>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -177,12 +177,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "53f6c0575159ee0f16aca959644fc03a",
+    "cacheID": "49f56de12e7d5115b1a4c36fe935f4a6",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery {\n  ...MessageList_data\n}\n\nfragment MessageListTable_messageRecord on MessageRecord {\n  id\n  title\n  receivedAt\n  type\n  provider\n  to\n}\n\nfragment MessageListTable_messagesEdge on MessagesEdge {\n  node {\n    ...MessageListTable_messageRecord\n    id\n  }\n}\n\nfragment MessageList_data on Query {\n  messages(first: 30) {\n    edges {\n      ...MessageListTable_messagesEdge\n      cursor\n      node {\n        __typename\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeQuery {\n  ...MessageList_data\n}\n\nfragment MessageListTable_messageRecord on MessageRecord {\n  id\n  title\n  receivedAt\n  type\n  provider\n  to\n}\n\nfragment MessageListTable_messagesEdge on MessagesEdge {\n  node {\n    id\n    ...MessageListTable_messageRecord\n  }\n}\n\nfragment MessageList_data on Query {\n  messages(first: 30) {\n    edges {\n      ...MessageListTable_messagesEdge\n      cursor\n      node {\n        __typename\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();

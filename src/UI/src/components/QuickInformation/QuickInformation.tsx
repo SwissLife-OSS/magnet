@@ -20,7 +20,8 @@ import {
   Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { graphql, useFragment } from "react-relay";
+import { graphql } from "babel-plugin-relay/macro";
+import { useFragment } from "react-relay";
 import { QuickInformation_messageRecord$key } from "./__generated__/QuickInformation_messageRecord.graphql";
 
 const useStyles = makeStyles({

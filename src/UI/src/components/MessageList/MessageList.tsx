@@ -104,7 +104,7 @@ export const MessageList: React.FC<MessageListProps> = ({ queryRef }) => {
       )}
       {(showInformation ?? 0) > 0 && (
         <MessageListTable
-          $ref={data?.messages?.edges}
+          $ref={data?.messages?.edges ?? []}
           hasNext={hasNext}
           loadNext={loadNext}
         />
