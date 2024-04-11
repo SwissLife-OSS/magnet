@@ -75,14 +75,7 @@ export const MessageList: React.FC<MessageListProps> = ({ queryRef }) => {
         messages(after: $cursor, first: $count, where: $where)
           @connection(key: "ScreenerList_messages") {
           edges {
-            node {
-              id
-              title
-              receivedAt
-              type
-              provider
-              to
-            }
+            ...MessageListTable_messagesEdge
           }
         }
       }
@@ -111,7 +104,7 @@ export const MessageList: React.FC<MessageListProps> = ({ queryRef }) => {
       )}
       {(showInformation ?? 0) > 0 && (
         <MessageListTable
-          messages={data?.messages}
+          $ref={data?.messages?.edges ?? []}
           hasNext={hasNext}
           loadNext={loadNext}
         />

@@ -8,6 +8,9 @@ import {
   TableRow,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { graphql } from "babel-plugin-relay/macro";
+import { useFragment } from "react-relay";
+import { ReceivedLogTable_messageRecord$key } from "./__generated__/ReceivedLogTable_messageRecord.graphql";
 
 const useStyles = makeStyles({
   dataTitle: {
@@ -27,15 +30,22 @@ const useStyles = makeStyles({
 });
 
 interface ReceivedLogTableProps {
-  receivedLog: ReadonlyArray<{
-    clientName: string | null;
-    receivedAt: string;
-  } | null> | null;
+  $ref: ReceivedLogTable_messageRecord$key;
 }
 
-export const ReceivedLogTable: React.FC<ReceivedLogTableProps> = ({
-  receivedLog,
-}) => {
+export const ReceivedLogTable: React.FC<ReceivedLogTableProps> = ({ $ref }) => {
+  const { receivedLog } = useFragment(
+    graphql`
+      fragment ReceivedLogTable_messageRecord on MessageRecord {
+        receivedLog {
+          clientName
+          receivedAt
+        }
+      }
+    `,
+    $ref
+  );
+
   const classes = useStyles();
 
   const getDateTime = (date: any) => new Date(date).toLocaleString() ?? "";

@@ -20,6 +20,9 @@ import {
   Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { graphql } from "babel-plugin-relay/macro";
+import { useFragment } from "react-relay";
+import { QuickInformation_messageRecord$key } from "./__generated__/QuickInformation_messageRecord.graphql";
 
 const useStyles = makeStyles({
   cardMargin: {
@@ -70,20 +73,24 @@ const jsonTreeTheme = {
 };
 
 interface QuickInformationProps {
-  readonly message: {
-    readonly id: string;
-    readonly title: string;
-    readonly type: string;
-    readonly receivedAt: string;
-    readonly provider: string;
-    readonly from: string;
-    readonly body: string | null;
-  };
+  $ref: QuickInformation_messageRecord$key;
 }
 
-export const QuickInformation: React.FC<QuickInformationProps> = ({
-  message,
-}) => {
+export const QuickInformation: React.FC<QuickInformationProps> = ({ $ref }) => {
+  const message = useFragment(
+    graphql`
+      fragment QuickInformation_messageRecord on MessageRecord {
+        id
+        title
+        type
+        receivedAt
+        provider
+        from
+        body
+      }
+    `,
+    $ref
+  );
   const classes = useStyles();
 
   const getDateTime = (date: any) => new Date(date).toLocaleString() ?? "";

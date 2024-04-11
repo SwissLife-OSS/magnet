@@ -7,20 +7,25 @@ export const useHasAccess = () => {
   const [error, setError] = useState<Error>();
 
   useEffect(() => {
-    getClaims().then((response) => {
-      const required = response.find((c) => c.value === 'Magnet.Read')
-     
-      if(required){
-        setHasRole(true);
-      }
-      setIsLoading(false);
-    })
-    .catch((error) => {
-      setError(error);
-    })
+    getClaims()
+      .then((response) => {
+        const required = response.find(
+          (c) =>
+            c.value === "Magnet.Read" ||
+            (c.value instanceof Array && c.value.includes("Magnet.Read"))
+        );
+
+        if (required) {
+          setHasRole(true);
+        }
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+      });
   }, []);
 
-  if(error){
+  if (error) {
     throw error;
   }
 

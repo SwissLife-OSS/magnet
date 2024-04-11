@@ -43,7 +43,8 @@ public class Startup
             .AddAzureServiceBus(Configuration)
             .AddMongoStore(Configuration);
 
-        services.AddAuthentication("fake")
+        services
+            .AddAuthentication("fake")
             .AddCookie("fake");
 
         services.AddAuthorization(o => o.AddPolicy(

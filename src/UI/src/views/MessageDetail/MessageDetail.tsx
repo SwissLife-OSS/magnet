@@ -1,5 +1,5 @@
-import { graphql } from "babel-plugin-relay/macro";
 import React from "react";
+import { graphql } from "babel-plugin-relay/macro";
 import { useLazyLoadQuery } from "react-relay";
 import { useParams } from "react-router-dom";
 import { Grid } from "@mui/material";
@@ -20,54 +20,43 @@ const useStyles = makeStyles({
 
 export const MessageDetail: React.FC = () => {
   const classes = useStyles();
-  const { id } = useParams();
+  const { id = "" } = useParams();
 
   const data = useLazyLoadQuery<MessageDetailQuery>(
     graphql`
       query MessageDetailQuery($id: Uuid!) {
         message(id: $id) {
-          id
-          title
-          type
-          receivedAt
-          provider
-          from
-          to
-          body
-          receivedLog {
-            clientName
-            receivedAt
-          }
+          ...QuickInformation_messageRecord
+          ...ReceiverList_messageRecord
+          ...ReceivedLogTable_messageRecord
         }
       }
     `,
-    { id: id ?? "" },
+    { id },
     { fetchPolicy: "store-or-network" }
   );
 
+  if (!data.message) {
+    return <MessageDetailError />;
+  }
+
   return (
-    <>
-      {data.message ? (
-        <Grid className={classes.dataSection} container>
-          <Grid item xs={0} lg={2}></Grid>
-          <Grid item xs={12} lg={8}>
-            <QuickInformation message={data?.message} />
-          </Grid>
-          <Grid item xs={0} lg={2}></Grid>
-          <Grid item xs={0} lg={2}></Grid>
-          <Grid item xs={12} lg={8}>
-            <ReceiverList receivers={data?.message?.to} />
-          </Grid>
-          <Grid item xs={0} lg={2}></Grid>
-          <Grid item xs={0} lg={2}></Grid>
-          <Grid item xs={12} lg={8}>
-            <ReceivedLogTable receivedLog={data?.message?.receivedLog} />
-          </Grid>
-          <Grid item xs={0} lg={2}></Grid>
-        </Grid>
-      ) : (
-        <MessageDetailError />
-      )}
-    </>
+    <Grid className={classes.dataSection} container>
+      <Grid item xs={0} lg={2}></Grid>
+      <Grid item xs={12} lg={8}>
+        <QuickInformation $ref={data.message} />
+      </Grid>
+      <Grid item xs={0} lg={2}></Grid>
+      <Grid item xs={0} lg={2}></Grid>
+      <Grid item xs={12} lg={8}>
+        <ReceiverList $ref={data.message} />
+      </Grid>
+      <Grid item xs={0} lg={2}></Grid>
+      <Grid item xs={0} lg={2}></Grid>
+      <Grid item xs={12} lg={8}>
+        <ReceivedLogTable $ref={data.message} />
+      </Grid>
+      <Grid item xs={0} lg={2}></Grid>
+    </Grid>
   );
 };
