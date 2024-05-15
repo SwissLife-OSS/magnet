@@ -50,7 +50,7 @@ public static class AzureServiceBusServerBuilderExtensions
                 "Magnet:ServiceBus section is missing in the configuration");
         }
 
-        if (options.ConnectionString == null && options.Url == null)
+        if (string.IsNullOrEmpty(options.ConnectionString) && string.IsNullOrEmpty(options.Url))
         {
             throw new ConfigurationErrorsException(
                 "ConnectionString or Url is required for Azure Service Bus.");
