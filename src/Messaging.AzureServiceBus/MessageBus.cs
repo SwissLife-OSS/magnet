@@ -26,8 +26,10 @@ public sealed class MessageBus : IMessageBus
 
     private ServiceBusClient GetServiceBusClient(AzureServiceBusOptions options) => options switch
     {
-        { ConnectionString: { } connectionString } => new ServiceBusClient(connectionString),
-        { Url: { } url } => new ServiceBusClient(url, new WorkloadIdentityCredential()),
+        { ConnectionString: { } connectionString } when !string.IsNullOrEmpty(connectionString) =>
+            new ServiceBusClient(connectionString),
+        { Url: { } url } when !string.IsNullOrEmpty(url) =>
+            new ServiceBusClient(url, new WorkloadIdentityCredential()),
         _ => throw new ArgumentException(
             "ConnectionString or Url is required for Azure Service Bus.")
     };
@@ -35,7 +37,7 @@ public sealed class MessageBus : IMessageBus
     private ServiceBusAdministrationClient GetServiceBusAdministrationClient(
         AzureServiceBusOptions options) => options switch
     {
-        { ConnectionString: { } connectionString } =>
+        { ConnectionString: { } connectionString } when !string.IsNullOrEmpty(connectionString) =>
             new ServiceBusAdministrationClient(
                 connectionString,
                 new ServiceBusAdministrationClientOptions
@@ -45,7 +47,7 @@ public sealed class MessageBus : IMessageBus
                         IsDistributedTracingEnabled = true
                     }
                 }),
-        { Url: { } url } =>
+        { Url: { } url } when !string.IsNullOrEmpty(url) =>
             new ServiceBusAdministrationClient(
                 url,
                 new WorkloadIdentityCredential(),
