@@ -4,7 +4,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-    <PackageVersion Include="Azure.Messaging.ServiceBus" Version="7.17.4" />
+    <PackageVersion Include="Azure.Identity" Version="1.11.3" />
+    <PackageVersion Include="Azure.Messaging.ServiceBus" Version="7.17.5" />
     <PackageVersion Include="coverlet.collector" Version="6.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -33,6 +34,7 @@
     <PackageVersion Include="Snapshooter.Xunit" Version="0.14.1" />
     <PackageVersion Include="Squadron.Mongo" Version="0.18.0" />
     <PackageVersion Include="StrongGrid" Version="0.106.0" />
+    <PackageVersion Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

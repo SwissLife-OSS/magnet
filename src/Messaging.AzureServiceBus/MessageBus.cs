@@ -2,6 +2,7 @@ using System;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Azure.Identity;
 using Azure.Messaging.ServiceBus;
 using Azure.Messaging.ServiceBus.Administration;
 using Microsoft.Extensions.Logging;
@@ -19,14 +20,45 @@ public sealed class MessageBus : IMessageBus
     {
         _options = options;
         _logger = logger;
-        _client = new ServiceBusClient(options.ConnectionString);
-        _adminClient = new ServiceBusAdministrationClient(
-            options.ConnectionString,
-            new ServiceBusAdministrationClientOptions
-            {
-                Diagnostics = { IsDistributedTracingEnabled = true }
-            });
+        _client = GetServiceBusClient(options);
+        _adminClient = GetServiceBusAdministrationClient(options);
     }
+
+    private ServiceBusClient GetServiceBusClient(AzureServiceBusOptions options) => options switch
+    {
+        { ConnectionString: { } connectionString } => new ServiceBusClient(connectionString),
+        { Url: { } url } => new ServiceBusClient(url, new WorkloadIdentityCredential()),
+        _ => throw new ArgumentException(
+            "ConnectionString or Url is required for Azure Service Bus.")
+    };
+
+    private ServiceBusAdministrationClient GetServiceBusAdministrationClient(
+        AzureServiceBusOptions options) => options switch
+    {
+        { ConnectionString: { } connectionString } =>
+            new ServiceBusAdministrationClient(
+                connectionString,
+                new ServiceBusAdministrationClientOptions
+                {
+                    Diagnostics =
+                    {
+                        IsDistributedTracingEnabled = true
+                    }
+                }),
+        { Url: { } url } =>
+            new ServiceBusAdministrationClient(
+                url,
+                new WorkloadIdentityCredential(),
+                new ServiceBusAdministrationClientOptions
+                {
+                    Diagnostics =
+                    {
+                        IsDistributedTracingEnabled = true
+                    }
+                }),
+        _ => throw new ArgumentException(
+            "ConnectionString or Url is required for Azure Service Bus.")
+    };
 
     public async Task<string> PublishAsync(MagnetMessage message)
     {
@@ -43,8 +75,7 @@ public sealed class MessageBus : IMessageBus
         var jsonMessage = JsonSerializer.Serialize(message);
         var sbMessage = new ServiceBusMessage(jsonMessage)
         {
-            MessageId = message.Id.ToString("N"),
-            Subject = message.Type
+            MessageId = message.Id.ToString("N"), Subject = message.Type
         };
 
         return sbMessage;
@@ -61,8 +92,7 @@ public sealed class MessageBus : IMessageBus
             name,
             new ServiceBusReceiverOptions
             {
-                PrefetchCount = 1,
-                ReceiveMode = ServiceBusReceiveMode.PeekLock,
+                PrefetchCount = 1, ReceiveMode = ServiceBusReceiveMode.PeekLock,
             });
 
         ServiceBusReceivedMessage message = default;
@@ -138,8 +168,7 @@ public sealed class MessageBus : IMessageBus
                 _options.Topic,
                 SubscriptionName.Create(name))
             {
-                AutoDeleteOnIdle = TimeSpan.FromHours(1),
-                RequiresSession = false
+                AutoDeleteOnIdle = TimeSpan.FromHours(1), RequiresSession = false
             };
 
             SubscriptionProperties properties = await _adminClient
