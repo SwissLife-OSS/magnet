@@ -27,12 +27,14 @@ public sealed class MessageBus : IMessageBus
     private ServiceBusClient GetServiceBusClient(AzureServiceBusOptions options) => options switch
     {
         { ConnectionString: { } connectionString } when !string.IsNullOrEmpty(connectionString) =>
-            new ServiceBusClient(connectionString),
+            new ServiceBusClient(
+                connectionString,
+                new ServiceBusClientOptions { TransportType = options.TransportType }),
         { Url: { } url } when !string.IsNullOrEmpty(url) =>
             new ServiceBusClient(
                 url,
                 new WorkloadIdentityCredential(),
-                new ServiceBusClientOptions { TransportType = ServiceBusTransportType.AmqpWebSockets }),
+                new ServiceBusClientOptions { TransportType = options.TransportType }),
         _ => throw new ArgumentException(
             "ConnectionString or Url is required for Azure Service Bus.")
     };
