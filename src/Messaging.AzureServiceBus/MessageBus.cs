@@ -29,7 +29,10 @@ public sealed class MessageBus : IMessageBus
         { ConnectionString: { } connectionString } when !string.IsNullOrEmpty(connectionString) =>
             new ServiceBusClient(connectionString),
         { Url: { } url } when !string.IsNullOrEmpty(url) =>
-            new ServiceBusClient(url, new WorkloadIdentityCredential()),
+            new ServiceBusClient(
+                url,
+                new WorkloadIdentityCredential(),
+                new ServiceBusClientOptions { TransportType = ServiceBusTransportType.AmqpWebSockets }),
         _ => throw new ArgumentException(
             "ConnectionString or Url is required for Azure Service Bus.")
     };
@@ -40,24 +43,12 @@ public sealed class MessageBus : IMessageBus
         { ConnectionString: { } connectionString } when !string.IsNullOrEmpty(connectionString) =>
             new ServiceBusAdministrationClient(
                 connectionString,
-                new ServiceBusAdministrationClientOptions
-                {
-                    Diagnostics =
-                    {
-                        IsDistributedTracingEnabled = true
-                    }
-                }),
+                new ServiceBusAdministrationClientOptions { Diagnostics = { IsDistributedTracingEnabled = true } }),
         { Url: { } url } when !string.IsNullOrEmpty(url) =>
             new ServiceBusAdministrationClient(
                 url,
                 new WorkloadIdentityCredential(),
-                new ServiceBusAdministrationClientOptions
-                {
-                    Diagnostics =
-                    {
-                        IsDistributedTracingEnabled = true
-                    }
-                }),
+                new ServiceBusAdministrationClientOptions { Diagnostics = { IsDistributedTracingEnabled = true } }),
         _ => throw new ArgumentException(
             "ConnectionString or Url is required for Azure Service Bus.")
     };
@@ -92,10 +83,7 @@ public sealed class MessageBus : IMessageBus
         await using ServiceBusReceiver receiver = _client.CreateReceiver(
             _options.Topic,
             name,
-            new ServiceBusReceiverOptions
-            {
-                PrefetchCount = 1, ReceiveMode = ServiceBusReceiveMode.PeekLock,
-            });
+            new ServiceBusReceiverOptions { PrefetchCount = 1, ReceiveMode = ServiceBusReceiveMode.PeekLock, });
 
         ServiceBusReceivedMessage message = default;
         try
@@ -119,6 +107,7 @@ public sealed class MessageBus : IMessageBus
             {
                 await receiver.AbandonMessageAsync(message, cancellationToken: cancellationToken);
             }
+
             throw;
         }
     }
@@ -168,10 +157,7 @@ public sealed class MessageBus : IMessageBus
         {
             var options = new CreateSubscriptionOptions(
                 _options.Topic,
-                SubscriptionName.Create(name))
-            {
-                AutoDeleteOnIdle = TimeSpan.FromHours(1), RequiresSession = false
-            };
+                SubscriptionName.Create(name)) { AutoDeleteOnIdle = TimeSpan.FromHours(1), RequiresSession = false };
 
             SubscriptionProperties properties = await _adminClient
                 .CreateSubscriptionAsync(options, cancellationToken);
