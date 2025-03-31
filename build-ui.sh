@@ -1,7 +1,10 @@
 #!/bin/sh
+set -e
 
 # Use provided ROOT_DIR or default to current directory
 ROOT_DIR="${ROOT_DIR:-./}"
+
+echo "Using ROOT_DIR: $ROOT_DIR"
 
 rm -rf $ROOT_DIR/src/Server/Hosting.UI/UI/
 yarn --cwd $ROOT_DIR/src/UI
