@@ -1,58 +1,59 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import {
+  AppBar,
+  Box,
+  Button,
+  IconButton,
+  InputBase,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { homePath } from "../../paths";
 
-const navItems = [{ name: "Home", link: "/" }];
+export interface NavigationBarProps {
+  search: string;
+  onSearchChange: (val: string) => void;
+};
 
-const useStyles = makeStyles({
-  navBox: {
-    display: "flex",
-    marginBottom: "80px",
-  },
-  navTypography: {
-    flexGrow: 1,
-    cursor: "pointer",
-  },
-  navItemButton: {
-    color: "#fff",
-  },
-});
-
-export const NavigationBar: React.FC = () => {
-  const classes = useStyles();
+export const NavigationBar: React.FC<NavigationBarProps> = ({ search, onSearchChange }) => {
   const navigate = useNavigate();
 
+
   return (
-    <Box className={classes.navBox}>
-      <AppBar component="nav">
-        <Toolbar>
+    <AppBar position="static" color="default" elevation={0}>
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
           <Typography
             variant="h6"
-            component="div"
-            className={classes.navTypography}
-            onClick={() => {
-              navigate(homePath);
-            }}
+            sx={{ cursor: "pointer" }}
+            onClick={() => navigate(homePath)}
           >
             Magnet
           </Typography>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map((item) => (
-              <Button
-                key={item.name}
-                className={classes.navItemButton}
-                onClick={() => {
-                  navigate(item.link);
-                }}
-              >
-                {item.name}
-              </Button>
-            ))}
-          </Box>
-        </Toolbar>
-      </AppBar>
-    </Box>
+                  </Box>
+
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <SearchIcon />
+          <InputBase
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => onSearchChange(e.target.value)}
+            sx={{
+              backgroundColor: "#f0f0f0",
+              px: 1,
+              borderRadius: 1,
+              fontSize: 14,
+              height: 36,
+            }}
+          />
+          <IconButton>
+            <AccountCircleIcon />
+          </IconButton>
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 };
