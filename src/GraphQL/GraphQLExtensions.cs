@@ -15,8 +15,8 @@ public static class GraphQLExtensions
             .AddType<MessageType>()
             .AddFiltering()
             .ConfigureSchema(x => x.AddType(new UuidType("Uuid", defaultFormat: 'N')))
-            .AddAuthorization();
-
+            .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true);
+            // .AddAuthorization();
         return services;
     }
 }

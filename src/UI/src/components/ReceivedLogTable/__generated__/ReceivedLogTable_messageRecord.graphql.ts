@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<37ad3ed850d52d023f1be525acb52267>>
+ * @generated SignedSource<<3e4e6bae00fa947814a9e939b6958492>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -8,7 +8,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Fragment, ReaderFragment } from 'relay-runtime';
+import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type ReceivedLogTable_messageRecord$data = {
   readonly receivedLog: ReadonlyArray<{
