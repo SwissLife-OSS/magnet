@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<37dcdacf34b1e07b5d05ef77d279133a>>
+ * @generated SignedSource<<a96942ea41c005b709be1728cd343b70>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -8,7 +8,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ReaderFragment } from 'relay-runtime';
+import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type MessageListTable_messageRecord$data = {
   readonly id: string;

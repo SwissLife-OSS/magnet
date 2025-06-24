@@ -1,5 +1,5 @@
 import { graphql } from "babel-plugin-relay/macro";
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition, useMemo } from "react";
 import { usePaginationFragment } from "react-relay";
 import { Box, Typography } from "@mui/material";
 import { MessageFilter, MessageType } from "../MessageFilter";
@@ -78,12 +78,12 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
         </Box>
       )}
       {showInformation && (
-        <TransitionIndicator in={busy}>
-        <MessageListTable
-          $ref={(data.messages?.edges ?? [])}
-          hasNext={hasNext}
-          loadNext={loadNext}
-        />
+        <TransitionIndicator in={!busy}>
+          <MessageListTable
+            $ref={(data.messages?.edges ?? [])}
+            hasNext={hasNext}
+            loadNext={loadNext}
+          />
         </TransitionIndicator>
       )}
     </Box>

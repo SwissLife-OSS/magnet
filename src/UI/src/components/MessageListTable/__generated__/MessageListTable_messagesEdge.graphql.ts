@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8d90ede14c0b337669cb63aa9697a69a>>
+ * @generated SignedSource<<94e9e6af75ec8f4851bc44ef8462f1cc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -8,7 +8,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ReaderFragment } from 'relay-runtime';
+import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type MessageListTable_messagesEdge$data = ReadonlyArray<{
   readonly node: {
