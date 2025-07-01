@@ -13,7 +13,8 @@ public static class MongoStoreServerBuilderExtensions
         IConfiguration configuration,
         Action<MongoClientSettings>? configureSettings = default)
     {
-        IConfigurationSection section = configuration.GetSection("Magnet:MongoDb");
+        // Try both "MongoDB" and "MongoDb" to handle case differences
+        IConfigurationSection section = configuration.GetSection("MongoDB") ?? configuration.GetSection("MongoDb");
         DatabaseOptions options = section.Get<DatabaseOptions>();
 
         if (options?.ConnectionString != null)
@@ -34,7 +35,6 @@ public static class MongoStoreServerBuilderExtensions
 
         configureSettings?.Invoke(clientSettings);
 
-        // Register BSON class map for MessageRecord
         MessageRecordBsonClassMap.Register();
 
         builder.SetMessageStore<MessageStore>();

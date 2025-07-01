@@ -1,11 +1,9 @@
 import { graphql } from "babel-plugin-relay/macro";
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition, useMemo } from "react";
 import { usePaginationFragment } from "react-relay";
 import { Box, Typography } from "@mui/material";
 import { MessageFilter, MessageType } from "../MessageFilter";
 import { MessageListTable } from "../MessageListTable";
-import { MessageList_data$key } from "./__generated__/MessageList_data.graphql";
-import { Filter } from "@mui/icons-material";
 import { TransitionIndicator } from "../TransitionIndicator";
 import { MessageList_query$key} from "./__generated__/MessageList_query.graphql";
 
@@ -20,13 +18,13 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
   const [typeFilter, setTypeFilter] = useState<MessageType>(null);
   const [providerFilter, setProviderFilter] = useState<string | null>(null);
 
-  const filter = {
+  const filter = useMemo(() => ({
     where: {
       ...(search ? { title: { contains: search }, } : undefined),
       ...(typeFilter ? { type: { eq: typeFilter } } : undefined),
       ...(providerFilter ? { provider: { eq: providerFilter } } : undefined),
     },
-  };
+  }), [search, typeFilter, providerFilter]);
 
 
   const { data, hasNext, loadNext, refetch } = usePaginationFragment(
@@ -52,12 +50,21 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
   const showInformation = !!data?.messages?.edges?.length;
 
   const [busy, startTransition] = useTransition();
+  const [isRefetching, setIsRefetching] = useState(false);
 
   useEffect(() => {
-    startTransition(() => {
-      refetch(filter);
-    });
-  }, [filter]);
+    // Add a small delay to prevent rapid successive refetches
+    const timeoutId = setTimeout(() => {
+      setIsRefetching(true);
+      startTransition(() => {
+        refetch(filter);
+        // Small delay to ensure smooth transition
+        setTimeout(() => setIsRefetching(false), 200);
+      });
+    }, 100);
+
+    return () => clearTimeout(timeoutId);
+  }, [search, typeFilter, providerFilter, filter, refetch]);
 
   return (
     <Box sx={{ mt: 4, mb: 2 }}>
@@ -78,12 +85,14 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
         </Box>
       )}
       {showInformation && (
-        <TransitionIndicator in={busy}>
-        <MessageListTable
-          $ref={(data.messages?.edges ?? [])}
-          hasNext={hasNext}
-          loadNext={loadNext}
-        />
+        <TransitionIndicator in={busy || isRefetching}>
+          <Box>
+            <MessageListTable
+              $ref={(data.messages?.edges ?? [])}
+              hasNext={hasNext}
+              loadNext={loadNext}
+            />
+          </Box>
         </TransitionIndicator>
       )}
     </Box>

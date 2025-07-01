@@ -49,7 +49,7 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({ search, onSearchCh
               height: 36,
             }}
           />
-          <IconButton>
+          <IconButton disableRipple>
             <AccountCircleIcon />
           </IconButton>
         </Box>

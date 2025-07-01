@@ -55,7 +55,7 @@ export const MessageDetail: React.FC = () => {
 
   return (
     <Box sx={{ maxWidth: 600, mx: "auto", mt: 4 }}>
-      <Button variant="outlined" onClick={() => navigate(-1)} sx={{ mb: 2 }} color="error">
+      <Button variant="outlined" onClick={() => navigate(-1)} sx={{ mb: 2 }} color="error" disableRipple>
         ← Back to overview
       </Button>
 

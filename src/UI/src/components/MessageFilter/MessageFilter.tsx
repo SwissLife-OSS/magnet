@@ -1,4 +1,4 @@
-import { Box, Button, TextField, MenuItem } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useState } from "react";
 
 export type MessageType = "SMS" | "Email" | "Inbox" | "Workitem" | null;
@@ -40,6 +40,7 @@ export const MessageFilter = ({
             key={type}
             variant={typeFilter === type ? "contained" : "outlined"}
             color="error"
+            disableRipple
             onClick={() =>
               onTypeChange(typeFilter === type ? null : type)
             }
@@ -50,24 +51,33 @@ export const MessageFilter = ({
       </Box>
 
       <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-
-        <TextField
-          select
-          label="Provider"
-          size="small"
-          value={providerFilter ?? ""}
-          onChange={(e) =>
-            onProviderChange(e.target.value ? e.target.value : null)
-          }
-          sx={{ minWidth: 150 }}
-        >
-          <MenuItem value="">All</MenuItem>
-          {providers.map((prov) => (
-            <MenuItem key={prov} value={prov}>
-              {prov}
-            </MenuItem>
-          ))}
-        </TextField>
+        <FormControl size="small" sx={{ minWidth: 150 }}>
+          <InputLabel>Provider</InputLabel>
+          <Select
+            value={providerFilter ?? ""}
+            onChange={(e) =>
+              onProviderChange(e.target.value ? e.target.value : null)
+            }
+            label="Provider"
+            MenuProps={{
+              // Disable fade animation and transitions
+              disableAutoFocusItem: true,
+              transitionDuration: 0,
+              PaperProps: {
+                style: {
+                  transform: 'none !important',
+                },
+              },
+            }}
+          >
+            <MenuItem value="">All</MenuItem>
+            {providers.map((prov) => (
+              <MenuItem key={prov} value={prov}>
+                {prov}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Box>
     </Box>
 )

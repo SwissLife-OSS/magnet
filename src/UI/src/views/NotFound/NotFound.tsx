@@ -46,6 +46,7 @@ export const NotFound: React.FC = () => {
         <Button
           className={classes.returnButton}
           variant="contained"
+          disableRipple
           onClick={() => navigate(homePath)}
         >
           Go to Home
