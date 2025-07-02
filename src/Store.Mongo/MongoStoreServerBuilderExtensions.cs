@@ -13,8 +13,7 @@ public static class MongoStoreServerBuilderExtensions
         IConfiguration configuration,
         Action<MongoClientSettings>? configureSettings = default)
     {
-        // Try both "MongoDB" and "MongoDb" to handle case differences
-        IConfigurationSection section = configuration.GetSection("MongoDB") ?? configuration.GetSection("MongoDb");
+        IConfigurationSection section = configuration.GetSection("Magnet:MongoDb");
         DatabaseOptions options = section.Get<DatabaseOptions>();
 
         if (options?.ConnectionString != null)
@@ -40,7 +39,7 @@ public static class MongoStoreServerBuilderExtensions
         builder.SetMessageStore<MessageStore>();
         builder.Services.AddSingleton(options);
         builder.Services.AddSingleton<IMongoClient>(_ => new MongoClient(clientSettings));
-        builder.Services.AddSingleton<MessageDbContext>(provider => 
+        builder.Services.AddSingleton<MessageDbContext>(provider =>
             new MessageDbContext(provider.GetRequiredService<IMongoClient>(), options));
         return builder;
     }
