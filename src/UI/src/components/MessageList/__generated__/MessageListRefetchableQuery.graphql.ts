@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<481dfc88f190255230df21a62b3b222b>>
+ * @generated SignedSource<<1692c58dc267d585682ee9a85acad1af>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -8,7 +8,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ConcreteRequest } from 'relay-runtime';
+import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type MessageRecordFilterInput = {
   and?: ReadonlyArray<MessageRecordFilterInput> | null | undefined;

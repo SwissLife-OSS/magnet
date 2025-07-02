@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ac4eb874e2cc090f99295ce49c97291b>>
+ * @generated SignedSource<<2f71a27f71b832101c84c5ae3d5ef21a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -8,7 +8,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ReaderFragment } from 'relay-runtime';
+import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type QuickInformation_messageRecord$data = {
   readonly body: string | null | undefined;

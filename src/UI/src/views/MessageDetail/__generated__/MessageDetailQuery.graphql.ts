@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5ed77879561595b523574cacc0422054>>
+ * @generated SignedSource<<59cf2ad2935117cb6913854bd6542fcc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -8,7 +8,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ConcreteRequest } from 'relay-runtime';
+import { ConcreteRequest, Query } from 'relay-runtime';
 export type MessageDetailQuery$variables = {
   id: any;
 };
