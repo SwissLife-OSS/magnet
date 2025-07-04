@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1692c58dc267d585682ee9a85acad1af>>
+ * @generated SignedSource<<7d2fe78939fc240db6adc3f963fc4ca3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -8,46 +8,45 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ConcreteRequest, Query } from 'relay-runtime';
+import { ConcreteRequest } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type MessageRecordFilterInput = {
   and?: ReadonlyArray<MessageRecordFilterInput> | null | undefined;
   body?: StringOperationFilterInput | null | undefined;
   from?: StringOperationFilterInput | null | undefined;
-  id?: ComparableGuidOperationFilterInput | null | undefined;
+  id?: UuidOperationFilterInput | null | undefined;
   or?: ReadonlyArray<MessageRecordFilterInput> | null | undefined;
-  properties?: IReadOnlyDictionaryOfStringAndStringFilterInput | null | undefined;
+  properties?: ListFilterInputTypeOfKeyValuePairOfStringAndStringFilterInput | null | undefined;
   provider?: StringOperationFilterInput | null | undefined;
-  receivedAt?: ComparableDateTimeOperationFilterInput | null | undefined;
+  receivedAt?: DateTimeOperationFilterInput | null | undefined;
   receivedLog?: ListFilterInputTypeOfMessageReceivedLogFilterInput | null | undefined;
   to?: ListStringOperationFilterInput | null | undefined;
   type?: StringOperationFilterInput | null | undefined;
 };
-export type ComparableGuidOperationFilterInput = {
-  eq?: any | null | undefined;
-  gt?: any | null | undefined;
-  gte?: any | null | undefined;
-  in?: ReadonlyArray<any> | null | undefined;
-  lt?: any | null | undefined;
-  lte?: any | null | undefined;
-  neq?: any | null | undefined;
-  ngt?: any | null | undefined;
-  ngte?: any | null | undefined;
-  nin?: ReadonlyArray<any> | null | undefined;
-  nlt?: any | null | undefined;
-  nlte?: any | null | undefined;
+export type ListFilterInputTypeOfMessageReceivedLogFilterInput = {
+  all?: MessageReceivedLogFilterInput | null | undefined;
+  any?: boolean | null | undefined;
+  none?: MessageReceivedLogFilterInput | null | undefined;
+  some?: MessageReceivedLogFilterInput | null | undefined;
 };
-export type ComparableDateTimeOperationFilterInput = {
+export type MessageReceivedLogFilterInput = {
+  and?: ReadonlyArray<MessageReceivedLogFilterInput> | null | undefined;
+  clientName?: StringOperationFilterInput | null | undefined;
+  isMatch?: BooleanOperationFilterInput | null | undefined;
+  or?: ReadonlyArray<MessageReceivedLogFilterInput> | null | undefined;
+  receivedAt?: DateTimeOperationFilterInput | null | undefined;
+};
+export type DateTimeOperationFilterInput = {
   eq?: any | null | undefined;
   gt?: any | null | undefined;
   gte?: any | null | undefined;
-  in?: ReadonlyArray<any> | null | undefined;
+  in?: ReadonlyArray<any | null | undefined> | null | undefined;
   lt?: any | null | undefined;
   lte?: any | null | undefined;
   neq?: any | null | undefined;
   ngt?: any | null | undefined;
   ngte?: any | null | undefined;
-  nin?: ReadonlyArray<any> | null | undefined;
+  nin?: ReadonlyArray<any | null | undefined> | null | undefined;
   nlt?: any | null | undefined;
   nlte?: any | null | undefined;
 };
@@ -65,34 +64,41 @@ export type StringOperationFilterInput = {
   or?: ReadonlyArray<StringOperationFilterInput> | null | undefined;
   startsWith?: string | null | undefined;
 };
+export type BooleanOperationFilterInput = {
+  eq?: boolean | null | undefined;
+  neq?: boolean | null | undefined;
+};
+export type UuidOperationFilterInput = {
+  eq?: any | null | undefined;
+  gt?: any | null | undefined;
+  gte?: any | null | undefined;
+  in?: ReadonlyArray<any | null | undefined> | null | undefined;
+  lt?: any | null | undefined;
+  lte?: any | null | undefined;
+  neq?: any | null | undefined;
+  ngt?: any | null | undefined;
+  ngte?: any | null | undefined;
+  nin?: ReadonlyArray<any | null | undefined> | null | undefined;
+  nlt?: any | null | undefined;
+  nlte?: any | null | undefined;
+};
 export type ListStringOperationFilterInput = {
   all?: StringOperationFilterInput | null | undefined;
   any?: boolean | null | undefined;
   none?: StringOperationFilterInput | null | undefined;
   some?: StringOperationFilterInput | null | undefined;
 };
-export type ListFilterInputTypeOfMessageReceivedLogFilterInput = {
-  all?: MessageReceivedLogFilterInput | null | undefined;
+export type ListFilterInputTypeOfKeyValuePairOfStringAndStringFilterInput = {
+  all?: KeyValuePairOfStringAndStringFilterInput | null | undefined;
   any?: boolean | null | undefined;
-  none?: MessageReceivedLogFilterInput | null | undefined;
-  some?: MessageReceivedLogFilterInput | null | undefined;
+  none?: KeyValuePairOfStringAndStringFilterInput | null | undefined;
+  some?: KeyValuePairOfStringAndStringFilterInput | null | undefined;
 };
-export type MessageReceivedLogFilterInput = {
-  and?: ReadonlyArray<MessageReceivedLogFilterInput> | null | undefined;
-  clientName?: StringOperationFilterInput | null | undefined;
-  isMatch?: BooleanOperationFilterInput | null | undefined;
-  or?: ReadonlyArray<MessageReceivedLogFilterInput> | null | undefined;
-  receivedAt?: ComparableDateTimeOperationFilterInput | null | undefined;
-};
-export type BooleanOperationFilterInput = {
-  eq?: boolean | null | undefined;
-  neq?: boolean | null | undefined;
-};
-export type IReadOnlyDictionaryOfStringAndStringFilterInput = {
-  and?: ReadonlyArray<IReadOnlyDictionaryOfStringAndStringFilterInput> | null | undefined;
-  keys?: ListStringOperationFilterInput | null | undefined;
-  or?: ReadonlyArray<IReadOnlyDictionaryOfStringAndStringFilterInput> | null | undefined;
-  values?: ListStringOperationFilterInput | null | undefined;
+export type KeyValuePairOfStringAndStringFilterInput = {
+  and?: ReadonlyArray<KeyValuePairOfStringAndStringFilterInput> | null | undefined;
+  key?: StringOperationFilterInput | null | undefined;
+  or?: ReadonlyArray<KeyValuePairOfStringAndStringFilterInput> | null | undefined;
+  value?: StringOperationFilterInput | null | undefined;
 };
 export type MessageListRefetchableQuery$variables = {
   count?: number | null | undefined;

@@ -34,7 +34,8 @@ public static class MongoStoreServerBuilderExtensions
 
         configureSettings?.Invoke(clientSettings);
 
-        MessageRecordBsonClassMap.Register();
+        // MessageRecordBsonClassMap.Register();
+
 
         builder.SetMessageStore<MessageStore>();
         builder.Services.AddSingleton(options);

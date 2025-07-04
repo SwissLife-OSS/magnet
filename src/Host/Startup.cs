@@ -76,18 +76,17 @@ public class Startup
             app.UseDeveloperExceptionPage();
         }
         app.UseCors();
-        
-        // Keep authentication middleware for BFF endpoints
+
         app.Use(async (context, next) =>
         {
-            var identity = new ClaimsIdentity( new List<Claim>() { 
+            var identity = new ClaimsIdentity( new List<Claim>() {
                 new Claim("sub", "admin"),
                 new Claim("role", "Magnet.Read")  // This is what the UI is looking for!
             }, "fake");
             await context.SignInAsync("fake", new ClaimsPrincipal(identity));
             await next.Invoke();
         });
-        
+
         app.UseRouting();
 
         app.UseAuthentication();
@@ -96,7 +95,7 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
-            endpoints.MapGraphQLHttp();
+            endpoints.MapGraphQL();
         });
 
         app.UseMagnetUi();

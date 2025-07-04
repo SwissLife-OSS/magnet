@@ -1,87 +1,16 @@
-"""
-The `@defer` directive may be provided for fragment spreads and inline fragments
-to inform the executor to delay the execution of the current fragment to
-indicate deprioritization of the current fragment. A query with `@defer`
-directive will cause the request to potentially return multiple responses, where
-non-deferred data is delivered in the initial response and data deferred is
-delivered in a subsequent response. `@include` and `@skip` take precedence over `@defer`.
-"""
-directive @defer(
-  """
-  If this argument label has a value other than null, it will be passed on to
-  the result of this defer directive. This label is intended to give client
-  applications a way to identify to which fragment a deferred result belongs to.
-  """
-  label: String
-
-  """Deferred when true."""
-  if: Boolean
-) on FRAGMENT_SPREAD | INLINE_FRAGMENT
-
-"""
-The `@stream` directive may be provided for a field of `List` type so that the
-backend can leverage technology such as asynchronous iterators to provide a
-partial list in the initial response, and additional list items in subsequent
-responses. `@include` and `@skip` take precedence over `@stream`.
-"""
-directive @stream(
-  """
-  If this argument label has a value other than null, it will be passed on to
-  the result of this stream directive. This label is intended to give client
-  applications a way to identify to which fragment a streamed result belongs to.
-  """
-  label: String
-
-  """The initial elements that shall be send down to the consumer."""
-  initialCount: Int! = 0
-
-  """Streamed when true."""
-  if: Boolean
-) on FIELD
-
-directive @authorize(
-  """
-  The name of the authorization policy that determines access to the annotated resource.
-  """
-  policy: String
-
-  """Roles that are allowed to access the annotated resource."""
-  roles: [String!]
-
-  """
-  Defines when when the resolver shall be executed.By default the resolver is
-  executed after the policy has determined that the current user is allowed to
-  access the field.
-  """
-  apply: ApplyPolicy! = BEFORE_RESOLVER
-) on SCHEMA | OBJECT | FIELD_DEFINITION
-
-"""
-The `@specifiedBy` directive is used within the type system definition language
-to provide a URL for specifying the behavior of custom scalar definitions.
-"""
-directive @specifiedBy(
-  """
-  The specifiedBy URL points to a human-readable specification. This field will only read a result for scalar types.
-  """
-  url: String!
-) on SCALAR
-
-enum ApplyPolicy {
-  BEFORE_RESOLVER
-  AFTER_RESOLVER
-}
-
 input BooleanOperationFilterInput {
   eq: Boolean
   neq: Boolean
 }
 
-input ComparableDateTimeOperationFilterInput {
+"""The `DateTime` scalar represents an ISO-8601 compliant date time type."""
+scalar DateTime
+
+input DateTimeOperationFilterInput {
   eq: DateTime
   neq: DateTime
-  in: [DateTime!]
-  nin: [DateTime!]
+  in: [DateTime]
+  nin: [DateTime]
   gt: DateTime
   ngt: DateTime
   gte: DateTime
@@ -92,34 +21,23 @@ input ComparableDateTimeOperationFilterInput {
   nlte: DateTime
 }
 
-input ComparableGuidOperationFilterInput {
-  eq: Uuid
-  neq: Uuid
-  in: [Uuid!]
-  nin: [Uuid!]
-  gt: Uuid
-  ngt: Uuid
-  gte: Uuid
-  ngte: Uuid
-  lt: Uuid
-  nlt: Uuid
-  lte: Uuid
-  nlte: Uuid
-}
-
-"""The `DateTime` scalar represents an ISO-8601 compliant date time type."""
-scalar DateTime
-
-input IReadOnlyDictionaryOfStringAndStringFilterInput {
-  and: [IReadOnlyDictionaryOfStringAndStringFilterInput!]
-  or: [IReadOnlyDictionaryOfStringAndStringFilterInput!]
-  keys: ListStringOperationFilterInput
-  values: ListStringOperationFilterInput
-}
-
 type KeyValuePairOfStringAndString {
   key: String!
   value: String!
+}
+
+input KeyValuePairOfStringAndStringFilterInput {
+  and: [KeyValuePairOfStringAndStringFilterInput!]
+  or: [KeyValuePairOfStringAndStringFilterInput!]
+  key: StringOperationFilterInput
+  value: StringOperationFilterInput
+}
+
+input ListFilterInputTypeOfKeyValuePairOfStringAndStringFilterInput {
+  all: KeyValuePairOfStringAndStringFilterInput
+  none: KeyValuePairOfStringAndStringFilterInput
+  some: KeyValuePairOfStringAndStringFilterInput
+  any: Boolean
 }
 
 input ListFilterInputTypeOfMessageReceivedLogFilterInput {
@@ -145,7 +63,7 @@ type MessageReceivedLog {
 input MessageReceivedLogFilterInput {
   and: [MessageReceivedLogFilterInput!]
   or: [MessageReceivedLogFilterInput!]
-  receivedAt: ComparableDateTimeOperationFilterInput
+  receivedAt: DateTimeOperationFilterInput
   clientName: StringOperationFilterInput
   isMatch: BooleanOperationFilterInput
 }
@@ -167,14 +85,14 @@ type MessageRecord {
 input MessageRecordFilterInput {
   and: [MessageRecordFilterInput!]
   or: [MessageRecordFilterInput!]
-  id: ComparableGuidOperationFilterInput
-  receivedAt: ComparableDateTimeOperationFilterInput
-  type: StringOperationFilterInput
-  from: StringOperationFilterInput
-  body: StringOperationFilterInput
-  to: ListStringOperationFilterInput
   receivedLog: ListFilterInputTypeOfMessageReceivedLogFilterInput
-  properties: IReadOnlyDictionaryOfStringAndStringFilterInput
+  id: UuidOperationFilterInput
+  type: StringOperationFilterInput
+  receivedAt: DateTimeOperationFilterInput
+  from: StringOperationFilterInput
+  to: ListStringOperationFilterInput
+  body: StringOperationFilterInput
+  properties: ListFilterInputTypeOfKeyValuePairOfStringAndStringFilterInput
   provider: StringOperationFilterInput
 }
 
@@ -254,4 +172,19 @@ input StringOperationFilterInput {
 }
 
 scalar Uuid
+
+input UuidOperationFilterInput {
+  eq: Uuid
+  neq: Uuid
+  in: [Uuid]
+  nin: [Uuid]
+  gt: Uuid
+  ngt: Uuid
+  gte: Uuid
+  ngte: Uuid
+  lt: Uuid
+  nlt: Uuid
+  lte: Uuid
+  nlte: Uuid
+}
 

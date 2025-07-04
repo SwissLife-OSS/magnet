@@ -43,11 +43,13 @@ export const Home: React.FC<HomeProps> = ({search}) => {
     {},
   );
 
+
+ // return 'foo';
   return (
     <Grid container>
       <Grid item xs={0} lg={2}></Grid>
       <Grid item xs={12} lg={8}>
-        <Suspense fallback={<LoadingSpinner />}>
+        <Suspense fallback={"loading..."}>
           <MessageList fragmentRef={data} search={search} />
         </Suspense>
       </Grid>

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<431eebeed08471f39cefddcc72e978c7>>
+ * @generated SignedSource<<dca18c0273f0b64abbe68c0938a4394a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -8,7 +8,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ReaderFragment, RefetchableFragment } from 'relay-runtime';
+import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type MessageList_query$data = {
   readonly messages: {

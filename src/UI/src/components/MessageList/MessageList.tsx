@@ -46,6 +46,7 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
     `,
     fragmentRef
   );
+  console.log("MessageList data:", data);
 
   const showInformation = !!data?.messages?.edges?.length;
 
@@ -87,11 +88,11 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
       {showInformation && (
         <TransitionIndicator in={busy || isRefetching}>
           <Box>
-            <MessageListTable
+            {/* <MessageListTable
               $ref={(data.messages?.edges ?? [])}
               hasNext={hasNext}
               loadNext={loadNext}
-            />
+            /> */}
           </Box>
         </TransitionIndicator>
       )}

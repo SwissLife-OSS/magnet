@@ -1,4 +1,4 @@
-import React, { useDeferredValue, useState } from "react";
+import React, { useDeferredValue, useState, Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Authorized, NavigationBar } from "./components";
 import { ErrorBoundary } from "./shared/components/errorBoundary";
@@ -17,7 +17,9 @@ export const Routing: React.FC = () => {
           <Routes>
             <Route 
               path="/" 
-              element={<Home key={`home-${deferredSearch}`} search={deferredSearch} />} 
+              element={
+                <Suspense fallback={"loading..."}>
+              <Home key={`home-${deferredSearch}`} search={deferredSearch} /></Suspense>} 
             />
             <Route path="/message/:id" element={<MessageDetailView />} />
             <Route path="*" element={<NotFoundView />} />
