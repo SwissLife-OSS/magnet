@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6ea62f8ddfd05806758495a3216e36bf>>
+ * @generated SignedSource<<5ed77879561595b523574cacc0422054>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -8,14 +8,18 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ConcreteRequest, Query } from 'relay-runtime';
-import { FragmentRefs } from "relay-runtime";
+import { ConcreteRequest } from 'relay-runtime';
 export type MessageDetailQuery$variables = {
   id: any;
 };
 export type MessageDetailQuery$data = {
   readonly message: {
-    readonly " $fragmentSpreads": FragmentRefs<"QuickInformation_messageRecord" | "ReceivedLogTable_messageRecord" | "ReceiverList_messageRecord">;
+    readonly id: string;
+    readonly provider: string;
+    readonly receivedAt: any;
+    readonly title: string;
+    readonly to: ReadonlyArray<string | null | undefined> | null | undefined;
+    readonly type: string;
   } | null | undefined;
 };
 export type MessageDetailQuery = {
@@ -33,52 +37,72 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "Variable",
-    "name": "id",
-    "variableName": "id"
+    "alias": null,
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "id",
+        "variableName": "id"
+      }
+    ],
+    "concreteType": "MessageRecord",
+    "kind": "LinkedField",
+    "name": "message",
+    "plural": false,
+    "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "id",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "title",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "type",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "provider",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "receivedAt",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "to",
+        "storageKey": null
+      }
+    ],
+    "storageKey": null
   }
-],
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "receivedAt",
-  "storageKey": null
-};
+];
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "MessageDetailQuery",
-    "selections": [
-      {
-        "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "MessageRecord",
-        "kind": "LinkedField",
-        "name": "message",
-        "plural": false,
-        "selections": [
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "QuickInformation_messageRecord"
-          },
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "ReceiverList_messageRecord"
-          },
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "ReceivedLogTable_messageRecord"
-          }
-        ],
-        "storageKey": null
-      }
-    ],
+    "selections": (v1/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
@@ -87,100 +111,19 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "MessageDetailQuery",
-    "selections": [
-      {
-        "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "MessageRecord",
-        "kind": "LinkedField",
-        "name": "message",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "id",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "title",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "type",
-            "storageKey": null
-          },
-          (v2/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "provider",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "from",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "body",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "to",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "MessageReceivedLog",
-            "kind": "LinkedField",
-            "name": "receivedLog",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "clientName",
-                "storageKey": null
-              },
-              (v2/*: any*/)
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      }
-    ]
+    "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "c3fb4574f27854832b7f08a7b55721b5",
+    "cacheID": "ade256d2d3c6b0c251b4d64ed4e555ed",
     "id": null,
     "metadata": {},
     "name": "MessageDetailQuery",
     "operationKind": "query",
-    "text": "query MessageDetailQuery(\n  $id: Uuid!\n) {\n  message(id: $id) {\n    ...QuickInformation_messageRecord\n    ...ReceiverList_messageRecord\n    ...ReceivedLogTable_messageRecord\n    id\n  }\n}\n\nfragment QuickInformation_messageRecord on MessageRecord {\n  id\n  title\n  type\n  receivedAt\n  provider\n  from\n  body\n}\n\nfragment ReceivedLogTable_messageRecord on MessageRecord {\n  receivedLog {\n    clientName\n    receivedAt\n  }\n}\n\nfragment ReceiverList_messageRecord on MessageRecord {\n  to\n}\n"
+    "text": "query MessageDetailQuery(\n  $id: Uuid!\n) {\n  message(id: $id) {\n    id\n    title\n    type\n    provider\n    receivedAt\n    to\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "718de6c9616d5689a9e3964620486d10";
+(node as any).hash = "f5d4ddae70a71f995e378d7829814cdd";
 
 export default node;

@@ -4,4 +4,5 @@ module.exports = {
   eagerEsModules: false,
   noFutureProofEnums: true,
   language: "typescript",
+  // Remove persistConfig to disable persisted queries
 };

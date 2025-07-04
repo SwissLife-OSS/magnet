@@ -1,34 +1,36 @@
 import React from "react";
 import { graphql } from "babel-plugin-relay/macro";
 import { useLazyLoadQuery } from "react-relay";
-import { useParams } from "react-router-dom";
-import { Grid } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { useNavigate, useParams } from "react-router-dom";
 import {
-  MessageDetailError,
-  QuickInformation,
-  ReceivedLogTable,
-  ReceiverList,
-} from "../../components";
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Stack,
+  Typography,
+} from "@mui/material";
+import EmailIcon from "@mui/icons-material/Email";
+import SmsIcon from "@mui/icons-material/Sms";
 import { MessageDetailQuery } from "./__generated__/MessageDetailQuery.graphql";
-
-const useStyles = makeStyles({
-  dataSection: {
-    marginTop: "20px",
-  },
-});
+import { MessageDetailError } from "../../components/MessageDetailError";
 
 export const MessageDetail: React.FC = () => {
-  const classes = useStyles();
   const { id = "" } = useParams();
+  const navigate = useNavigate();
 
   const data = useLazyLoadQuery<MessageDetailQuery>(
     graphql`
       query MessageDetailQuery($id: Uuid!) {
         message(id: $id) {
-          ...QuickInformation_messageRecord
-          ...ReceiverList_messageRecord
-          ...ReceivedLogTable_messageRecord
+          id
+          title
+          type
+          provider
+          receivedAt
+          to
         }
       }
     `,
@@ -36,27 +38,53 @@ export const MessageDetail: React.FC = () => {
     { fetchPolicy: "store-or-network" }
   );
 
+  console.log(data.message);
+
   if (!data.message) {
     return <MessageDetailError />;
   }
 
+  const { title, type, provider, receivedAt, to } = data.message;
+
+  const icon =
+    type === "Email" ? (
+      <EmailIcon color="primary" />
+    ) : (
+      <SmsIcon color="secondary" />
+    );
+
   return (
-    <Grid className={classes.dataSection} container>
-      <Grid item xs={0} lg={2}></Grid>
-      <Grid item xs={12} lg={8}>
-        <QuickInformation $ref={data.message} />
-      </Grid>
-      <Grid item xs={0} lg={2}></Grid>
-      <Grid item xs={0} lg={2}></Grid>
-      <Grid item xs={12} lg={8}>
-        <ReceiverList $ref={data.message} />
-      </Grid>
-      <Grid item xs={0} lg={2}></Grid>
-      <Grid item xs={0} lg={2}></Grid>
-      <Grid item xs={12} lg={8}>
-        <ReceivedLogTable $ref={data.message} />
-      </Grid>
-      <Grid item xs={0} lg={2}></Grid>
-    </Grid>
+    <Box sx={{ maxWidth: 600, mx: "auto", mt: 4 }}>
+      <Button variant="outlined" onClick={() => navigate(-1)} sx={{ mb: 2 }} color="error" disableRipple>
+        ← Back to overview
+      </Button>
+
+      <Card variant="outlined">
+        <CardHeader avatar={icon} title={title} subheader={new Date(receivedAt).toLocaleString("en-UK", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        })} />
+        <CardContent>
+          <Stack spacing={2} divider={<Divider flexItem />}>
+            <Box>
+              <Typography variant="subtitle2" color="text.secondary">Empfänger</Typography>
+              <Typography>{to?.[0] ?? "–"}</Typography>
+            </Box>
+            <Box>
+              <Typography variant="subtitle2" color="text.secondary">Typ</Typography>
+              <Typography>{type}</Typography>
+            </Box>
+            <Box>
+              <Typography variant="subtitle2" color="text.secondary">Provider</Typography>
+              <Typography>{provider}</Typography>
+            </Box>
+          </Stack>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };

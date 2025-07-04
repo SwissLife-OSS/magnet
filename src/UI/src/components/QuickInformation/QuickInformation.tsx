@@ -16,12 +16,12 @@ import {
   ListItemIcon,
   ListItemText,
   Stack,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { graphql } from "babel-plugin-relay/macro";
 import { useFragment } from "react-relay";
+import { SafeTooltip } from "../SafeTooltip";
 import { QuickInformation_messageRecord$key } from "./__generated__/QuickInformation_messageRecord.graphql";
 
 const useStyles = makeStyles({
@@ -105,44 +105,52 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({ $ref }) => {
       <Box className={classes.listBox}>
         <List component={Stack} direction="row">
           <ListItem disablePadding>
-            <Tooltip title="Type" arrow>
-              <ListItemButton sx={listItemStyle} disableRipple>
-                <ListItemIcon>
-                  <ChatBubbleOutline />
-                </ListItemIcon>
-                <ListItemText>{message?.type}</ListItemText>
-              </ListItemButton>
-            </Tooltip>
+            <SafeTooltip title="Type" arrow>
+              <Box>
+                <ListItemButton sx={listItemStyle} disableRipple>
+                  <ListItemIcon>
+                    <ChatBubbleOutline />
+                  </ListItemIcon>
+                  <ListItemText>{message?.type}</ListItemText>
+                </ListItemButton>
+              </Box>
+            </SafeTooltip>
           </ListItem>
           <ListItem disablePadding>
-            <Tooltip title="Received At" arrow>
-              <ListItemButton sx={listItemStyle} disableRipple>
-                <ListItemIcon>
-                  <AccessTime />
-                </ListItemIcon>
-                <ListItemText>{getDateTime(message?.receivedAt)}</ListItemText>
-              </ListItemButton>
-            </Tooltip>
+            <SafeTooltip title="Received At" arrow>
+              <Box>
+                <ListItemButton sx={listItemStyle} disableRipple>
+                  <ListItemIcon>
+                    <AccessTime />
+                  </ListItemIcon>
+                  <ListItemText>{getDateTime(message?.receivedAt)}</ListItemText>
+                </ListItemButton>
+              </Box>
+            </SafeTooltip>
           </ListItem>
           <ListItem disablePadding>
-            <Tooltip title="Provider" arrow>
-              <ListItemButton sx={listItemStyle} disableRipple>
-                <ListItemIcon>
-                  <Settings />
-                </ListItemIcon>
-                <ListItemText>{message?.provider}</ListItemText>
-              </ListItemButton>
-            </Tooltip>
+            <SafeTooltip title="Provider" arrow>
+              <Box>
+                <ListItemButton sx={listItemStyle} disableRipple>
+                  <ListItemIcon>
+                    <Settings />
+                  </ListItemIcon>
+                  <ListItemText>{message?.provider}</ListItemText>
+                </ListItemButton>
+              </Box>
+            </SafeTooltip>
           </ListItem>
           <ListItem disablePadding>
-            <Tooltip title="From" arrow>
-              <ListItemButton sx={listItemStyle} disableRipple>
-                <ListItemIcon>
-                  <Send />
-                </ListItemIcon>
-                <ListItemText>{message?.from}</ListItemText>
-              </ListItemButton>
-            </Tooltip>
+            <SafeTooltip title="From" arrow>
+              <Box>
+                <ListItemButton sx={listItemStyle} disableRipple>
+                  <ListItemIcon>
+                    <Send />
+                  </ListItemIcon>
+                  <ListItemText>{message?.from}</ListItemText>
+                </ListItemButton>
+              </Box>
+            </SafeTooltip>
           </ListItem>
         </List>
       </Box>

@@ -34,10 +34,14 @@ public static class MongoStoreServerBuilderExtensions
 
         configureSettings?.Invoke(clientSettings);
 
+        // MessageRecordBsonClassMap.Register();
+
+
         builder.SetMessageStore<MessageStore>();
         builder.Services.AddSingleton(options);
-        builder.Services.AddSingleton(_ => new MessageDbContext(
-            new MongoClient(clientSettings), options));
+        builder.Services.AddSingleton<IMongoClient>(_ => new MongoClient(clientSettings));
+        builder.Services.AddSingleton<MessageDbContext>(provider =>
+            new MessageDbContext(provider.GetRequiredService<IMongoClient>(), options));
         return builder;
     }
 }

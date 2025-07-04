@@ -28,7 +28,7 @@
     "get-graphql-schema": "^2.1.2",
     "graphql": "^16.6.0",
     "react-scripts": "^5.0.1",
-    "relay-compiler": "^16.2.0",
+    "relay-compiler": "^20.0.0",
     "typescript": "^5.4.3",
     "web-vitals": "^3.5.2"
   },
@@ -39,7 +39,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "relay": "yarn run relay-compiler",
-    "get-schema": "get-graphql-schema /graphql > ./schema.graphql"
+    "get-schema": "get-graphql-schema http://localhost:5000/graphql > ./schema.graphql"
   },
   "eslintConfig": {
     "extends": [

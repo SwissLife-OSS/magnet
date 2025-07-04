@@ -7,6 +7,8 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+console.log("banana");
+
 root.render(
   <RelayEnvironmentProvider environment={createEnvironment()}>
     <App />

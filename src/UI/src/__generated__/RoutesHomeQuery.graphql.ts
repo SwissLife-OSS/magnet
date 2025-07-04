@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c781bc36273fe401b3f7d47b503b252f>>
+ * @generated SignedSource<<a358704076ade4fb38686a5c422e625b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -8,36 +8,68 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ConcreteRequest } from 'relay-runtime';
+import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type HomeQuery$variables = Record<PropertyKey, never>;
-export type HomeQuery$data = {
-  readonly " $fragmentSpreads": FragmentRefs<"MessageList_query">;
+export type RoutesHomeQuery$variables = {
+  search?: string | null | undefined;
 };
-export type HomeQuery = {
-  response: HomeQuery$data;
-  variables: HomeQuery$variables;
+export type RoutesHomeQuery$data = {
+  readonly " $fragmentSpreads": FragmentRefs<"HomeFragment">;
+};
+export type RoutesHomeQuery = {
+  response: RoutesHomeQuery$data;
+  variables: RoutesHomeQuery$variables;
 };
 
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "search"
+  }
+],
+v1 = [
+  {
     "kind": "Literal",
     "name": "first",
     "value": 30
+  },
+  {
+    "fields": [
+      {
+        "fields": [
+          {
+            "kind": "Variable",
+            "name": "contains",
+            "variableName": "search"
+          }
+        ],
+        "kind": "ObjectValue",
+        "name": "title"
+      }
+    ],
+    "kind": "ObjectValue",
+    "name": "where"
   }
 ];
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "HomeQuery",
+    "name": "RoutesHomeQuery",
     "selections": [
       {
-        "args": null,
+        "args": [
+          {
+            "kind": "Variable",
+            "name": "search",
+            "variableName": "search"
+          }
+        ],
         "kind": "FragmentSpread",
-        "name": "MessageList_query"
+        "name": "HomeFragment"
       }
     ],
     "type": "Query",
@@ -45,13 +77,13 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "HomeQuery",
+    "name": "RoutesHomeQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "MessagesConnection",
         "kind": "LinkedField",
         "name": "messages",
@@ -161,11 +193,11 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "messages(first:30)"
+        "storageKey": null
       },
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "filters": [
           "where"
         ],
@@ -177,16 +209,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0b6b61058eb7c68b83bc64c39f2cb9fb",
+    "cacheID": "bd0fd19ea57e1d34a5df71d71ca7d5b6",
     "id": null,
     "metadata": {},
-    "name": "HomeQuery",
+    "name": "RoutesHomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery {\n  ...MessageList_query\n}\n\nfragment MessageListTable_messageRecord on MessageRecord {\n  id\n  title\n  receivedAt\n  type\n  provider\n  to\n}\n\nfragment MessageListTable_messagesEdge on MessagesEdge {\n  node {\n    id\n    ...MessageListTable_messageRecord\n  }\n}\n\nfragment MessageList_query on Query {\n  messages(first: 30) {\n    edges {\n      ...MessageListTable_messagesEdge\n      cursor\n      node {\n        __typename\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query RoutesHomeQuery(\n  $search: String\n) {\n  ...HomeFragment_40zwac\n}\n\nfragment HomeFragment_40zwac on Query {\n  ...MessageList_data_1DkO9M\n}\n\nfragment MessageListTable_messageRecord on MessageRecord {\n  id\n  title\n  receivedAt\n  type\n  provider\n  to\n}\n\nfragment MessageListTable_messagesEdge on MessagesEdge {\n  node {\n    id\n    ...MessageListTable_messageRecord\n  }\n}\n\nfragment MessageList_data_1DkO9M on Query {\n  messages(first: 30, where: {title: {contains: $search}}) {\n    edges {\n      ...MessageListTable_messagesEdge\n      cursor\n      node {\n        __typename\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "f2f616a49f872a6936a9564d0bbfdce6";
+(node as any).hash = "55ce1e61134d89be02dc0ca5b403e6b2";
 
 export default node;

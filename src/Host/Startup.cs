@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Magnet.GraphQL;
 using Magnet.Hosting.UI;
-using Magnet.Messaging.AzureServiceBus;
+using Magnet.Messaging.RabbitMQ;
 using Magnet.Store.Mongo;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -39,20 +39,22 @@ public class Startup
             .AddTwilioSms()
             .AddAzureDevOps()
             // switch between Azure Service Bus and RabbitMQ as needed
-            // .AddRabbitMQ(Configuration)
-            .AddAzureServiceBus(Configuration)
+            .AddRabbitMQ(Configuration)
+            // .AddAzureServiceBus(Configuration)
             .AddMongoStore(Configuration);
 
+        // Keep basic authentication for BFF endpoints
         services
             .AddAuthentication("fake")
             .AddCookie("fake");
 
-        services.AddAuthorization(o => o.AddPolicy(
-            "Magnet.Read",
-            p => p.RequireAssertion(c =>
-            {
-                return true;
-            })));
+        // But don't add authorization policies
+        // services.AddAuthorization(o => o.AddPolicy(
+        //     "Magnet.Read",
+        //     p => p.RequireAssertion(c =>
+        //     {
+        //         return true;
+        //     })));
 
         services.AddGraphQLServices();
         services.AddCors(options =>
@@ -74,22 +76,26 @@ public class Startup
             app.UseDeveloperExceptionPage();
         }
         app.UseCors();
-        app.UseRouting();
-
-        app.UseAuthorization();
-        app.UseAuthentication();
 
         app.Use(async (context, next) =>
         {
-            var identity = new ClaimsIdentity( new List<Claim>() { new Claim("sub", "admin") }, "fake");
+            var identity = new ClaimsIdentity( new List<Claim>() {
+                new Claim("sub", "admin"),
+                new Claim("role", "Magnet.Read")  // This is what the UI is looking for!
+            }, "fake");
             await context.SignInAsync("fake", new ClaimsPrincipal(identity));
             await next.Invoke();
         });
 
+        app.UseRouting();
+
+        app.UseAuthentication();
+        // app.UseAuthorization(); // Skip authorization for now
+
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
-            endpoints.MapGraphQLHttp();
+            endpoints.MapGraphQL();
         });
 
         app.UseMagnetUi();
