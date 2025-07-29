@@ -38,7 +38,7 @@ export const MessageFilter = ({
         {types.map((type) => (
           <Button
             key={type}
-            color="success"
+            color="error"
             variant={typeFilter === type ? "contained" : "outlined"}
             onClick={() =>
               onTypeChange(typeFilter === type ? null : type)

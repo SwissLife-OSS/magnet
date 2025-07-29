@@ -1,10 +1,9 @@
 import { graphql } from "babel-plugin-relay/macro";
-import React, { useEffect, useState, useTransition, useMemo } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { usePaginationFragment } from "react-relay";
 import { Box, Typography } from "@mui/material";
 import { MessageFilter, MessageType } from "../MessageFilter";
 import { MessageListTable } from "../MessageListTable";
-import { Filter } from "@mui/icons-material";
 import { TransitionIndicator } from "../TransitionIndicator/TransitionIndicator";
 import { MessageList_query$key } from "./__generated__/MessageList_query.graphql";
 
@@ -56,7 +55,7 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
     startTransition(() => {
       refetch(filter);
     });
-  }, [filter]);
+  }, [filter, refetch, startTransition]);
 
   return (
     <Box sx={{ mt: 4, mb: 2 }}>
