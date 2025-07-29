@@ -9,7 +9,7 @@ export const Home: React.FC = () => {
   const data = useLazyLoadQuery<HomeQuery>(
     graphql`
       query HomeQuery {
-        ...MessageList_data
+        ...MessageList_query
       }
     `,
     {},
@@ -21,7 +21,7 @@ export const Home: React.FC = () => {
       <Grid item xs={0} lg={2}></Grid>
       <Grid item xs={12} lg={8}>
         <Suspense fallback={<CircularProgress />}>
-          <MessageList queryRef={data} />
+          <MessageList fragmentRef={data} />
         </Suspense>
       </Grid>
       <Grid item xs={0} lg={2}></Grid>

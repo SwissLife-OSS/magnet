@@ -1,71 +1,36 @@
 import { graphql } from "babel-plugin-relay/macro";
-import React, { useState } from "react";
+import React, { useEffect, useState, useTransition, useMemo } from "react";
 import { usePaginationFragment } from "react-relay";
-import { makeStyles } from "@mui/styles";
-import { MessageFilter } from "../MessageFilter";
+import { Box, Typography } from "@mui/material";
+import { MessageFilter, MessageType } from "../MessageFilter";
 import { MessageListTable } from "../MessageListTable";
-import { MessageList_data$key } from "./__generated__/MessageList_data.graphql";
+import { Filter } from "@mui/icons-material";
+import { TransitionIndicator } from "../TransitionIndicator/TransitionIndicator";
+import { MessageList_query$key } from "./__generated__/MessageList_query.graphql";
 
-const useStyles = makeStyles({
-  informationPosition: {
-    textAlign: "center",
-    marginTop: "35px",
-  },
-  informationTitle: {
-    marginBottom: "0",
-  },
-  informationSubTitle: {
-    fontWeight: "400",
-    marginTop: "10px",
-  },
-  filterTitle: {
-    fontSize: "20px",
-    fontWeight: "500",
-    marginBottom: 0,
-  },
-});
-
-export interface MessageListFilterState {
-  sms: boolean;
-  email: boolean;
-  inbox: boolean;
-  workItem: boolean;
-}
-
-export type MessageListDataProp = MessageList_data$key;
+export type MessageListDataProp = MessageList_query$key
 
 interface MessageListProps {
-  queryRef: MessageListDataProp;
+  fragmentRef: MessageListDataProp;
+  search?: string;
 }
 
-export const MessageList: React.FC<MessageListProps> = ({ queryRef }) => {
-  const classes = useStyles();
-  const [filterState, setFilterState] = useState<MessageListFilterState>({
-    sms: true,
-    email: true,
-    inbox: true,
-    workItem: true,
-  });
+export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search }) => {
+  const [typeFilter, setTypeFilter] = useState<MessageType>(null);
+  const [providerFilter, setProviderFilter] = useState<string | null>(null);
 
-  const handleFilterChange = (filters: MessageListFilterState) => {
-    setFilterState(filters);
-
-    const selectedFilters = Object.entries(filters)
-      .filter(([type, value]) => value)
-      .map(([type]) => type.charAt(0).toUpperCase() + type.slice(1))
-      .map((item) => ({ type: { eq: item } }));
-
-    const selectedFiltersLength = selectedFilters.length;
-
-    refetch(
-      { where: selectedFiltersLength === 4 ? null : { or: selectedFilters } },
-      { fetchPolicy: "network-only" }
-    );
+  const filter = {
+    where: {
+      ...(search ? { title: { contains: search }, } : undefined),
+      ...(typeFilter ? { type: { eq: typeFilter } } : undefined),
+      ...(providerFilter ? { provider: { eq: providerFilter } } : undefined),
+    },
   };
+
 
   const { data, hasNext, loadNext, refetch } = usePaginationFragment(
     graphql`
-      fragment MessageList_data on Query
+      fragment MessageList_query on Query
       @argumentDefinitions(
         cursor: { type: "String" }
         count: { type: "Int", defaultValue: 30 }
@@ -80,35 +45,46 @@ export const MessageList: React.FC<MessageListProps> = ({ queryRef }) => {
         }
       }
     `,
-    queryRef
+    fragmentRef
   );
 
-  const showInformation = data?.messages?.edges?.length;
+  const showInformation = !!data?.messages?.edges?.length;
+
+  const [busy, startTransition] = useTransition();
+
+  useEffect(() => {
+    startTransition(() => {
+      refetch(filter);
+    });
+  }, [filter]);
 
   return (
-    <>
-      <h2 className={classes.filterTitle}> Filters</h2>
+    <Box sx={{ mt: 4, mb: 2 }}>
       <MessageFilter
-        filters={filterState}
-        onFilterChange={handleFilterChange}
+        typeFilter={typeFilter}
+        providerFilter={providerFilter}
+        onTypeChange={setTypeFilter}
+        onProviderChange={setProviderFilter}
       />
       {!showInformation && (
-        <div className={classes.informationPosition}>
-          <h2 className={classes.informationTitle}>
+        <Box sx={{ textAlign: "center", mt: 4 }}>
+          <Typography variant="h4" sx={{ mb: 0 }}>
             New data is displayed here
-          </h2>
-          <h4 className={classes.informationSubTitle}>
+          </Typography>
+          <Typography variant="subtitle1" sx={{ fontWeight: 400, mt: 2 }}>
             Click on a row to see more Information
-          </h4>
-        </div>
+          </Typography>
+        </Box>
       )}
-      {(showInformation ?? 0) > 0 && (
-        <MessageListTable
-          $ref={data?.messages?.edges ?? []}
-          hasNext={hasNext}
-          loadNext={loadNext}
-        />
+      {showInformation && (
+        <TransitionIndicator in={!busy}>
+          <MessageListTable
+            $ref={(data.messages?.edges ?? [])}
+            hasNext={hasNext}
+            loadNext={loadNext}
+          />
+        </TransitionIndicator>
       )}
-    </>
+    </Box>
   );
 };

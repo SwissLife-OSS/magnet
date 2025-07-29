@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<824f7fce8962a6c0ae16bad26c2fff54>>
+ * @generated SignedSource<<bca27dff22ccfd0990485cc000e3d6ae>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,7 +12,7 @@ import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type HomeQuery$variables = Record<PropertyKey, never>;
 export type HomeQuery$data = {
-  readonly " $fragmentSpreads": FragmentRefs<"MessageList_data">;
+  readonly " $fragmentSpreads": FragmentRefs<"MessageList_query">;
 };
 export type HomeQuery = {
   response: HomeQuery$data;
@@ -37,7 +37,7 @@ return {
       {
         "args": null,
         "kind": "FragmentSpread",
-        "name": "MessageList_data"
+        "name": "MessageList_query"
       }
     ],
     "type": "Query",
@@ -177,16 +177,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "49f56de12e7d5115b1a4c36fe935f4a6",
+    "cacheID": "0b6b61058eb7c68b83bc64c39f2cb9fb",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery {\n  ...MessageList_data\n}\n\nfragment MessageListTable_messageRecord on MessageRecord {\n  id\n  title\n  receivedAt\n  type\n  provider\n  to\n}\n\nfragment MessageListTable_messagesEdge on MessagesEdge {\n  node {\n    id\n    ...MessageListTable_messageRecord\n  }\n}\n\nfragment MessageList_data on Query {\n  messages(first: 30) {\n    edges {\n      ...MessageListTable_messagesEdge\n      cursor\n      node {\n        __typename\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeQuery {\n  ...MessageList_query\n}\n\nfragment MessageListTable_messageRecord on MessageRecord {\n  id\n  title\n  receivedAt\n  type\n  provider\n  to\n}\n\nfragment MessageListTable_messagesEdge on MessagesEdge {\n  node {\n    id\n    ...MessageListTable_messageRecord\n  }\n}\n\nfragment MessageList_query on Query {\n  messages(first: 30) {\n    edges {\n      ...MessageListTable_messagesEdge\n      cursor\n      node {\n        __typename\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "6c89c6812ce907cc528542be79380e59";
+(node as any).hash = "f2f616a49f872a6936a9564d0bbfdce6";
 
 export default node;
