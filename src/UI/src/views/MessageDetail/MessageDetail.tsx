@@ -50,20 +50,18 @@ export const MessageDetail: React.FC = () => {
         </Typography>
       </Box>
 
-      {/* Content in Cards */}
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-        <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
-          <QuickInformation $ref={data.message} />
-        </Paper>
-
-        <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
+      {/* Content in einer Card */}
+      <Paper elevation={2} sx={{ p: 4, borderRadius: 2 }}>
+        <QuickInformation $ref={data.message} />
+        
+        <Box sx={{ mt: 4, mb: 3 }}>
           <ReceiverList $ref={data.message} />
-        </Paper>
+        </Box>
 
-        <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
+        <Box sx={{ mt: 4 }}>
           <ReceivedLogTable $ref={data.message} />
-        </Paper>
-      </Box>
+        </Box>
+      </Paper>
     </Container>
   );
 };

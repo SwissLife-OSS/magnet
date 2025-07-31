@@ -123,11 +123,17 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({ $ref }) => {
       {/* Info Grid */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
         <Grid item xs={12} sm={6} md={3}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Box sx={{ 
+            display: "flex", 
+            alignItems: "center", 
+            gap: 1,
+            height: "100%",
+            minHeight: 60
+          }}>
             <Avatar sx={{ bgcolor: "primary.light", width: 32, height: 32 }}>
               <AccessTime fontSize="small" />
             </Avatar>
-            <Box>
+            <Box sx={{ flex: 1 }}>
               <Typography variant="caption" color="text.secondary" display="block">
                 Received At
               </Typography>
@@ -139,11 +145,17 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({ $ref }) => {
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Box sx={{ 
+            display: "flex", 
+            alignItems: "center", 
+            gap: 1,
+            height: "100%",
+            minHeight: 60
+          }}>
             <Avatar sx={{ bgcolor: "secondary.light", width: 32, height: 32 }}>
               <Settings fontSize="small" />
             </Avatar>
-            <Box>
+            <Box sx={{ flex: 1 }}>
               <Typography variant="caption" color="text.secondary" display="block">
                 Provider
               </Typography>
@@ -155,11 +167,17 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({ $ref }) => {
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Box sx={{ 
+            display: "flex", 
+            alignItems: "center", 
+            gap: 1,
+            height: "100%",
+            minHeight: 60
+          }}>
             <Avatar sx={{ bgcolor: "info.light", width: 32, height: 32 }}>
               <Send fontSize="small" />
             </Avatar>
-            <Box>
+            <Box sx={{ flex: 1 }}>
               <Typography variant="caption" color="text.secondary" display="block">
                 From
               </Typography>
