@@ -1,5 +1,4 @@
 import { Box, Button, TextField, MenuItem } from "@mui/material";
-import { useState } from "react";
 
 export type MessageType = "SMS" | "Email" | "Inbox" | "Workitem" | null;
 
@@ -19,8 +18,6 @@ export const MessageFilter = ({
   providerFilter,
   onProviderChange,
 }: Props) => {
-  const [dateRange, setDateRange] = useState<string>("");
-
   return (
     <Box
       sx={{
@@ -70,5 +67,5 @@ export const MessageFilter = ({
         </TextField>
       </Box>
     </Box>
-)
-}
+  );
+};

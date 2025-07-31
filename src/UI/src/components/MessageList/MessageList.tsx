@@ -1,5 +1,5 @@
 import { graphql } from "babel-plugin-relay/macro";
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition, useMemo } from "react";
 import { usePaginationFragment } from "react-relay";
 import { Box, Typography } from "@mui/material";
 import { MessageFilter, MessageType } from "../MessageFilter";
@@ -18,13 +18,13 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
   const [typeFilter, setTypeFilter] = useState<MessageType>(null);
   const [providerFilter, setProviderFilter] = useState<string | null>(null);
 
-  const filter = {
+  const filter = useMemo(() => ({
     where: {
       ...(search ? { title: { contains: search }, } : undefined),
       ...(typeFilter ? { type: { eq: typeFilter } } : undefined),
       ...(providerFilter ? { provider: { eq: providerFilter } } : undefined),
     },
-  };
+  }), [search, typeFilter, providerFilter]);
 
 
   const { data, hasNext, loadNext, refetch } = usePaginationFragment(
@@ -53,9 +53,9 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
 
   useEffect(() => {
     startTransition(() => {
-      refetch(filter);
+      refetch(filter, { fetchPolicy: 'store-or-network' });
     });
-  }, [filter, refetch, startTransition]);
+  }, [search, typeFilter, providerFilter]);
 
   return (
     <Box sx={{ mt: 4, mb: 2 }}>
