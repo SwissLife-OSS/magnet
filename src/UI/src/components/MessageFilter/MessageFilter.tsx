@@ -1,4 +1,5 @@
 import { Box, Button, TextField, MenuItem } from "@mui/material";
+import { Sms, Email, Inbox, Work } from "@mui/icons-material";
 
 export type MessageType = "SMS" | "Email" | "Inbox" | "Workitem" | null;
 
@@ -11,6 +12,21 @@ interface Props {
 
 const types: MessageType[] = ["SMS", "Email", "Inbox", "Workitem"];
 const providers = ["E2ETests", "SendGrid"];
+
+// const getTypeIcon = (type: MessageType) => {
+//   switch (type) {
+//     case "SMS":
+//       return <Sms sx={{ mr: 1 }} />;
+//     case "Email":
+//       return <Email sx={{ mr: 1 }} />;
+//     case "Inbox":
+//       return <Inbox sx={{ mr: 1 }} />;
+//     case "Workitem":
+//       return <Work sx={{ mr: 1 }} />;
+//     default:
+//       return null;
+//   }
+// };
 
 export const MessageFilter = ({
   typeFilter,
@@ -39,6 +55,7 @@ export const MessageFilter = ({
             onClick={() =>
               onTypeChange(typeFilter === type ? null : type)
             }
+            // startIcon={getTypeIcon(type)}
           >
             {type}
           </Button>

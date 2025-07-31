@@ -12,6 +12,7 @@ import {
   Button,
   Box,
 } from "@mui/material";
+import { Sms, Email, Inbox, Work, Message } from "@mui/icons-material";
 import { graphql } from "babel-plugin-relay/macro";
 import { useFragment } from "react-relay";
 import { MessageListTable_messagesEdge$key } from "./__generated__/MessageListTable_messagesEdge.graphql";
@@ -111,6 +112,21 @@ function Row({ $ref }: RowProps) {
   const getShortTitle = (title: string) =>
     title.length > 50 ? `${title.substring(0, 50)}...` : title;
 
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case "Sms":
+        return <Sms />;
+      case "Email":
+        return <Email />;
+      case "Inbox":
+        return <Inbox />;
+      case "WorkItem":
+        return <Work />;
+      default:
+        return <Message />;
+    }
+  };
+
   return (
     <TableRow
       hover
@@ -124,7 +140,9 @@ function Row({ $ref }: RowProps) {
       <TableCell>{getShortTitle(node.title)}</TableCell>
       <TableCell>{node.to?.[0] ?? "—"}</TableCell>
       <TableCell>{getDateTime(node.receivedAt)}</TableCell>
-      <TableCell>{node.type}</TableCell>
+      <TableCell>
+        {getTypeIcon(node.type)}
+      </TableCell>
       <TableCell>{node.provider}</TableCell>
     </TableRow>
   );

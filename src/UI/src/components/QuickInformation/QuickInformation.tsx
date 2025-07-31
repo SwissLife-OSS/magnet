@@ -2,54 +2,25 @@ import React from "react";
 import { JSONTree } from "react-json-tree";
 import {
   AccessTime,
-  ChatBubbleOutline,
+  Email,
   Send,
   Settings,
+  Sms,
+  Inbox,
+  Work,
+  Message,
 } from "@mui/icons-material/";
 import {
   Box,
-  Card,
-  CardContent,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Stack,
-  Tooltip,
+  Chip,
+  Divider,
+  Grid,
   Typography,
+  Avatar,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { graphql } from "babel-plugin-relay/macro";
 import { useFragment } from "react-relay";
 import { QuickInformation_messageRecord$key } from "./__generated__/QuickInformation_messageRecord.graphql";
-
-const useStyles = makeStyles({
-  cardMargin: {
-    marginTop: "30px",
-    minWidth: 275,
-  },
-  bodyTitle: {
-    fontSize: "20px",
-    fontWeight: "400",
-  },
-  listBox: {
-    width: "95%",
-  },
-  emailBody: {
-    width: "800px",
-    height: "80vh",
-    border: "none",
-  },
-  iframePosition: {
-    textAlign: "center",
-  },
-});
-
-const listItemStyle = {
-  "&:hover": { backgroundColor: "transparent" },
-  cursor: "default",
-};
 
 const jsonTreeTheme = {
   scheme: "monokai",
@@ -72,6 +43,36 @@ const jsonTreeTheme = {
   base0F: "#cc6633",
 };
 
+const getTypeIcon = (type: string) => {
+  switch (type) {
+    case "Sms":
+      return <Sms />;
+    case "Email":
+      return <Email />;
+    case "Inbox":
+      return <Inbox />;
+    case "WorkItem":
+      return <Work />;
+    default:
+      return <Message />;
+  }
+};
+
+const getTypeColor = (type: string) => {
+  switch (type) {
+    case "Sms":
+      return "primary";
+    case "Email":
+      return "secondary";
+    case "Inbox":
+      return "info";
+    case "WorkItem":
+      return "warning";
+    default:
+      return "default";
+  }
+};
+
 interface QuickInformationProps {
   $ref: QuickInformation_messageRecord$key;
 }
@@ -91,80 +92,127 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({ $ref }) => {
     `,
     $ref
   );
-  const classes = useStyles();
 
-  const getDateTime = (date: any) => new Date(date).toLocaleString() ?? "";
+  const getDateTime = (date: any) => 
+    new Date(date).toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
 
   return (
-    <Card className={classes.cardMargin}>
-      <CardContent>
-        <Typography variant="h5" component="div">
+    <Box>
+      {/* Header Section */}
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="h5" component="h2" sx={{ mb: 2, fontWeight: 600 }}>
           {message?.title}
         </Typography>
-      </CardContent>
-      <Box className={classes.listBox}>
-        <List component={Stack} direction="row">
-          <ListItem disablePadding>
-            <Tooltip title="Type" arrow>
-              <ListItemButton sx={listItemStyle} disableRipple>
-                <ListItemIcon>
-                  <ChatBubbleOutline />
-                </ListItemIcon>
-                <ListItemText>{message?.type}</ListItemText>
-              </ListItemButton>
-            </Tooltip>
-          </ListItem>
-          <ListItem disablePadding>
-            <Tooltip title="Received At" arrow>
-              <ListItemButton sx={listItemStyle} disableRipple>
-                <ListItemIcon>
-                  <AccessTime />
-                </ListItemIcon>
-                <ListItemText>{getDateTime(message?.receivedAt)}</ListItemText>
-              </ListItemButton>
-            </Tooltip>
-          </ListItem>
-          <ListItem disablePadding>
-            <Tooltip title="Provider" arrow>
-              <ListItemButton sx={listItemStyle} disableRipple>
-                <ListItemIcon>
-                  <Settings />
-                </ListItemIcon>
-                <ListItemText>{message?.provider}</ListItemText>
-              </ListItemButton>
-            </Tooltip>
-          </ListItem>
-          <ListItem disablePadding>
-            <Tooltip title="From" arrow>
-              <ListItemButton sx={listItemStyle} disableRipple>
-                <ListItemIcon>
-                  <Send />
-                </ListItemIcon>
-                <ListItemText>{message?.from}</ListItemText>
-              </ListItemButton>
-            </Tooltip>
-          </ListItem>
-        </List>
+        
+        <Chip
+          icon={getTypeIcon(message?.type || "")}
+          label={message?.type}
+          color={getTypeColor(message?.type || "") as any}
+          variant="outlined"
+          sx={{ mb: 2 }}
+        />
       </Box>
-      <CardContent>
-        <h1 className={classes.bodyTitle}>Body</h1>
-        {message?.type === "Email" ? (
-          <div className={classes.iframePosition}>
-            <iframe
-              src={"/view/content/" + message?.id}
-              title="Email Body"
-              className={classes.emailBody}
+
+      {/* Info Grid */}
+      <Grid container spacing={3} sx={{ mb: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Avatar sx={{ bgcolor: "primary.light", width: 32, height: 32 }}>
+              <AccessTime fontSize="small" />
+            </Avatar>
+            <Box>
+              <Typography variant="caption" color="text.secondary" display="block">
+                Received At
+              </Typography>
+              <Typography variant="body2" fontWeight="medium">
+                {getDateTime(message?.receivedAt)}
+              </Typography>
+            </Box>
+          </Box>
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={3}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Avatar sx={{ bgcolor: "secondary.light", width: 32, height: 32 }}>
+              <Settings fontSize="small" />
+            </Avatar>
+            <Box>
+              <Typography variant="caption" color="text.secondary" display="block">
+                Provider
+              </Typography>
+              <Typography variant="body2" fontWeight="medium">
+                {message?.provider}
+              </Typography>
+            </Box>
+          </Box>
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={3}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Avatar sx={{ bgcolor: "info.light", width: 32, height: 32 }}>
+              <Send fontSize="small" />
+            </Avatar>
+            <Box>
+              <Typography variant="caption" color="text.secondary" display="block">
+                From
+              </Typography>
+              <Typography variant="body2" fontWeight="medium">
+                {message?.from}
+              </Typography>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+
+      <Divider sx={{ my: 3 }} />
+
+      {/* Body Section */}
+      <Box>
+        <Typography variant="h6" component="h3" sx={{ mb: 2, fontWeight: 600 }}>
+          Message Content
+        </Typography>
+        
+        <Box 
+          sx={{ 
+            p: 2, 
+            backgroundColor: "grey.50", 
+            borderRadius: 2,
+            border: "1px solid",
+            borderColor: "grey.200"
+          }}
+        >
+          {message?.type === "Email" ? (
+            <Box sx={{ textAlign: "center" }}>
+              <iframe
+                src={"/view/content/" + message?.id}
+                title="Email Body"
+                style={{
+                  width: "100%",
+                  height: "400px",
+                  border: "none",
+                  borderRadius: "8px"
+                }}
+              />
+            </Box>
+          ) : message?.type === "Inbox" ? (
+            <JSONTree
+              theme={jsonTreeTheme}
+              data={JSON.parse(message?.body ?? "")}
             />
-          </div>
-        ) : message?.type === "Inbox" ? (
-          <JSONTree
-            theme={jsonTreeTheme}
-            data={JSON.parse(message?.body ?? "")}
-          />
-        ) : (
-          message?.body
-        )}
-      </CardContent>
-    </Card>
+          ) : (
+            <Typography variant="body1" style={{ whiteSpace: "pre-wrap" }}>
+              {message?.body}
+            </Typography>
+          )}
+        </Box>
+      </Box>
+    </Box>
   );
 };
