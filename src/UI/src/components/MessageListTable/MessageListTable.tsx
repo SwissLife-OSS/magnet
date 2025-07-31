@@ -47,7 +47,7 @@ export const MessageListTable: React.FC<MessageListTableProps> = ({
     .filter((node): node is NonNullable<typeof node> => !!node);
 
   return (
-    <Box sx={{ px: { xs: 2, sm: 4, md: 8 }, py: 4 }}>
+    <Box sx={{ py: 2 }}>
       <TableContainer
         component={Paper}
         sx={{

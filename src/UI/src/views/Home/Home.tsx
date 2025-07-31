@@ -22,13 +22,13 @@ export const Home: React.FC<HomeProps> = ({ search }) => {
 
   return (
     <Grid container>
-      <Grid item xs={0} lg={2}></Grid>
-      <Grid item xs={12} lg={8}>
+      <Grid item xs={1} lg={1}></Grid>
+      <Grid item xs={10} lg={10}>
         <Suspense fallback={<CircularProgress />}>
           <MessageList fragmentRef={data} search={search} />
         </Suspense>
       </Grid>
-      <Grid item xs={0} lg={2}></Grid>
+      <Grid item xs={1} lg={1}></Grid>
     </Grid>
   );
 };

@@ -21,14 +21,13 @@ export const MessageFilter = ({
   return (
     <Box
       sx={{
-        mt: 4,
-        mb: 2,
+        mt: 2,
+        mb: 1,
         display: "flex",
         flexWrap: "wrap",
         justifyContent: "space-between",
         alignItems: "center",
         gap: 2,
-        px: { xs: 2, sm: 4, md: 8 },
       }}
     >
       <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
