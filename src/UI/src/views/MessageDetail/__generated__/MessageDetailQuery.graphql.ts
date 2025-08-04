@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6ea62f8ddfd05806758495a3216e36bf>>
+ * @generated SignedSource<<30852632272ba82fd5faa33fe0d49193>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,7 +15,7 @@ export type MessageDetailQuery$variables = {
 };
 export type MessageDetailQuery$data = {
   readonly message: {
-    readonly " $fragmentSpreads": FragmentRefs<"QuickInformation_messageRecord" | "ReceivedLogTable_messageRecord" | "ReceiverList_messageRecord">;
+    readonly " $fragmentSpreads": FragmentRefs<"MessageDetailHeader_messageRecord" | "QuickInformation_messageRecord" | "ReceivedLogTable_messageRecord" | "ReceiverList_messageRecord">;
   } | null | undefined;
 };
 export type MessageDetailQuery = {
@@ -60,6 +60,11 @@ return {
         "name": "message",
         "plural": false,
         "selections": [
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "MessageDetailHeader_messageRecord"
+          },
           {
             "args": null,
             "kind": "FragmentSpread",
@@ -171,16 +176,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "c3fb4574f27854832b7f08a7b55721b5",
+    "cacheID": "6a03e120213cab9c2facabec209fce33",
     "id": null,
     "metadata": {},
     "name": "MessageDetailQuery",
     "operationKind": "query",
-    "text": "query MessageDetailQuery(\n  $id: Uuid!\n) {\n  message(id: $id) {\n    ...QuickInformation_messageRecord\n    ...ReceiverList_messageRecord\n    ...ReceivedLogTable_messageRecord\n    id\n  }\n}\n\nfragment QuickInformation_messageRecord on MessageRecord {\n  id\n  title\n  type\n  receivedAt\n  provider\n  from\n  body\n}\n\nfragment ReceivedLogTable_messageRecord on MessageRecord {\n  receivedLog {\n    clientName\n    receivedAt\n  }\n}\n\nfragment ReceiverList_messageRecord on MessageRecord {\n  to\n}\n"
+    "text": "query MessageDetailQuery(\n  $id: Uuid!\n) {\n  message(id: $id) {\n    ...MessageDetailHeader_messageRecord\n    ...QuickInformation_messageRecord\n    ...ReceiverList_messageRecord\n    ...ReceivedLogTable_messageRecord\n    id\n  }\n}\n\nfragment MessageDetailHeader_messageRecord on MessageRecord {\n  id\n  title\n  type\n}\n\nfragment QuickInformation_messageRecord on MessageRecord {\n  id\n  title\n  type\n  receivedAt\n  provider\n  from\n  body\n}\n\nfragment ReceivedLogTable_messageRecord on MessageRecord {\n  receivedLog {\n    clientName\n    receivedAt\n  }\n}\n\nfragment ReceiverList_messageRecord on MessageRecord {\n  to\n}\n"
   }
 };
 })();
 
-(node as any).hash = "718de6c9616d5689a9e3964620486d10";
+(node as any).hash = "f13965a837fc958a4d09e81a531bb05d";
 
 export default node;

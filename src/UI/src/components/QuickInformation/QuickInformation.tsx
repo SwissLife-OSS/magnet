@@ -105,35 +105,24 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({ $ref }) => {
 
   return (
     <Box>
-      {/* Header Section */}
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" component="h2" sx={{ mb: 2, fontWeight: 600 }}>
-          {message?.title}
-        </Typography>
-        
-        <Chip
-          icon={getTypeIcon(message?.type || "")}
-          label={message?.type}
-          color={getTypeColor(message?.type || "") as any}
-          variant="outlined"
-          sx={{ mb: 2 }}
-        />
-      </Box>
-
       {/* Info Grid */}
-      <Grid container spacing={3} sx={{ mb: 3 }}>
-        <Grid item xs={12} sm={6} md={3}>
+      <Box sx={{ mb: 3 }}>
+        <Box sx={{ 
+          display: "flex", 
+          width: "100%",
+          gap: 1
+        }}>
           <Box sx={{ 
             display: "flex", 
             alignItems: "center", 
             gap: 1,
-            height: "100%",
-            minHeight: 60
+            flex: "1 1 33.33%",
+            justifyContent: "flex-start"
           }}>
             <Avatar sx={{ bgcolor: "primary.light", width: 32, height: 32 }}>
               <AccessTime fontSize="small" />
             </Avatar>
-            <Box sx={{ flex: 1 }}>
+            <Box>
               <Typography variant="caption" color="text.secondary" display="block">
                 Received At
               </Typography>
@@ -142,42 +131,18 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({ $ref }) => {
               </Typography>
             </Box>
           </Box>
-        </Grid>
 
-        <Grid item xs={12} sm={6} md={3}>
           <Box sx={{ 
             display: "flex", 
             alignItems: "center", 
             gap: 1,
-            height: "100%",
-            minHeight: 60
-          }}>
-            <Avatar sx={{ bgcolor: "secondary.light", width: 32, height: 32 }}>
-              <Settings fontSize="small" />
-            </Avatar>
-            <Box sx={{ flex: 1 }}>
-              <Typography variant="caption" color="text.secondary" display="block">
-                Provider
-              </Typography>
-              <Typography variant="body2" fontWeight="medium">
-                {message?.provider}
-              </Typography>
-            </Box>
-          </Box>
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={3}>
-          <Box sx={{ 
-            display: "flex", 
-            alignItems: "center", 
-            gap: 1,
-            height: "100%",
-            minHeight: 60
+            flex: "1 1 33.33%",
+            justifyContent: "center"
           }}>
             <Avatar sx={{ bgcolor: "info.light", width: 32, height: 32 }}>
               <Send fontSize="small" />
             </Avatar>
-            <Box sx={{ flex: 1 }}>
+            <Box>
               <Typography variant="caption" color="text.secondary" display="block">
                 From
               </Typography>
@@ -186,8 +151,28 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({ $ref }) => {
               </Typography>
             </Box>
           </Box>
-        </Grid>
-      </Grid>
+
+          <Box sx={{ 
+            display: "flex", 
+            alignItems: "center", 
+            gap: 1,
+            flex: "1 1 33.33%",
+            justifyContent: "flex-end"
+          }}>
+            <Avatar sx={{ bgcolor: "secondary.light", width: 32, height: 32 }}>
+              <Settings fontSize="small" />
+            </Avatar>
+            <Box>
+              <Typography variant="caption" color="text.secondary" display="block">
+                Provider
+              </Typography>
+              <Typography variant="body2" fontWeight="medium">
+                {message?.provider}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
 
       <Divider sx={{ my: 3 }} />
 

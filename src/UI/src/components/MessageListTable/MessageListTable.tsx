@@ -65,7 +65,6 @@ export const MessageListTable: React.FC<MessageListTableProps> = ({
               <TableCell sx={{ fontWeight: 600 }}>Message Title</TableCell>
               <TableCell sx={{ fontWeight: 600 }}>Recipient</TableCell>
               <TableCell sx={{ fontWeight: 600 }}>Date Sent</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Type</TableCell>
               <TableCell sx={{ fontWeight: 600 }}>Provider</TableCell>
             </TableRow>
           </TableHead>
@@ -121,15 +120,15 @@ function Row({ $ref }: RowProps) {
   const getTypeIcon = (type: string) => {
     switch (type) {
       case "Sms":
-        return <Sms />;
+        return <Sms fontSize="small" />;
       case "Email":
-        return <Email />;
+        return <Email fontSize="small" />;
       case "Inbox":
-        return <Inbox />;
+        return <Inbox fontSize="small" />;
       case "WorkItem":
-        return <Work />;
+        return <Work fontSize="small" />;
       default:
-        return <Message />;
+        return <Message fontSize="small" />;
     }
   };
 
@@ -143,15 +142,17 @@ function Row({ $ref }: RowProps) {
       }}
       onClick={() => navigate(messagePath(node.id))}
     >
-      <TableCell>{getShortTitle(node.title)}</TableCell>
+      <TableCell>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          {getTypeIcon(node.type)}
+          <span>{getShortTitle(node.title)}</span>
+        </Box>
+      </TableCell>
       <TableCell>{node.to?.[0] ?? "—"}</TableCell>
       <TableCell>
         <Tooltip title={getDateTime(node.receivedAt)} arrow>
           <span>{getRelativeTime(node.receivedAt)}</span>
         </Tooltip>
-      </TableCell>
-      <TableCell>
-        {getTypeIcon(node.type)}
       </TableCell>
       <TableCell>{node.provider}</TableCell>
     </TableRow>
