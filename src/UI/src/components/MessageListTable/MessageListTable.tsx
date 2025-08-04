@@ -1,6 +1,7 @@
 // MessageListTable.tsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
 import {
   Table,
   TableBody,
@@ -111,36 +112,7 @@ function Row({ $ref }: RowProps) {
     });
 
   const getRelativeTime = (date: string | number) => {
-    const now = new Date();
-    const messageDate = new Date(date);
-    const diffInSeconds = Math.floor((now.getTime() - messageDate.getTime()) / 1000);
-
-    if (diffInSeconds < 60) {
-      return "just now";
-    }
-    
-    const diffInMinutes = Math.floor(diffInSeconds / 60);
-    if (diffInMinutes < 60) {
-      return `${diffInMinutes} minute${diffInMinutes === 1 ? "" : "s"} ago`;
-    }
-    
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) {
-      return `${diffInHours} hour${diffInHours === 1 ? "" : "s"} ago`;
-    }
-    
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays < 30) {
-      return `${diffInDays} day${diffInDays === 1 ? "" : "s"} ago`;
-    }
-    
-    const diffInMonths = Math.floor(diffInDays / 30);
-    if (diffInMonths < 12) {
-      return `${diffInMonths} month${diffInMonths === 1 ? "" : "s"} ago`;
-    }
-    
-    const diffInYears = Math.floor(diffInMonths / 12);
-    return `${diffInYears} year${diffInYears === 1 ? "" : "s"} ago`;
+    return formatDistanceToNow(new Date(date), { addSuffix: true });
   };
 
   const getShortTitle = (title: string) =>
