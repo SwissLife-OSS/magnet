@@ -20,7 +20,15 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
 
   const filter = useMemo(() => ({
     where: {
-      ...(search ? { body: { contains: search } } : undefined),
+      ...(search ? { 
+        or: [
+          { body: { contains: search } },
+          { from: { contains: search } },
+          { properties: { some: { key: { eq: "Subject" }, value: { contains: search } } } },
+          { properties: { some: { key: { eq: "System_Title" }, value: { contains: search } } } },
+          { properties: { some: { key: { eq: "WorkItemId" }, value: { contains: search } } } }
+        ]
+      } : undefined),
       ...(typeFilter ? { type: { eq: typeFilter } } : undefined),
       ...(providerFilter ? { provider: { eq: providerFilter } } : undefined),
     },

@@ -32,6 +32,8 @@ public class MessageStore : IMessageStore
         try
         {
             MessageRecord record = _mapper.Map<MessageRecord>(message);
+            // Berechne und setze den Titel
+            record.Title = CalculateTitle(record);
             await _dbContext.Messages.InsertOneAsync(record, options: null, cancellationToken);
         }
         catch (Exception ex)
@@ -80,6 +82,57 @@ public class MessageStore : IMessageStore
         return await _dbContext.Messages.AsQueryable()
             .Where(x => x.Id == id)
             .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    private string CalculateTitle(MessageRecord record)
+    {
+        if (record.Type == "Sms")
+        {
+            return record.Body ?? "SMS Message";
+        }
+        else if (record.Type == "Email")
+        {
+            var subject = GetPropertyValue(record, "Subject");
+            if (!string.IsNullOrEmpty(subject))
+                return subject;
+        }
+        else if (record.Provider == "RegistrationActivationLetter")
+        {
+            return $"Activation Letter: {record.Body}";
+        }
+        else if (record.Type == "Inbox")
+        {
+            try
+            {
+                using var doc = System.Text.Json.JsonDocument.Parse(record.Body ?? "{}");
+                if (doc.RootElement.TryGetProperty("Type", out var typeProperty))
+                {
+                    return $"Inbox: {typeProperty.GetString()}";
+                }
+                return "Inbox Message";
+            }
+            catch
+            {
+                return "Inbox Message";
+            }
+        }
+        else if (record.Type == "WorkItem")
+        {
+            var workItemId = GetPropertyValue(record, "WorkItemId");
+            var systemTitle = GetPropertyValue(record, "System_Title");
+            if (!string.IsNullOrEmpty(workItemId) && !string.IsNullOrEmpty(systemTitle))
+            {
+                return $"{workItemId} - {systemTitle}";
+            }
+            return workItemId ?? systemTitle ?? "WorkItem";
+        }
+
+        return $"Unknown Type {record.Id:N}";
+    }
+
+    private string? GetPropertyValue(MessageRecord record, string name)
+    {
+        return record.Properties?.TryGetValue(name, out var value) == true ? value : null;
     }
 
     public async Task<List<MessageRecord>> GetAllAsync(

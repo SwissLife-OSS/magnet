@@ -11,6 +11,7 @@ import {
   Paper,
   Button,
   Box,
+  Tooltip,
 } from "@mui/material";
 import { Sms, Email, Inbox, Work, Message } from "@mui/icons-material";
 import { graphql } from "babel-plugin-relay/macro";
@@ -109,6 +110,39 @@ function Row({ $ref }: RowProps) {
       hour12: false,
     });
 
+  const getRelativeTime = (date: string | number) => {
+    const now = new Date();
+    const messageDate = new Date(date);
+    const diffInSeconds = Math.floor((now.getTime() - messageDate.getTime()) / 1000);
+
+    if (diffInSeconds < 60) {
+      return "just now";
+    }
+    
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    if (diffInMinutes < 60) {
+      return `${diffInMinutes} minute${diffInMinutes === 1 ? "" : "s"} ago`;
+    }
+    
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) {
+      return `${diffInHours} hour${diffInHours === 1 ? "" : "s"} ago`;
+    }
+    
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays < 30) {
+      return `${diffInDays} day${diffInDays === 1 ? "" : "s"} ago`;
+    }
+    
+    const diffInMonths = Math.floor(diffInDays / 30);
+    if (diffInMonths < 12) {
+      return `${diffInMonths} month${diffInMonths === 1 ? "" : "s"} ago`;
+    }
+    
+    const diffInYears = Math.floor(diffInMonths / 12);
+    return `${diffInYears} year${diffInYears === 1 ? "" : "s"} ago`;
+  };
+
   const getShortTitle = (title: string) =>
     title.length > 50 ? `${title.substring(0, 50)}...` : title;
 
@@ -139,7 +173,11 @@ function Row({ $ref }: RowProps) {
     >
       <TableCell>{getShortTitle(node.title)}</TableCell>
       <TableCell>{node.to?.[0] ?? "—"}</TableCell>
-      <TableCell>{getDateTime(node.receivedAt)}</TableCell>
+      <TableCell>
+        <Tooltip title={getDateTime(node.receivedAt)} arrow>
+          <span>{getRelativeTime(node.receivedAt)}</span>
+        </Tooltip>
+      </TableCell>
       <TableCell>
         {getTypeIcon(node.type)}
       </TableCell>

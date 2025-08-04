@@ -207,27 +207,66 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({ $ref }) => {
           }}
         >
           {message?.type === "Email" ? (
-            <Box sx={{ textAlign: "center" }}>
-              <iframe
-                src={"/view/content/" + message?.id}
-                title="Email Body"
-                style={{
-                  width: "100%",
-                  height: "400px",
-                  border: "none",
-                  borderRadius: "8px"
-                }}
-              />
-            </Box>
+            message?.body && message.body.trim() !== "" ? (
+              <Box sx={{ textAlign: "center" }}>
+                <iframe
+                  src={"/view/content/" + message?.id}
+                  title="Email Body"
+                  style={{
+                    width: "100%",
+                    height: "400px",
+                    border: "none",
+                    borderRadius: "8px"
+                  }}
+                />
+              </Box>
+            ) : (
+              <Box sx={{ 
+                textAlign: "center", 
+                py: 4, 
+                color: "text.secondary",
+                fontStyle: "italic"
+              }}>
+                <Typography variant="body2">
+                  No content available
+                </Typography>
+              </Box>
+            )
           ) : message?.type === "Inbox" ? (
-            <JSONTree
-              theme={jsonTreeTheme}
-              data={JSON.parse(message?.body ?? "")}
-            />
+            message?.body && message.body.trim() !== "" && message.body !== "{}" ? (
+              <JSONTree
+                theme={jsonTreeTheme}
+                data={JSON.parse(message?.body ?? "{}")}
+              />
+            ) : (
+              <Box sx={{ 
+                textAlign: "center", 
+                py: 4, 
+                color: "text.secondary",
+                fontStyle: "italic"
+              }}>
+                <Typography variant="body2">
+                  No content available
+                </Typography>
+              </Box>
+            )
           ) : (
-            <Typography variant="body1" style={{ whiteSpace: "pre-wrap" }}>
-              {message?.body}
-            </Typography>
+            message?.body && message.body.trim() !== "" ? (
+              <Typography variant="body1" style={{ whiteSpace: "pre-wrap" }}>
+                {message.body}
+              </Typography>
+            ) : (
+              <Box sx={{ 
+                textAlign: "center", 
+                py: 4, 
+                color: "text.secondary",
+                fontStyle: "italic"
+              }}>
+                <Typography variant="body2">
+                  No content available
+                </Typography>
+              </Box>
+            )
           )}
         </Box>
       </Box>

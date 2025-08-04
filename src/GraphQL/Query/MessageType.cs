@@ -53,11 +53,7 @@ public class MessageType : ObjectType<MessageRecord>
              .Field(d => d.Properties);
 
         descriptor
-            .Field("title")
-            .Type<NonNullType<StringType>>()
-            .Resolve(ctx =>
-            {
-                return ctx.Parent<MessageRecord>().GetTitle();
-            });
+            .Field(d => d.Title)
+            .Type<NonNullType<StringType>>();
     }
 }
