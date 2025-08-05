@@ -90,12 +90,7 @@ export const MessageDetail: React.FC = () => {
         <Typography variant="h4" component="h1" sx={{ mr: 3 }}>
           {headerData?.title}
         </Typography>
-        <Chip
-          icon={getTypeIcon(headerData?.type || "")}
-          label={headerData?.type}
-          color={getTypeColor(headerData?.type || "") as any}
-          variant="outlined"
-        />
+        {getTypeIcon(headerData?.type || "")}
       </Box>
 
       {/* Content in einer Card */}

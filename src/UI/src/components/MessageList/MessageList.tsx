@@ -19,12 +19,20 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
   const [providerFilter, setProviderFilter] = useState<string | null>(null);
 
   // Entferne Backend-Filter komplett - wir machen nur Frontend-Filterung
-  const filter = useMemo(() => ({
-    where: {
-      ...(typeFilter ? { type: { eq: typeFilter } } : undefined),
-      ...(providerFilter ? { provider: { eq: providerFilter } } : undefined),
-    },
-  }), [typeFilter, providerFilter]);
+  const filter = useMemo(() => {
+    // Mapping: Frontend Button -> Backend Type
+    const getBackendType = (frontendType: MessageType) => {
+      if (frontendType === "SMS") return "Message";
+      return frontendType; // Email, Inbox, WorkItem bleiben gleich
+    };
+
+    return {
+      where: {
+        ...(typeFilter ? { type: { eq: getBackendType(typeFilter) } } : undefined),
+        ...(providerFilter ? { provider: { eq: providerFilter } } : undefined),
+      },
+    };
+  }, [typeFilter, providerFilter]);
 
 
   const { data, hasNext, loadNext, refetch } = usePaginationFragment(
