@@ -1,5 +1,4 @@
 import { Box, Button, TextField, MenuItem } from "@mui/material";
-import { Sms, Email, Inbox, Work } from "@mui/icons-material";
 
 export type MessageType = "SMS" | "Email" | "Inbox" | "Workitem" | null;
 

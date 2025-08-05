@@ -56,7 +56,7 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({ $ref }) => {
     $ref
   );
 
-  const getDateTime = (date: any) => 
+  const getDateTime = (date: string) => 
     new Date(date).toLocaleString("en-GB", {
       day: "2-digit",
       month: "long",

@@ -92,7 +92,7 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
     startTransition(() => {
       refetch(filter, { fetchPolicy: 'store-or-network' });
     });
-  }, [search, typeFilter, providerFilter]);
+  }, [search, typeFilter, providerFilter, filter, refetch]);
 
   return (
     <Box sx={{ mt: 2, mb: 1 }}>

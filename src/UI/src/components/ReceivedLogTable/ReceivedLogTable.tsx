@@ -13,11 +13,6 @@ import { useFragment } from "react-relay";
 import { ReceivedLogTable_messageRecord$key } from "./__generated__/ReceivedLogTable_messageRecord.graphql";
 
 const useStyles = makeStyles({
-  dataTitle: {
-    fontSize: "20px",
-    marginTop: "35px",
-    fontWeight: "400",
-  },
   tableMargin: {
     marginBottom: "50px",
   },
@@ -48,7 +43,7 @@ export const ReceivedLogTable: React.FC<ReceivedLogTableProps> = ({ $ref }) => {
 
   const classes = useStyles();
 
-  const getDateTime = (date: any) => new Date(date).toLocaleString() ?? "";
+  const getDateTime = (date: string) => new Date(date).toLocaleString() ?? "";
 
   return (
     <TableContainer className={classes.tableMargin}>
