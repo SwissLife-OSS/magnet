@@ -18,21 +18,13 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
   const [typeFilter, setTypeFilter] = useState<MessageType>(null);
   const [providerFilter, setProviderFilter] = useState<string | null>(null);
 
+  // Entferne Backend-Filter komplett - wir machen nur Frontend-Filterung
   const filter = useMemo(() => ({
     where: {
-      ...(search ? { 
-        or: [
-          { body: { contains: search } },
-          { from: { contains: search } },
-          { properties: { some: { key: { eq: "Subject" }, value: { contains: search } } } },
-          { properties: { some: { key: { eq: "System_Title" }, value: { contains: search } } } },
-          { properties: { some: { key: { eq: "WorkItemId" }, value: { contains: search } } } }
-        ]
-      } : undefined),
       ...(typeFilter ? { type: { eq: typeFilter } } : undefined),
       ...(providerFilter ? { provider: { eq: providerFilter } } : undefined),
     },
-  }), [search, typeFilter, providerFilter]);
+  }), [typeFilter, providerFilter]);
 
 
   const { data, hasNext, loadNext, refetch } = usePaginationFragment(
@@ -47,6 +39,12 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
         messages(after: $cursor, first: $count, where: $where)
           @connection(key: "ScreenerList_messages") {
           edges {
+            node {
+              id
+              title
+              from
+              to
+            }
             ...MessageListTable_messagesEdge
           }
         }
@@ -55,7 +53,30 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
     fragmentRef
   );
 
-  const showInformation = !!data?.messages?.edges?.length;
+  // Frontend-only Suche durch bereits geladene Daten
+  const filteredEdges = useMemo(() => {
+    if (!search || !data?.messages?.edges) {
+      return data?.messages?.edges || [];
+    }
+
+    const searchLower = search.toLowerCase();
+    return data.messages.edges.filter(edge => {
+      const node = edge?.node;
+      if (!node) return false;
+
+      // Suche in title, body, from und properties
+      const searchableText = [
+        node.title,
+        node.from,
+        ...(node.to || []),
+        // Füge Properties hinzu falls verfügbar
+      ].filter(Boolean).join(' ').toLowerCase();
+
+      return searchableText.includes(searchLower);
+    });
+  }, [data?.messages?.edges, search]);
+
+  const showInformation = !!filteredEdges?.length;
 
   const [busy, startTransition] = useTransition();
 
@@ -86,7 +107,7 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
       {showInformation && (
         <TransitionIndicator in={!busy}>
           <MessageListTable
-            $ref={(data.messages?.edges ?? [])}
+            $ref={filteredEdges}
             hasNext={hasNext}
             loadNext={loadNext}
           />

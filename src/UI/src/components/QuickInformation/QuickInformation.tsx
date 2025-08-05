@@ -110,14 +110,13 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({ $ref }) => {
         <Box sx={{ 
           display: "flex", 
           width: "100%",
-          gap: 1
+          justifyContent: "space-around",
+          alignItems: "center"
         }}>
           <Box sx={{ 
             display: "flex", 
             alignItems: "center", 
-            gap: 1,
-            flex: "1 1 33.33%",
-            justifyContent: "flex-start"
+            gap: 1
           }}>
             <Avatar sx={{ bgcolor: "primary.light", width: 32, height: 32 }}>
               <AccessTime fontSize="small" />
@@ -135,9 +134,7 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({ $ref }) => {
           <Box sx={{ 
             display: "flex", 
             alignItems: "center", 
-            gap: 1,
-            flex: "1 1 33.33%",
-            justifyContent: "center"
+            gap: 1
           }}>
             <Avatar sx={{ bgcolor: "info.light", width: 32, height: 32 }}>
               <Send fontSize="small" />
@@ -155,9 +152,7 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({ $ref }) => {
           <Box sx={{ 
             display: "flex", 
             alignItems: "center", 
-            gap: 1,
-            flex: "1 1 33.33%",
-            justifyContent: "flex-end"
+            gap: 1
           }}>
             <Avatar sx={{ bgcolor: "secondary.light", width: 32, height: 32 }}>
               <Settings fontSize="small" />

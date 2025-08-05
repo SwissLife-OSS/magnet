@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<bca27dff22ccfd0990485cc000e3d6ae>>
+ * @generated SignedSource<<d138238c99f81eeea2c2bb1214e17f49>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -91,6 +91,20 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
+                    "name": "from",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "to",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "receivedAt",
                     "storageKey": null
                   },
@@ -106,13 +120,6 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "provider",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "to",
                     "storageKey": null
                   },
                   {
@@ -177,12 +184,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0b6b61058eb7c68b83bc64c39f2cb9fb",
+    "cacheID": "1ead1c4643bdbea3826e3a3cb9aa7f2f",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery {\n  ...MessageList_query\n}\n\nfragment MessageListTable_messageRecord on MessageRecord {\n  id\n  title\n  receivedAt\n  type\n  provider\n  to\n}\n\nfragment MessageListTable_messagesEdge on MessagesEdge {\n  node {\n    id\n    ...MessageListTable_messageRecord\n  }\n}\n\nfragment MessageList_query on Query {\n  messages(first: 30) {\n    edges {\n      ...MessageListTable_messagesEdge\n      cursor\n      node {\n        __typename\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeQuery {\n  ...MessageList_query\n}\n\nfragment MessageListTable_messageRecord on MessageRecord {\n  id\n  title\n  receivedAt\n  type\n  provider\n  to\n}\n\nfragment MessageListTable_messagesEdge on MessagesEdge {\n  node {\n    id\n    ...MessageListTable_messageRecord\n  }\n}\n\nfragment MessageList_query on Query {\n  messages(first: 30) {\n    edges {\n      node {\n        id\n        title\n        from\n        to\n        __typename\n      }\n      ...MessageListTable_messagesEdge\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();

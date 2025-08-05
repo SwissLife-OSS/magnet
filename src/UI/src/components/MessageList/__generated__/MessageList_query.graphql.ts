@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<431eebeed08471f39cefddcc72e978c7>>
+ * @generated SignedSource<<55507b247a7096ddf4edabe517490297>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,6 +13,12 @@ import { FragmentRefs } from "relay-runtime";
 export type MessageList_query$data = {
   readonly messages: {
     readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly from: string;
+        readonly id: string;
+        readonly title: string;
+        readonly to: ReadonlyArray<string | null | undefined> | null | undefined;
+      } | null | undefined;
       readonly " $fragmentSpreads": FragmentRefs<"MessageListTable_messagesEdge">;
     }> | null | undefined;
   } | null | undefined;
@@ -93,18 +99,6 @@ return {
           "plural": true,
           "selections": [
             {
-              "args": null,
-              "kind": "FragmentSpread",
-              "name": "MessageListTable_messagesEdge"
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "cursor",
-              "storageKey": null
-            },
-            {
               "alias": null,
               "args": null,
               "concreteType": "MessageRecord",
@@ -116,10 +110,50 @@ return {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
+                  "name": "id",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "title",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "from",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "to",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
                 }
               ],
+              "storageKey": null
+            },
+            {
+              "args": null,
+              "kind": "FragmentSpread",
+              "name": "MessageListTable_messagesEdge"
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
               "storageKey": null
             }
           ],
@@ -159,6 +193,6 @@ return {
 };
 })();
 
-(node as any).hash = "af6d70fb0b2d8ae27383ee0da7d72d14";
+(node as any).hash = "c7378ef50460b3e500e1b8e88fe653c0";
 
 export default node;
