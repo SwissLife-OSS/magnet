@@ -2,19 +2,12 @@ import React from "react";
 import { JSONTree } from "react-json-tree";
 import {
   AccessTime,
-  Email,
   Send,
   Settings,
-  Sms,
-  Inbox,
-  Work,
-  Message,
 } from "@mui/icons-material/";
 import {
   Box,
-  Chip,
   Divider,
-  Grid,
   Typography,
   Avatar,
 } from "@mui/material";
@@ -41,36 +34,6 @@ const jsonTreeTheme = {
   base0D: "#66d9ef",
   base0E: "#ae81ff",
   base0F: "#cc6633",
-};
-
-const getTypeIcon = (type: string) => {
-  switch (type) {
-    case "Sms":
-      return <Sms />;
-    case "Email":
-      return <Email />;
-    case "Inbox":
-      return <Inbox />;
-    case "WorkItem":
-      return <Work />;
-    default:
-      return <Message />;
-  }
-};
-
-const getTypeColor = (type: string) => {
-  switch (type) {
-    case "Sms":
-      return "primary";
-    case "Email":
-      return "secondary";
-    case "Inbox":
-      return "info";
-    case "WorkItem":
-      return "warning";
-    default:
-      return "default";
-  }
 };
 
 interface QuickInformationProps {

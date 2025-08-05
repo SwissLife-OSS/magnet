@@ -2,7 +2,7 @@ import React from "react";
 import { graphql } from "babel-plugin-relay/macro";
 import { useLazyLoadQuery, useFragment } from "react-relay";
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, Container, Paper, IconButton, Typography, Chip, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import { Box, Container, Paper, IconButton, Typography, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { ArrowBack, Email, Sms, Inbox, Work, Message, ExpandMore } from "@mui/icons-material";
 import {
   MessageDetailError,
@@ -24,21 +24,6 @@ const getTypeIcon = (type: string) => {
       return <Work />;
     default:
       return <Message />;
-  }
-};
-
-const getTypeColor = (type: string) => {
-  switch (type) {
-    case "Sms":
-      return "primary";
-    case "Email":
-      return "secondary";
-    case "Inbox":
-      return "info";
-    case "WorkItem":
-      return "warning";
-    default:
-      return "default";
   }
 };
 
@@ -65,6 +50,15 @@ export const MessageDetail: React.FC = () => {
     return <MessageDetailError />;
   }
 
+  return <MessageDetailContent message={data.message} navigate={navigate} />;
+};
+
+interface MessageDetailContentProps {
+  message: any;
+  navigate: (delta: number) => void;
+}
+
+const MessageDetailContent: React.FC<MessageDetailContentProps> = ({ message, navigate }) => {
   const headerData = useFragment(
     graphql`
       fragment MessageDetailHeader_messageRecord on MessageRecord {
@@ -73,7 +67,7 @@ export const MessageDetail: React.FC = () => {
         type
       }
     `,
-    data.message
+    message
   );
 
   return (
@@ -95,10 +89,10 @@ export const MessageDetail: React.FC = () => {
 
       {/* Content in einer Card */}
       <Paper elevation={2} sx={{ p: 4, borderRadius: 2 }}>
-        <QuickInformation $ref={data.message} />
+        <QuickInformation $ref={message} />
         
         <Box sx={{ mt: 4, mb: 3 }}>
-          <ReceiverList $ref={data.message} />
+          <ReceiverList $ref={message} />
         </Box>
 
         <Accordion sx={{ mt: 4 }}>
@@ -112,7 +106,7 @@ export const MessageDetail: React.FC = () => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <ReceivedLogTable $ref={data.message} />
+            <ReceivedLogTable $ref={message} />
           </AccordionDetails>
         </Accordion>
       </Paper>
