@@ -32,7 +32,6 @@ public class MessageStore : IMessageStore
         try
         {
             MessageRecord record = _mapper.Map<MessageRecord>(message);
-            // Berechne und setze den Titel
             record.Title = CalculateTitle(record);
             await _dbContext.Messages.InsertOneAsync(record, options: null, cancellationToken);
         }
@@ -88,17 +87,23 @@ public class MessageStore : IMessageStore
     {
         if (record.Type == "Sms")
         {
-            return record.Body ?? "SMS Message";
+            var body = record.Body ?? "";
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                return "SMS Message";
+            }
+            
+            // Verwende ersten 50 Zeichen als Titel
+            return body.Length > 50 ? $"{body[..50]}..." : body;
         }
         else if (record.Type == "Email")
         {
             var subject = GetPropertyValue(record, "Subject");
             if (!string.IsNullOrEmpty(subject))
+            {
                 return subject;
-        }
-        else if (record.Provider == "RegistrationActivationLetter")
-        {
-            return $"Activation Letter: {record.Body}";
+            }
+            return "Email Message";
         }
         else if (record.Type == "Inbox")
         {
@@ -127,13 +132,21 @@ public class MessageStore : IMessageStore
             return workItemId ?? systemTitle ?? "WorkItem";
         }
 
-        return $"Unknown Type {record.Id:N}";
+        return $"{record.Type ?? "Unknown"} Message";
     }
 
     private string? GetPropertyValue(MessageRecord record, string name)
     {
-        return record.Properties?.TryGetValue(name, out var value) == true ? value : null;
+        if (record.Properties is null)
+        {
+            return null;
+        }
+
+        return record.Properties.TryGetValue(name, out var value)
+            ? value
+            : null;
     }
+
 
     public async Task<List<MessageRecord>> GetAllAsync(
         IQueryable<MessageRecord> query,
