@@ -12,21 +12,6 @@ interface Props {
 const types: MessageType[] = ["SMS", "Email", "Inbox", "Workitem"];
 const providers = ["E2ETests", "SendGrid"];
 
-// const getTypeIcon = (type: MessageType) => {
-//   switch (type) {
-//     case "SMS":
-//       return <Sms sx={{ mr: 1 }} />;
-//     case "Email":
-//       return <Email sx={{ mr: 1 }} />;
-//     case "Inbox":
-//       return <Inbox sx={{ mr: 1 }} />;
-//     case "Workitem":
-//       return <Work sx={{ mr: 1 }} />;
-//     default:
-//       return null;
-//   }
-// };
-
 export const MessageFilter = ({
   typeFilter,
   onTypeChange,
@@ -54,7 +39,6 @@ export const MessageFilter = ({
             onClick={() =>
               onTypeChange(typeFilter === type ? null : type)
             }
-            // startIcon={getTypeIcon(type)}
           >
             {type}
           </Button>

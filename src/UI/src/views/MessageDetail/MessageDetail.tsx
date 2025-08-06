@@ -72,7 +72,6 @@ const MessageDetailContent: React.FC<MessageDetailContentProps> = ({ message, na
 
   return (
     <Container maxWidth="lg" sx={{ py: 3 }}>
-      {/* Header mit Back Button, Titel und Type Chip */}
       <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
         <IconButton 
           onClick={() => navigate(-1)} 
@@ -87,7 +86,6 @@ const MessageDetailContent: React.FC<MessageDetailContentProps> = ({ message, na
         {getTypeIcon(headerData?.type || "")}
       </Box>
 
-      {/* Content in einer Card */}
       <Paper elevation={2} sx={{ p: 4, borderRadius: 2 }}>
         <QuickInformation $ref={message} />
         

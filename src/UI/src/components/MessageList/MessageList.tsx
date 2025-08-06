@@ -18,12 +18,10 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
   const [typeFilter, setTypeFilter] = useState<MessageType>(null);
   const [providerFilter, setProviderFilter] = useState<string | null>(null);
 
-  // Entferne Backend-Filter komplett - wir machen nur Frontend-Filterung
   const filter = useMemo(() => {
-    // Mapping: Frontend Button -> Backend Type
     const getBackendType = (frontendType: MessageType) => {
       if (frontendType === "SMS") return "Message";
-      return frontendType; // Email, Inbox, WorkItem bleiben gleich
+      return frontendType;
     };
 
     return {
@@ -61,7 +59,6 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
     fragmentRef
   );
 
-  // Frontend-only Suche durch bereits geladene Daten
   const filteredEdges = useMemo(() => {
     if (!search || !data?.messages?.edges) {
       return data?.messages?.edges || [];
@@ -72,12 +69,10 @@ export const MessageList: React.FC<MessageListProps> = ({ fragmentRef, search })
       const node = edge?.node;
       if (!node) return false;
 
-      // Suche in title, body, from und properties
       const searchableText = [
         node.title,
         node.from,
         ...(node.to || []),
-        // Füge Properties hinzu falls verfügbar
       ].filter(Boolean).join(' ').toLowerCase();
 
       return searchableText.includes(searchLower);

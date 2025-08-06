@@ -68,7 +68,6 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({ $ref }) => {
 
   return (
     <Box>
-      {/* Info Grid */}
       <Box sx={{ mb: 3 }}>
         <Box sx={{ 
           display: "flex", 
@@ -133,8 +132,6 @@ export const QuickInformation: React.FC<QuickInformationProps> = ({ $ref }) => {
       </Box>
 
       <Divider sx={{ my: 3 }} />
-
-      {/* Body Section */}
       <Box>
         <Typography variant="h6" component="h3" sx={{ mb: 2, fontWeight: 600 }}>
           Message Content
