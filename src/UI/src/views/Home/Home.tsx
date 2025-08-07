@@ -5,11 +5,15 @@ import { CircularProgress, Grid } from "@mui/material";
 import { MessageList } from "../../components";
 import { HomeQuery } from "./__generated__/HomeQuery.graphql";
 
-export const Home: React.FC = () => {
+interface HomeProps {
+  search?: string;
+}
+
+export const Home: React.FC<HomeProps> = ({ search }) => {
   const data = useLazyLoadQuery<HomeQuery>(
     graphql`
       query HomeQuery {
-        ...MessageList_data
+        ...MessageList_query
       }
     `,
     {},
@@ -18,13 +22,13 @@ export const Home: React.FC = () => {
 
   return (
     <Grid container>
-      <Grid item xs={0} lg={2}></Grid>
-      <Grid item xs={12} lg={8}>
+      <Grid item xs={1} lg={1}></Grid>
+      <Grid item xs={10} lg={10}>
         <Suspense fallback={<CircularProgress />}>
-          <MessageList queryRef={data} />
+          <MessageList fragmentRef={data} search={search} />
         </Suspense>
       </Grid>
-      <Grid item xs={0} lg={2}></Grid>
+      <Grid item xs={1} lg={1}></Grid>
     </Grid>
   );
 };

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3f27d00644145c2b7a43b46fad32290e>>
+ * @generated SignedSource<<8dd7804b718a414bb56389cdcf88eb6b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -100,7 +100,7 @@ export type MessageListRefetchableQuery$variables = {
   where?: MessageRecordFilterInput | null | undefined;
 };
 export type MessageListRefetchableQuery$data = {
-  readonly " $fragmentSpreads": FragmentRefs<"MessageList_data">;
+  readonly " $fragmentSpreads": FragmentRefs<"MessageList_query">;
 };
 export type MessageListRefetchableQuery = {
   response: MessageListRefetchableQuery$data;
@@ -165,7 +165,7 @@ return {
           (v1/*: any*/)
         ],
         "kind": "FragmentSpread",
-        "name": "MessageList_data"
+        "name": "MessageList_query"
       }
     ],
     "type": "Query",
@@ -219,6 +219,20 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
+                    "name": "from",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "to",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "receivedAt",
                     "storageKey": null
                   },
@@ -234,13 +248,6 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "provider",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "to",
                     "storageKey": null
                   },
                   {
@@ -305,16 +312,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "6d22a0051feb07a281b828d8592a7514",
+    "cacheID": "0d19c8eea6d777f879e80e2ce251afe0",
     "id": null,
     "metadata": {},
     "name": "MessageListRefetchableQuery",
     "operationKind": "query",
-    "text": "query MessageListRefetchableQuery(\n  $count: Int = 30\n  $cursor: String\n  $where: MessageRecordFilterInput\n) {\n  ...MessageList_data_mjR8k\n}\n\nfragment MessageListTable_messageRecord on MessageRecord {\n  id\n  title\n  receivedAt\n  type\n  provider\n  to\n}\n\nfragment MessageListTable_messagesEdge on MessagesEdge {\n  node {\n    id\n    ...MessageListTable_messageRecord\n  }\n}\n\nfragment MessageList_data_mjR8k on Query {\n  messages(after: $cursor, first: $count, where: $where) {\n    edges {\n      ...MessageListTable_messagesEdge\n      cursor\n      node {\n        __typename\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query MessageListRefetchableQuery(\n  $count: Int = 30\n  $cursor: String\n  $where: MessageRecordFilterInput\n) {\n  ...MessageList_query_mjR8k\n}\n\nfragment MessageListTable_messageRecord on MessageRecord {\n  id\n  title\n  receivedAt\n  type\n  provider\n  to\n}\n\nfragment MessageListTable_messagesEdge on MessagesEdge {\n  node {\n    id\n    ...MessageListTable_messageRecord\n  }\n}\n\nfragment MessageList_query_mjR8k on Query {\n  messages(after: $cursor, first: $count, where: $where) {\n    edges {\n      node {\n        id\n        title\n        from\n        to\n        __typename\n      }\n      ...MessageListTable_messagesEdge\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "853d6fe3c24dddeccc1cbbc1f6d70987";
+(node as any).hash = "c7378ef50460b3e500e1b8e88fe653c0";
 
 export default node;

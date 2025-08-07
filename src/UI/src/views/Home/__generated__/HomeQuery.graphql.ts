@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<824f7fce8962a6c0ae16bad26c2fff54>>
+ * @generated SignedSource<<d138238c99f81eeea2c2bb1214e17f49>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,7 +12,7 @@ import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type HomeQuery$variables = Record<PropertyKey, never>;
 export type HomeQuery$data = {
-  readonly " $fragmentSpreads": FragmentRefs<"MessageList_data">;
+  readonly " $fragmentSpreads": FragmentRefs<"MessageList_query">;
 };
 export type HomeQuery = {
   response: HomeQuery$data;
@@ -37,7 +37,7 @@ return {
       {
         "args": null,
         "kind": "FragmentSpread",
-        "name": "MessageList_data"
+        "name": "MessageList_query"
       }
     ],
     "type": "Query",
@@ -91,6 +91,20 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
+                    "name": "from",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "to",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "receivedAt",
                     "storageKey": null
                   },
@@ -106,13 +120,6 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "provider",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "to",
                     "storageKey": null
                   },
                   {
@@ -177,16 +184,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "49f56de12e7d5115b1a4c36fe935f4a6",
+    "cacheID": "1ead1c4643bdbea3826e3a3cb9aa7f2f",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery {\n  ...MessageList_data\n}\n\nfragment MessageListTable_messageRecord on MessageRecord {\n  id\n  title\n  receivedAt\n  type\n  provider\n  to\n}\n\nfragment MessageListTable_messagesEdge on MessagesEdge {\n  node {\n    id\n    ...MessageListTable_messageRecord\n  }\n}\n\nfragment MessageList_data on Query {\n  messages(first: 30) {\n    edges {\n      ...MessageListTable_messagesEdge\n      cursor\n      node {\n        __typename\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeQuery {\n  ...MessageList_query\n}\n\nfragment MessageListTable_messageRecord on MessageRecord {\n  id\n  title\n  receivedAt\n  type\n  provider\n  to\n}\n\nfragment MessageListTable_messagesEdge on MessagesEdge {\n  node {\n    id\n    ...MessageListTable_messageRecord\n  }\n}\n\nfragment MessageList_query on Query {\n  messages(first: 30) {\n    edges {\n      node {\n        id\n        title\n        from\n        to\n        __typename\n      }\n      ...MessageListTable_messagesEdge\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "6c89c6812ce907cc528542be79380e59";
+(node as any).hash = "f2f616a49f872a6936a9564d0bbfdce6";
 
 export default node;

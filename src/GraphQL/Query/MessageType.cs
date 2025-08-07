@@ -1,5 +1,6 @@
 using System.Linq;
 using HotChocolate.Types;
+using HotChocolate.Data;
 
 namespace Magnet.GraphQL;
 
@@ -31,6 +32,10 @@ public class MessageType : ObjectType<MessageRecord>
             .Type<StringType>();
 
         descriptor
+            .Field(d => d.Title)
+            .Type<NonNullType<StringType>>();
+
+        descriptor
             .Field(d => d.To)
             .Type<ListType<StringType>>();
 
@@ -51,13 +56,5 @@ public class MessageType : ObjectType<MessageRecord>
 
         descriptor
              .Field(d => d.Properties);
-
-        descriptor
-            .Field("title")
-            .Type<NonNullType<StringType>>()
-            .Resolve(ctx =>
-            {
-                return ctx.Parent<MessageRecord>().GetTitle();
-            });
     }
 }

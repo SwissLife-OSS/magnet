@@ -13,11 +13,6 @@ import { useFragment } from "react-relay";
 import { ReceivedLogTable_messageRecord$key } from "./__generated__/ReceivedLogTable_messageRecord.graphql";
 
 const useStyles = makeStyles({
-  dataTitle: {
-    fontSize: "20px",
-    marginTop: "35px",
-    fontWeight: "400",
-  },
   tableMargin: {
     marginBottom: "50px",
   },
@@ -48,29 +43,26 @@ export const ReceivedLogTable: React.FC<ReceivedLogTableProps> = ({ $ref }) => {
 
   const classes = useStyles();
 
-  const getDateTime = (date: any) => new Date(date).toLocaleString() ?? "";
+  const getDateTime = (date: string) => new Date(date).toLocaleString() ?? "";
 
   return (
-    <>
-      <h1 className={classes.dataTitle}>Received Log</h1>
-      <TableContainer className={classes.tableMargin}>
-        <Table className={classes.tableWidth}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Client name</TableCell>
-              <TableCell>Received at</TableCell>
+    <TableContainer className={classes.tableMargin}>
+      <Table className={classes.tableWidth}>
+        <TableHead>
+          <TableRow>
+            <TableCell>Client name</TableCell>
+            <TableCell>Received at</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {receivedLog?.map((element) => (
+            <TableRow className={classes.tableRow} key={element?.clientName}>
+              <TableCell>{element?.clientName}</TableCell>
+              <TableCell>{getDateTime(element?.receivedAt)}</TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {receivedLog?.map((element) => (
-              <TableRow className={classes.tableRow} key={element?.clientName}>
-                <TableCell>{element?.clientName}</TableCell>
-                <TableCell>{getDateTime(element?.receivedAt)}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };

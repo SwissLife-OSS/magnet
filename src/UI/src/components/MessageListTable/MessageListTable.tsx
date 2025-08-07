@@ -1,41 +1,23 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Paper,
+  Box,
+  Tooltip,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import { messagePath } from "../../paths";
+import { Sms, Email, Inbox, Work, Message } from "@mui/icons-material";
 import { graphql } from "babel-plugin-relay/macro";
 import { useFragment } from "react-relay";
 import { MessageListTable_messagesEdge$key } from "./__generated__/MessageListTable_messagesEdge.graphql";
 import { MessageListTable_messageRecord$key } from "./__generated__/MessageListTable_messageRecord.graphql";
-
-const useStyles = makeStyles({
-  rowStyle: {
-    cursor: "pointer",
-    textDecoration: "none",
-  },
-  loadMoreButtonPosition: {
-    textAlign: "center",
-    marginTop: "40px",
-    marginBottom: "40px",
-  },
-  tableContainer: {
-    maxHeight: (window.innerHeight / 3) * 2.5,
-  },
-  tableWidth: {
-    minWidth: 650,
-  },
-  tableRow: {
-    "&:last-child td, &:last-child th": { border: 0 },
-  },
-});
+import { messagePath } from "../../paths";
 
 interface MessageListTableProps {
   $ref?: MessageListTable_messagesEdge$key | null;
@@ -61,44 +43,37 @@ export const MessageListTable: React.FC<MessageListTableProps> = ({
     $ref
   );
 
-  const messages = edges?.map((edge) => edge);
-  const classes = useStyles();
+  const messages = edges
+    ?.map((edge) => edge.node)
+    .filter((node): node is NonNullable<typeof node> => !!node);
 
   return (
-    <>
-      <TableContainer className={classes.tableContainer}>
-        <Table stickyHeader className={classes.tableWidth}>
+    <Box sx={{ py: 2 }}>
+      <TableContainer
+        component={Paper}
+        sx={{
+          overflowX: "auto",
+          borderRadius: 2,
+          mx: "auto",
+        }}
+      >
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell>To</TableCell>
-              <TableCell>When</TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell>Provider</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>Message Title</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>Recipient</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>Date Sent</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>Provider</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {messages
-              ?.map((x) => x.node!)
-              .filter((y) => !!y)
-              .map((node) => (
-                <Row key={node.id} $ref={node} />
-              ))}
+            {messages?.map((node) => (
+              <Row key={node.id} $ref={node} />
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <div className={classes.loadMoreButtonPosition}>
-        <Button
-          variant="contained"
-          disabled={!hasNext}
-          onClick={() => {
-            loadNext(30);
-          }}
-        >
-          Load More
-        </Button>
-      </div>
-    </>
+    </Box>
   );
 };
 
@@ -120,35 +95,64 @@ function Row({ $ref }: RowProps) {
     `,
     $ref
   );
-  const classes = useStyles();
+
   const navigate = useNavigate();
 
-  const getDateTime = (date: any) => new Date(date).toLocaleString() ?? "";
+  const getDateTime = (date: string | number) =>
+    new Date(date).toLocaleString("en-UK", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+
+  const getRelativeTime = (date: string | number) => {
+    return formatDistanceToNow(new Date(date), { addSuffix: true });
+  };
 
   const getShortTitle = (title: string) =>
-    title.length > 50 ? title.substring(0, 50) + "..." : title;
+    title.length > 50 ? `${title.substring(0, 50)}...` : title;
+
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case "Sms":
+        return <Sms fontSize="small" />;
+      case "Email":
+        return <Email fontSize="small" />;
+      case "Inbox":
+        return <Inbox fontSize="small" />;
+      case "WorkItem":
+        return <Work fontSize="small" />;
+      default:
+        return <Message fontSize="small" />;
+    }
+  };
 
   return (
     <TableRow
-      key={node.id}
-      className={(classes.rowStyle, classes.tableRow)}
+      hover
+      sx={{
+        cursor: "pointer",
+        "&:hover": { backgroundColor: "#f5f5f5" },
+        transition: "background-color 0.2s ease",
+      }}
       onClick={() => navigate(messagePath(node.id))}
     >
-      <TableCell component="th" scope="row">
-        {getShortTitle(node.title)}
+      <TableCell>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          {getTypeIcon(node.type)}
+          <span>{getShortTitle(node.title)}</span>
+        </Box>
       </TableCell>
-      <TableCell component="th" scope="row">
-        {node.to?.[0]}
+      <TableCell>{node.to?.[0] ?? "—"}</TableCell>
+      <TableCell>
+        <Tooltip title={getDateTime(node.receivedAt)} arrow>
+          <span>{getRelativeTime(node.receivedAt)}</span>
+        </Tooltip>
       </TableCell>
-      <TableCell component="th" scope="row">
-        {getDateTime(node.receivedAt)}
-      </TableCell>
-      <TableCell component="th" scope="row">
-        {node.type}
-      </TableCell>
-      <TableCell component="th" scope="row">
-        {node.provider}
-      </TableCell>
+      <TableCell>{node.provider}</TableCell>
     </TableRow>
   );
 }
