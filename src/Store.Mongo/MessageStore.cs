@@ -93,7 +93,6 @@ public class MessageStore : IMessageStore
                 return "SMS Message";
             }
             
-            // Verwende ersten 50 Zeichen als Titel
             return body.Length > 50 ? $"{body[..50]}..." : body;
         }
         else if (record.Type == "Email")
