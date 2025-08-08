@@ -18,6 +18,7 @@
     "Properties": {
       "MesageId": "84CE8A10-C767-4D0F-A95D-27AB6CFB25DD"
     },
-    "Provider": "SendGrid"
+    "Provider": "SendGrid",
+    "Title": "Email Message"
   }
 ]
