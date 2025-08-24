@@ -15,6 +15,19 @@ public sealed class MessageBus : IMessageBus
     private readonly ILogger<MessageBus> _logger;
     private readonly ServiceBusClient _client;
     private readonly ServiceBusAdministrationClient _adminClient;
+    private readonly DefaultAzureCredentialOptions _azureCredentialOptions = new DefaultAzureCredentialOptions
+    {
+        ExcludeEnvironmentCredential = true,
+        ExcludeManagedIdentityCredential = true,
+        ExcludeSharedTokenCacheCredential = true,
+        ExcludeInteractiveBrowserCredential = true,
+        ExcludeVisualStudioCredential = true,
+        ExcludeVisualStudioCodeCredential = true,
+        ExcludeAzurePowerShellCredential = true,
+        ExcludeAzureDeveloperCliCredential = true,
+        ExcludeWorkloadIdentityCredential = false,
+        ExcludeAzureCliCredential = false
+    };
 
     public MessageBus(AzureServiceBusOptions options, ILogger<MessageBus> logger)
     {
@@ -33,7 +46,7 @@ public sealed class MessageBus : IMessageBus
         { Url: { } url } when !string.IsNullOrEmpty(url) =>
             new ServiceBusClient(
                 url,
-                new WorkloadIdentityCredential(),
+                new DefaultAzureCredential(_azureCredentialOptions),
                 new ServiceBusClientOptions { TransportType = options.TransportType }),
         _ => throw new ArgumentException(
             "ConnectionString or Url is required for Azure Service Bus.")
@@ -49,7 +62,7 @@ public sealed class MessageBus : IMessageBus
         { Url: { } url } when !string.IsNullOrEmpty(url) =>
             new ServiceBusAdministrationClient(
                 url,
-                new WorkloadIdentityCredential(),
+                new DefaultAzureCredential(_azureCredentialOptions),
                 new ServiceBusAdministrationClientOptions { Diagnostics = { IsDistributedTracingEnabled = true } }),
         _ => throw new ArgumentException(
             "ConnectionString or Url is required for Azure Service Bus.")
